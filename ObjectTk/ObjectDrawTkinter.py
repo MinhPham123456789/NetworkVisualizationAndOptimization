@@ -76,16 +76,6 @@ class ObjDrawTkinter:
                MG.vertex[edge.get_attribute("target")].get_attribute("vertex_size"),
                MG.vertex[edge.get_attribute("target")].get_attribute("y") + min_y +
                MG.vertex[edge.get_attribute("target")].get_attribute("vertex_size")]
-
-        # s_begin = self.tk_frame.do_scale(begin[0], begin[1])
-        # s_end = self.tk_frame.do_scale(end[0], end[1])
-
-        # print(s_begin, s_end)
-
-        # bbegin = [graph.vs[edge.source]["x"] + min_x + graph.vs[edge.source]["vertex_size"],
-        #          graph.vs[edge.source]["y"] + min_y + graph.vs[edge.source]["vertex_size"]]
-        # bend = [graph.vs[edge.target]["x"] + min_x + graph.vs[edge.target]["vertex_size"],
-        #        graph.vs[edge.target]["y"] + min_y + graph.vs[edge.target]["vertex_size"]]
         return begin, end
 
     def recolor_edge_list(self, edge_list, MG: ObjManager, color: str):

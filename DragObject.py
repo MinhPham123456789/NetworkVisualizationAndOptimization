@@ -5,7 +5,7 @@ from ObjectTk.ObjectManager import *
 
 class MouseMover():
     def __init__(self, tk_frame: ZoomAndDrag, DrawTkinter_center, graph:Graph, mg: ObjManager):
-        self.item = 0
+        self.item = (0)
         self.previous = (0, 0)
         self.canvas = tk_frame.canvas
         self.reverse_position_key = DrawTkinter_center
@@ -34,25 +34,48 @@ class MouseMover():
         widget = event.widget
         xc = widget.canvasx(event.x)
         yc = widget.canvasx(event.y)
-        index = self.item[0]-1
-        # current_size = math.sqrt((self.last_pos[0] - self.last_pos[2])**2 + (self.last_pos[1] - self.last_pos[3])**2)
-        # x1 = xc - current_size/2
-        # y1 = yc - current_size/2
-        # x2 = xc + current_size/2
-        # y2 = yc + current_size/2
-        # self.canvas.coords(self.item, x1, y1, x2, y2)
-        self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
-        print("Bis:")
-        print((xc, yc, self.item[0]))
-        print(self.canvas.coords(self.item))
-        self.previous = (xc, yc)
-        self.change_position_instantly()
+        if len(self.item) != 0 and self.item[0] <= len(self.mg.vertex):
+            self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
+            print("Bis:")
+            print((xc, yc, self.item[0]))
+            print(self.canvas.coords(self.item))
+
+            self.previous = (xc, yc)
+            self.change_position_instantly()
 
     def change_position_instantly(self):
+        source_list = []
+        target_list = []
+        xs, ys, xt, yt = self.canvas.coords(self.item)
+        x = (xs + xt)/2
+        y = (ys + yt)/2
+        vertex_item_index = self.item[0] - 1
+        print("vertex item:", vertex_item_index)
+        for index in range(len(self.mg.edge)):
+            if self.mg.edge[index].get_attribute("source") == vertex_item_index:
+                source_list.append(index)
+        for index in range(len(self.mg.edge)):
+            if self.mg.edge[index].get_attribute("target") == vertex_item_index:
+                target_list.append(index)
+        for i in source_list:
+            edge_item_index = i + 1 + len(self.mg.vertex)    # In item index, it starts from 1 and it adds all vertices then all edges
+            print("sedge:", edge_item_index)
+            x1, y1, x2, y2 = self.canvas.coords(edge_item_index)
+            self.canvas.coords(edge_item_index, x, y, x2, y2)
+        for u in target_list:
+            edge_item_index = u + 1 + len(self.mg.vertex)    # In item index, it starts from 1 and it adds all vertices then all edges
+            print("tedge:", edge_item_index)
+            x1, y1, x2, y2 = self.canvas.coords(edge_item_index)
+            self.canvas.coords(edge_item_index, x1, y1, x, y)
         items = self.canvas.find_withtag("all")
-        for item in items:
-            x1, y1, x2, y2 = self.canvas.coords(item)
-            self.canvas.coords(item, x1, y1, x2, y2)
+        print(len(items))
+        print(len(self.mg.vertex))
+        print(len(self.mg.edge))
+        print(source_list)
+        print(target_list)
+        # for item in items:
+        #     x1, y1, x2, y2 = self.canvas.coords(item)
+        #     self.canvas.coords(item, x, y, x2, y2)
         print("test")
 
 ##Storage#############
