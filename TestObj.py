@@ -5,6 +5,7 @@ import tkinter as tk
 from ZoomAndDrag import *
 from igraphNewModules import *
 from DragObject import *
+from ObjectTk.ObjTkFrame import *
 import numpy as np
 
 
@@ -35,6 +36,7 @@ if __name__ == "__main__":
     test = tk.Tk()
     NREN = Graph.Read_GraphML("newNREN.graphml")
     mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
+    imp_draw = ObjTkFrame(test)
     # DrawTk = ObjDrawTkinter(0.06, 300, mg)
 
     # GENERATE ADDITIONAL ATTRIBUTES
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     print(mg.edge[0].list_attributes())
 
     # ADD DRAG AND ZOOM
-    imp_draw = ZoomAndDrag(test, mg)  # THIS CLASS CREATE AND SETUP A WHOLE NEW CANVAS
+    zm = ZoomAndDrag(imp_draw, mg)  # THIS CLASS CREATE AND SETUP A WHOLE NEW CANVAS
     DrawTk = ObjDrawTkinter(300, mg, imp_draw)
 
     # ADD DRAG OBJECTS
@@ -56,10 +58,10 @@ if __name__ == "__main__":
     # MOTION
     imp_draw.canvas.bind("<Button-3>", mm.select)
     imp_draw.canvas.bind("<B3-Motion>", mm.drag)
-    imp_draw.canvas.bind("<Button-1>", imp_draw.move_start)
-    imp_draw.canvas.bind("<B1-Motion>", imp_draw.move_move)
-    imp_draw.canvas.bind("<Button-4>", imp_draw.zoomIn)
-    imp_draw.canvas.bind("<Button-5>", imp_draw.zoomOut)
+    imp_draw.canvas.bind("<Button-1>", zm.move_start)
+    imp_draw.canvas.bind("<B1-Motion>", zm.move_move)
+    imp_draw.canvas.bind("<Button-4>", zm.zoomIn)
+    imp_draw.canvas.bind("<Button-5>", zm.zoomOut)
 
     # GENERATE COLOR BY WEIGHT
     DrawTk.group_vertex_color("GeoLocation", mg)
