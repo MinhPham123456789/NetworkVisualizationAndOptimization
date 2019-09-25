@@ -105,19 +105,19 @@ class ZoomAndDrag(tk.Frame):
         items = self.canvas.find_withtag("all")
 
         for item in items:
-            x1, y1, x2, y2 = self.canvas.coords(item)
-            x = (x1 + x2) / 2
-            y = (y1 + y2) / 2
-            # print("Test")
-            # print(x,y)
-            x1 = x1 * self.scale_in - (true_x*self.scale_in - true_x)
-            y1 = y1 * self.scale_in - (true_y*self.scale_in - true_y)
-            x2 = x2 * self.scale_in - (true_x*self.scale_in - true_x)
-            y2 = y2 * self.scale_in - (true_y*self.scale_in - true_y)
-            x = (x1 + x2) / 2
-            y = (y1 + y2) / 2
-            # print(x,y)
-            self.canvas.coords(item, x1, y1, x2, y2)
+            coords = self.canvas.coords(item)
+            if len(coords) > 2:
+                x1, y1, x2, y2 = coords
+                x1 = x1 * self.scale_in - (true_x*self.scale_in - true_x)
+                y1 = y1 * self.scale_in - (true_y*self.scale_in - true_y)
+                x2 = x2 * self.scale_in - (true_x*self.scale_in - true_x)
+                y2 = y2 * self.scale_in - (true_y*self.scale_in - true_y)
+                self.canvas.coords(item, x1, y1, x2, y2)
+            else:
+                x, y = coords
+                x = x * self.scale_in - (true_x * self.scale_in - true_x)
+                y = y * self.scale_in - (true_y * self.scale_in - true_y)
+                self.canvas.coords(item, x, y)
 
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
@@ -127,16 +127,19 @@ class ZoomAndDrag(tk.Frame):
         items = self.canvas.find_withtag("all")
 
         for item in items:
-            x1, y1, x2, y2 = self.canvas.coords(item)
-            x = (x1 + x2) / 2
-            y = (y1 + y2) / 2
-            x1 = x1 * self.scale_out - (true_x*self.scale_out - true_x)
-            y1 = y1 * self.scale_out - (true_y*self.scale_out - true_y)
-            x2 = x2 * self.scale_out - (true_x*self.scale_out - true_x)
-            y2 = y2 * self.scale_out - (true_y*self.scale_out - true_y)
-            x = (x1 + x2) / 2
-            y = (y1 + y2) / 2
-            self.canvas.coords(item, x1, y1, x2, y2)
+            coords = self.canvas.coords(item)
+            if len(coords) > 2:
+                x1, y1, x2, y2 = coords
+                x1 = x1 * self.scale_out - (true_x * self.scale_out - true_x)
+                y1 = y1 * self.scale_out - (true_y * self.scale_out - true_y)
+                x2 = x2 * self.scale_out - (true_x * self.scale_out - true_x)
+                y2 = y2 * self.scale_out - (true_y * self.scale_out - true_y)
+                self.canvas.coords(item, x1, y1, x2, y2)
+            else:
+                x, y = coords
+                x = x * self.scale_out - (true_x * self.scale_out - true_x)
+                y = y * self.scale_out - (true_y * self.scale_out - true_y)
+                self.canvas.coords(item, x, y)
 
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 

@@ -20,6 +20,14 @@ class ObjManager:
             for edge in self.edge:
                 edge.add_attribute(attribute_name, value)
 
+    def add_attribute_list(self, attribute_name: str, value: list, is_vertex: bool):
+        if is_vertex:
+            for i in range(len(self.vertex)):
+                self.vertex[i].add_attribute(attribute_name, value[i])
+        else:
+            for i in range(len(self.edge)):
+                self.edge[i].add_attribute(attribute_name, value[i])
+
     def change_attribute(self, attribute_name: str, value, is_vertex: bool):
         if is_vertex:
             for vertex in self.vertex:

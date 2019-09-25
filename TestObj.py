@@ -5,24 +5,31 @@ import tkinter as tk
 from ZoomAndDrag import *
 from igraphNewModules import *
 from DragObject import *
+import numpy as np
 
 
 def test_redraw():
     imp_draw.canvas.delete("all")
     DrawTk.load_vertices()
     DrawTk.load_edges()
+    DrawTk.load_vertex_load_weight("service_load", mg)
 
     print("OK")
 
 
 def draw_circle():
     print("darw")
-    #new_item = imp_draw.canvas.create_oval(imp_draw.do_scale(325,325), imp_draw.do_scale(370,370), fill="red")
-    # imp_draw.do_scale(325,325)
-    # imp_draw.do_scale(370,370)
+
 
 def save_position():
     imp_draw.save_all_position(DrawTk.get_moved_center())
+
+
+def random_value(min_point: float, max_point: float, size: int):
+    result = [random.uniform(min_point, max_point) for i in range(size)]
+    return result
+
+###GENERAL RULE PLOT ALL VERTICES AND VERTICES ATTRIBUTE BEFORE EDGES AND EDGES ATTRIBUTE###########
 
 if __name__ == "__main__":
     test = tk.Tk()
@@ -30,9 +37,11 @@ if __name__ == "__main__":
     mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
     # DrawTk = ObjDrawTkinter(0.06, 300, mg)
 
+    # GENERATE ADDITIONAL ATTRIBUTES
     mg.add_attribute("color", "red", True)
     mg.add_attribute("color", "gray", False)
     mg.add_attribute("vertex_size", 0.06, True)
+    mg.add_attribute_list("service_load", random_value(0.0, 10.0, len(mg.vertex)), True)
 
     print(mg.vertex[0].list_attributes())
     print(mg.edge[0].list_attributes())
@@ -41,9 +50,8 @@ if __name__ == "__main__":
     imp_draw = ZoomAndDrag(test, mg)  # THIS CLASS CREATE AND SETUP A WHOLE NEW CANVAS
     DrawTk = ObjDrawTkinter(300, mg, imp_draw)
 
-    # print(DrawTk.transform_to_oval_position(mg.vertex[0], mg))
     # ADD DRAG OBJECTS
-    mm = MouseMover(imp_draw, DrawTk.get_moved_center(), NREN, mg)
+    mm = MouseMover(imp_draw, DrawTk, NREN, mg)
 
     # MOTION
     imp_draw.canvas.bind("<Button-3>", mm.select)
@@ -65,6 +73,8 @@ if __name__ == "__main__":
     # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
     DrawTk.load_vertices()
     DrawTk.load_edges()
+    DrawTk.load_vertex_text_weight("service_load")
+    DrawTk.test()
 
     imp_draw.pack(fill="both", expand=True)
 
