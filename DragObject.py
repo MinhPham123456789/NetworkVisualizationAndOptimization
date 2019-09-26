@@ -30,25 +30,26 @@ class MouseMover():
         print("Von:")
         print((xc, yc, self.item))
         self.last_pos = self.canvas.coords(self.item)
-        self.drawTk.set_weight_text_position(
-            int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
-        vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
-        vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
-        rectangle_index = "r" + str(vertex_obj_index)
+        # self.drawTk.set_weight_text_position(
+        #     int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
+        # vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
+        # vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
+        # rectangle_index = "r" + str(vertex_obj_index)
         # print(self.canvas.coords(self.item))
 
     def drag(self, event):
         widget = event.widget
         xc = widget.canvasx(event.x)
         yc = widget.canvasx(event.y)
-        if len(self.item) != 0 and self.item[0] <= len(self.mg.vertex):
-            self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
-            print("Bis:")
-            print((xc, yc, self.item[0]))
-            print(self.canvas.coords(self.item))
+        # print(len(self.item))
+        if len(self.item) >= 1 and self.item[0] <= len(self.mg.vertex):
+                self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
+                print("Bis:")
+                print((xc, yc, self.item[0]))
+                print(self.canvas.coords(self.item))
 
-            self.previous = (xc, yc)
-            self.change_position_instantly2()
+                self.previous = (xc, yc)
+                self.change_position_instantly2()
 
     def change_position_instantly(self):
         source_list = []
@@ -140,49 +141,5 @@ class MouseMover():
 
 # print(self.mg.vertex[self.item[0] - 1])
 
-# drag
-# self.new_pos = (xc, yc)
-# newx, newy = self.tk_frame.revert_scale(self.new_pos[0], self.new_pos[1])
-# print(newx,newy)
-# self.mg.vertex[self.item[0] - 1].set_attribute("x", newx-300-0.06)
-# self.mg.vertex[self.item[0] - 1].set_attribute("y", newy-300-0.06)
-
-# vector = [self.new_pos[0] - self.last_pos[0], self.new_pos[1] - self.last_pos[1]]
-# old_x = self.mg.vertex[self.item[0] - 1].get_attribute("x")
-# old_y = self.mg.vertex[self.item[0] - 1].get_attribute("y")
-# s_vectorx, s_vectory = self.tk_frame.revert_scale(vector[0], vector[1])
-# self.mg.vertex[self.item[0] - 1].set_attribute("x", old_x + s_vectorx)
-# self.mg.vertex[self.item[0] - 1].set_attribute("y", old_y + s_vectory)
-
-# if int(self.item[0])-1 < len(self.graph.vs):
-#     new_x = xc - self.reverse_position_key - self.graph.vs[self.item[0]-1]["vertex_size"]
-#     new_y = yc - self.reverse_position_key - self.graph.vs[self.item[0]-1]["vertex_size"]
 
 
-    # def get_rectangle_ratio(self, rectangle_index, vertex_obj: VertexObj):
-    #     x1, y1, x2, y2 = self.canvas.coords(self.drawTk.items_table[rectangle_index])
-    #     vx1, vy1, vx2, vy2 = self.canvas.coords(self.drawTk.items_table[vertex_obj])
-    #     rec_current_width = x2 - x1
-    #     vertex_current_width = vx2 - vx1
-    #     #vertex_current_height = vy2 - vy1
-    #     ratio = rec_current_width / vertex_current_width
-    #     return ratio
-    #
-    # def calculate_new_rectangle(self, rectangle_index, vertex_obj: VertexObj):
-    #     # x1, y1, x2, y2 = self.canvas.coords(self.drawTk.items_table[rectangle_index])
-    #     vx1, vy1, vx2, vy2 = self.canvas.coords(self.drawTk.items_table[vertex_obj])
-    #     #rec_current_width = x2 - x1
-    #     vertex_current_width = vx2 - vx1
-    #     vertex_current_height = vy2 - vy1
-    #     #ratio = rec_current_width / vertex_current_width
-    #     ratio = 1
-    #     rec_width = vertex_current_width * ratio
-    #     mid_x = (vx1 + vx2) / 2
-    #     mid_y = (vy1 + vy2) / 2
-    #     new_mid_y = mid_y + vertex_current_height/2
-    #     position = [mid_x - rec_width, new_mid_y, mid_x + rec_width, new_mid_y + vertex_current_height/2]
-    #     #print(x1, y1, x2, y2)
-    #     print(vx1, vy1, vx2, vy2)
-    #     print("ratio", ratio)
-    #     print(position)
-    #     return position

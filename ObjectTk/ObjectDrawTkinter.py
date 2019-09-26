@@ -62,6 +62,7 @@ class ObjDrawTkinter:
         for key in the_list:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, True)
+        return new_color
 
     def resize_vertex_list(self, vertex_list, MG: ObjManager, size):
         for i in vertex_list:
@@ -77,9 +78,9 @@ class ObjDrawTkinter:
         width_mid = (coords[0] + coords[2]) / 2
         width_len = (width_mid - coords[0])*2
         position = [width_mid - width_len, coords[3], width_mid + width_len, coords[3] + height_len*2]
-        print(position[0] - position[2], index)
-        print(coords[0] - position[0], coords[2] - position[2])
-        print((position[0] - position[2]) / (coords[0] - coords[2]))
+        # print(position[0] - position[2], index)
+        # print(coords[0] - position[0], coords[2] - position[2])
+        # print((position[0] - position[2]) / (coords[0] - coords[2]))
         new = [width_mid, height_mid + height_len*3]
         return new
 
