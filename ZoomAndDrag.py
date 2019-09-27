@@ -1,6 +1,7 @@
+import math
 import tkinter as tk
 import random
-from ObjectTk.ObjectManager import *
+from ObjectTk.ObjectManager import ObjManager
 
 
 class ZoomAndDrag(tk.Frame):
@@ -53,14 +54,6 @@ class ZoomAndDrag(tk.Frame):
 
     def move_move(self, event):
         self.canvas.scan_dragto(event.x, event.y, gain=1)
-
-    # windows zoom
-    # def zoomer(self, event):
-    #     if (event.delta > 0):
-    #         self.canvas.scale("all", event.x, event.y, 1.1, 1.1)
-    #     elif (event.delta < 0):
-    #         self.canvas.scale("all", event.x, event.y, 0.9, 0.9)
-    #     self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     # linux zoom
     def zoomerP(self, event):

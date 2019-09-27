@@ -1,6 +1,6 @@
 from igraph import *
 import numpy as np
-from ObjectTk.ObjectManager import *
+from ObjectTk.ObjectManager import ObjManager
 from ObjectTk.ObjectTkinter import *
 from ZoomAndDrag import *
 from bidict import bidict
@@ -62,6 +62,7 @@ class ObjDrawTkinter:
         for key in the_list:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, True)
+        return new_color
 
     def resize_vertex_list(self, vertex_list, MG: ObjManager, size):
         for i in vertex_list:

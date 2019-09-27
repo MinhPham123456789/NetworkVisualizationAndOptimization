@@ -1,11 +1,14 @@
 from igraph import *
-from ObjectTk.ObjectTkinter import *
 
+
+from ObjectTk.ObjectTkinter import *
+import tkinter as tk
 
 class ObjManager:
     def __init__(self, graph: Graph = None):
         self.vertex = []
         self.edge = []
+        self.graph = graph
         if graph is not None:
             for vertex in graph.vs:
                 self.vertex.append(VertexObj(graph, vertex.index))
@@ -55,3 +58,14 @@ class ObjManager:
             for edge in self.edge:
                 result.append(edge.get_attribute(attribute_name))
             return result
+
+    def save_graph(self, drawTk, canvas_frame):
+        for attribute in self.vertex[0].properties.keys():
+            self.graph.vs[attribute] = self.get_all_attribute_value(attribute, True)
+        for attribute2 in self.edge[0].properties.keys():
+            self.graph.es[attribute2] = self.get_all_attribute_value(attribute2, False)
+        for index in range(len(self.vertex)):
+            x1, y1, x2, y2 = canvas_frame.coords(drawTk.items_table[self.vertex[index]])
+            self.graph.vs[index]["x"] = ((x1+x2)/2 - drawTk.get_moved_center()) / 16
+            self.graph.vs[index]["y"] = ((y1+y2)/2 - drawTk.get_moved_center()) / 16
+        return self.graph

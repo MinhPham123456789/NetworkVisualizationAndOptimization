@@ -30,11 +30,11 @@ class MouseMover():
         print("Von:")
         print((xc, yc, self.item))
         self.last_pos = self.canvas.coords(self.item)
-        self.drawTk.set_weight_text_position(
-            int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
-        vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
-        vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
-        rectangle_index = "r" + str(vertex_obj_index)
+        # self.drawTk.set_weight_text_position(
+        #     int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
+        # vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
+        # vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
+        # rectangle_index = "r" + str(vertex_obj_index)
         # print(self.canvas.coords(self.item))
 
     def drag(self, event):

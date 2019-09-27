@@ -2,7 +2,8 @@ import tkinter as tk
 from ObjectTk.ObjectManager import *
 
 class ObjTkFrame(tk.Frame):
-    def __init__(self, root):
+    def __init__(self, root, gui_canvas=None):
+        # gui_canvas here is the gui canvas layer then we overlap the drawing canvas layer on it
         tk.Frame.__init__(self, root)  # TODO: Consider remove this for better structure code
         self.canvas = tk.Canvas(self, width=900, height=900, background="white")
         self.xsb = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
