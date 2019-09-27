@@ -1,13 +1,18 @@
 from igraph import *
 from ObjectTk.ObjectManager import *
 from ObjectTk.ObjectDrawTkinter import *
+from ObjectTk.ObjTkFrame import *
+from ObjectTk.ObjTkLayout import GraphLayout
 import tkinter as tk
 from ZoomAndDrag import *
 from igraphNewModules import *
 from DragObject import *
+
 from ObjectTk.ObjTkFrame import *
 from GUI import *
+
 import numpy as np
+from GUI import *
 
 
 # def test_redraw():
@@ -18,13 +23,18 @@ import numpy as np
 #
 #     print("OK")
 
+def a():
+    pass
+    # show_text_weight(text_weight_toggle)
 
 def draw_circle():
     print("darw")
 
 
+
 # def save_position():
 #     imp_draw.save_all_position(DrawTk.get_moved_center())
+
 
 
 def random_value(min_point: float, max_point: float, size: int):
@@ -35,15 +45,21 @@ def random_value(min_point: float, max_point: float, size: int):
 
 if __name__ == "__main__":
     test = tk.Tk()
+
     # NREN = Graph.Read_GraphML("newNREN.graphml")
     # mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
     # imp_draw = ObjTkFrame(test)
     # DrawTk = ObjDrawTkinter(300, mg, imp_draw)
     # layout_class = GraphLayout(NREN)
     main_window = Window(test)
+
     # DrawTk = ObjDrawTkinter(0.06, 300, mg)
 
+    # TOGGLE VARIABLE
+    text_weight_toggle = 1
+
     # GENERATE ADDITIONAL ATTRIBUTES
+
     # mg.add_attribute("color", "red", True)
     # mg.add_attribute("color", "gray", False)
     # mg.add_attribute("vertex_size", 0.06, True)
@@ -77,15 +93,18 @@ if __name__ == "__main__":
     # DrawTk.recolor_edge_list(get_path_edge_object(NREN, 0, 1102), mg, "#11fb09")
 
     # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
+
     # DrawTk.load_vertices()
     # DrawTk.load_edges()
     # # DrawTk.load_vertex_text_weight("service_load")
     # DrawTk.test()
 
+
     # imp_draw.pack(fill="both", expand=True)
 
     # button = tk.Button(test, text="save", command=save_position)
     # button2 = tk.Button(test, text="refresh", command=test_redraw)
+
     # button.pack()
     # button2.pack()
 
