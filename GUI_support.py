@@ -103,6 +103,22 @@ class GUI_support():
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
 
+    # kiet linkspeedraw:
+    def edge_width(self,value):
+        att_name = str(value)
+        width_dict = self.gui.drawTk.group_edge_bandwidth(att_name, self.gui.mg)
+        for i in range(len(width_dict)):
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], width = width_dict[i])
+
+    # thao
+    def edge_color(self, value):
+        attribute = str(value)
+        print("----GUI_support.edgewidthdelay()----")
+        edge_color_list = self.gui.drawTk.edge_color(attribute, self.gui.mg)
+        for i in range(len(edge_color_list)):
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], fill=edge_color_list[i])
+        print("//----GUI_support.edgewidthdelay()----")
+
     def start_graph(self):
         coords = self.gui.layout.start_layout()
         for i in range(len(coords)):

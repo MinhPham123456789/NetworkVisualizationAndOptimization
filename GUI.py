@@ -39,9 +39,9 @@ class Window(Frame):
         File.add_command(label="load", command=lambda: self.gui_support.load())
         File.add_command(label="refresh")
 
-        Edit.add_command(label="group_vertex", command=lambda: self.popup_group_vertex())
-        Edit.add_command(label="bandwidth", command=lambda: self.Bandwidth())
-        Edit.add_command(label="delay")  # , command = self.Delay)
+        Edit.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
+        Edit.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
+        Edit.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
 
         Layout_menu.add_command(label="original layout",
                                 command=lambda: self.gui_support.start_graph())
@@ -120,8 +120,25 @@ class Window(Frame):
         self.asn_entry.insert(0, list_value[4])
         self.serviceload_entry.insert(0, list_value[5])
 
+    def popup_group_edge_width(self):
+        popupBonusWindow = Tk()
+        input_name = Label(popupBonusWindow, text="Attribute")
+        input_name.grid(row=0)
+        input_entry = Entry(popupBonusWindow)
+        input_entry.grid(row=0, column=1)
+        B1 = Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.edge_width(input_entry.get()))
+        B1.grid(row=0, column=2)
 
-
+    def popup_group_edge_color(self):
+        print("into func. self.Delay")
+        popupWindow = tk.Tk()
+        popupWindow.wm_title("Attribute Input")
+        input_name = tk.Label(popupWindow, text="Attribute")
+        input_name.grid(row=0)
+        inputentry = tk.Entry(popupWindow)
+        inputentry.grid(row=0, column=1)
+        Btn = tk.Button(popupWindow, text="Enter", command=lambda: self.gui_support.edge_color(inputentry.get()))
+        Btn.grid(row=0, column=2)
 
     # def Groupvertex(self):
     #     color_list = self.drawTk.group_vertex_color("GeoLocation", self.mg)
@@ -189,11 +206,3 @@ class Window(Frame):
     #     # print(source_list)
     #     # print(target_list)
     #     print("test")
-
-# def Delay(self):
-# t = Toplevel(height=1200, width=1300)
-# t.title("pop-up")
-# exit_button = Button(t, text="exit", command=t.destroy)
-# exit_button.place(x=0, y=0)
-# canvas1 = Canvas(t, heigh=1200, width=1200)
-# canvas1.place(x=100, y=0)

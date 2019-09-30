@@ -92,7 +92,7 @@ class ObjDrawTkinter:
         for index in range(len(self.mg.vertex)):
             ratio = (self.mg.vertex[index].get_attribute(vertex_weight) - min_weight) / (max_weight - min_weight)
             position = self.set_weight_text_position(index, vertex_weight, self.mg)
-            if ratio > 0.8:
+            if ratio < 0.8:
                 self.tk_frame.canvas.create_text(position, fill="red",
                                                  text=str(round(self.mg.vertex[index].get_attribute(vertex_weight), 2)))
             else:
@@ -128,6 +128,61 @@ class ObjDrawTkinter:
     def recolor_edge_list(self, edge_list, MG: ObjManager, color: str):
         for i in edge_list:
             MG.edge[i.index].set_attribute("color", color)
+
+    def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
+        min_weight = min(MG.get_all_attribute_value(edge_weight, False))
+        max_weight = max(MG.get_all_attribute_value(edge_weight, False))
+        print(min_weight)
+        print(max_weight)
+        threshold1 = (max_weight - min_weight) / 3 + min_weight
+        threshold2 = (max_weight - min_weight) / 3 * 2 + min_weight
+        print(threshold1)
+        print(threshold2)
+        the_list = MG.get_all_attribute_value(edge_weight, False)
+        width_dict = []
+        print(np.unique(the_list))
+        print(type(the_list[0]))
+        for key in the_list:
+            if key < threshold1:
+                width_dict.append(1)
+            elif key < threshold2:
+                width_dict.append(3)
+            else:
+                width_dict.append(6)
+        return width_dict
+
+    def edge_color(self, edge_weight: str, MG: ObjManager):
+        print("----ObjectDrawTkinter----")
+        if edge_weight == "delay":
+            weight_list = self.edge_color_by_delay(MG)
+        else:
+            weight_list = MG.get_all_attribute_value(edge_weight, False)
+        color_list = []
+        maxweight = max(weight_list)
+        minweight = min(weight_list)
+        rangeweight = maxweight - minweight
+        onethird = rangeweight/3
+        for i in range(len(MG.edge)):
+            if weight_list[i] < minweight + onethird:
+                percent = (weight_list[i] - minweight)/onethird
+                color = self.rgb_2_hex(255, int(percent * 255), 0)
+            elif weight_list[i] < minweight + onethird*2:
+                percent = (weight_list[i] - minweight - onethird)/onethird
+                color = self.rgb_2_hex(int(255 - 255 * percent), 255, 0)
+            else:
+                percent = (weight_list[i] - minweight - onethird*2) / onethird
+                color = self.rgb_2_hex(0, 255, int(255 * percent))
+            color_list.append(color)
+        MG.change_attribute_value_list("color", color_list, False)
+        print("//----ObjectDrawTkinter----")
+        return color_list
+
+    def edge_color_by_delay(self, MG: ObjManager):
+        delay_list = []
+        for edge in MG.edge:
+            delay = edge.get_attribute("tranmissionDelay") + edge.get_attribute("bufferDelay") + edge.get_attribute("propagationDelay")
+            delay_list.append(delay)
+        return delay_list
 
     def load_edges(self):
         for i in range(len(self.mg.edge)):
