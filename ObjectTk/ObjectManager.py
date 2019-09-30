@@ -66,6 +66,6 @@ class ObjManager:
             self.graph.es[attribute2] = self.get_all_attribute_value(attribute2, False)
         for index in range(len(self.vertex)):
             x1, y1, x2, y2 = canvas_frame.coords(drawTk.items_table[self.vertex[index]])
-            self.graph.vs[index]["x"] = ((x1+x2)/2 - drawTk.get_moved_center()) / 16
-            self.graph.vs[index]["y"] = ((y1+y2)/2 - drawTk.get_moved_center()) / 16
+            self.graph.vs[index]["x"] = ((x1+x2)/2 - drawTk.get_moved_center()) / 12
+            self.graph.vs[index]["y"] = ((y1+y2)/2 - drawTk.get_moved_center()) / 12
         return self.graph

@@ -1,3 +1,5 @@
+from typing import List
+
 from igraph import *
 
 from DragObject import MouseMover
@@ -11,6 +13,7 @@ from tkinter import filedialog
 class GUI_support():
     def __init__(self, gui):
         self.gui = gui
+        self.selected_vertex = None
 
     def load(self):
         print("Loading")
@@ -41,7 +44,7 @@ class GUI_support():
         zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
 
         # ADD DRAG OBJECTS
-        mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg)
+        mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self)
 
         # MOTION
         self.gui.frame.canvas.bind("<Button-3>", mm.select)
@@ -57,13 +60,39 @@ class GUI_support():
         # DrawTk.load_vertex_text_weight("service_load")
         self.gui.drawTk.test()
 
-        self.gui.frame.pack(fill="both", expand=True)
+        self.gui.frame.place(x=300, y=0)
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
                                                   filetypes=[("graph", "*.graphml")])
         new_graph = self.gui.mg.save_graph(self.gui.drawTk, self.gui.canvas)
         new_graph.write_graphml(graph_name)
+
+    def get_vertex_value(self, vertex_item_index):
+        vertex_obj = self.gui.drawTk.items_table.inverse[vertex_item_index]
+        self.selected_vertex = vertex_obj
+        node_id = str(vertex_obj.get_attribute("id"))
+        country = str(vertex_obj.get_attribute("GeoLocation"))
+        network = str(vertex_obj.get_attribute("Network"))
+        label = str(vertex_obj.get_attribute("label"))
+        asn = str(vertex_obj.get_attribute("asn"))
+        service_load = str(vertex_obj.get_attribute("service_load"))
+        result_list: List[str] = [node_id, country, network, label, asn, service_load]
+        self.gui.get_vertex_value(result_list)
+
+    def set_vertex_value(self):
+        new_country = self.gui.countrynode_entry.get()
+        new_network = self.gui.network_entry.get()
+        new_label = self.gui.label_node_entry.get()
+        new_asn = self.gui.asn_entry.get()
+        new_service_load = self.gui.serviceload_entry.get()
+        self.selected_vertex.set_attribute("GeoLocation", new_country)
+        self.selected_vertex.set_attribute("Network", new_network)
+        self.selected_vertex.set_attribute("label", new_label)
+        self.selected_vertex.set_attribute("asn", new_asn)
+        self.selected_vertex.set_attribute("service_load", new_service_load)
+        result = [new_country, new_network, new_label, new_asn, new_service_load]
+        print(result)
 
     def Groupvertex(self, value):
         att_name = str(value)

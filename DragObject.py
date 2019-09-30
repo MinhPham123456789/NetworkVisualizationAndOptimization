@@ -6,7 +6,7 @@ from ObjectTk.ObjectDrawTkinter import *
 
 
 class MouseMover():
-    def __init__(self, tk_frame: ZoomAndDrag, drawTk: ObjDrawTkinter, graph: Graph, mg: ObjManager):
+    def __init__(self, tk_frame: ZoomAndDrag, drawTk: ObjDrawTkinter, graph: Graph, mg: ObjManager, gui_support):
         self.item = (0)
         self.previous = (0, 0)
         self.canvas = tk_frame.canvas
@@ -15,6 +15,7 @@ class MouseMover():
         self.graph = graph
         self.tk_frame = tk_frame
         self.mg = mg
+        self.gui_support = gui_support
         self.last_pos = []
         self.new_pos = []
 
@@ -30,6 +31,9 @@ class MouseMover():
         print("Von:")
         print((xc, yc, self.item))
         self.last_pos = self.canvas.coords(self.item)
+        if self.drawTk.items_table.inverse[self.item[0]] is VertexObj:
+            self.gui_support.get_vertex_value(self.item[0])
+
         # self.drawTk.set_weight_text_position(
         #     int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
         # vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
@@ -43,13 +47,13 @@ class MouseMover():
         yc = widget.canvasx(event.y)
         # print(len(self.item))
         if len(self.item) >= 1 and self.item[0] <= len(self.mg.vertex):
-                self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
-                print("Bis:")
-                print((xc, yc, self.item[0]))
-                print(self.canvas.coords(self.item))
+            self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
+            print("Bis:")
+            print((xc, yc, self.item[0]))
+            print(self.canvas.coords(self.item))
 
-                self.previous = (xc, yc)
-                self.change_position_instantly2()
+            self.previous = (xc, yc)
+            self.change_position_instantly2()
 
     def change_position_instantly(self):
         source_list = []

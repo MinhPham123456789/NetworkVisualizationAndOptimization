@@ -12,7 +12,8 @@ import numpy as np
 
 
 class Window(Frame):
-    def __init__(self, master):  # canvas_frame, drawTk: ObjDrawTkinter, mg: ObjManager, layout_class: GraphLayout, master=None):
+    def __init__(self,
+                 master):  # canvas_frame, drawTk: ObjDrawTkinter, mg: ObjManager, layout_class: GraphLayout, master=None):
         Frame.__init__(self, master)
         self.gui_frame = tk.Frame(self.master)
         self.frame = tk.Frame(self.master)
@@ -51,6 +52,49 @@ class Window(Frame):
         menu.add_cascade(label="Edit", menu=Edit)
         menu.add_cascade(label="Layout", menu=Layout_menu)
 
+        # VERTEX x=0, y=0###############################################3
+
+        vertex_information = Label(self, text="Vertex")
+        id_node = Label(self, text="ID")
+        country_node = Label(self, text="Geolocation")
+        network = Label(self, text="Network")
+        label_node = Label(self, text="Label")
+        asn = Label(self, text="ASN")
+        service_load = Label(self, text="Service load")
+
+        self.idnode_entry = Entry(self)
+        self.countrynode_entry = Entry(self)
+        self.network_entry = Entry(self)
+        self.label_node_entry = Entry(self)
+        self.asn_entry = Entry(self)
+        self.serviceload_entry = Entry(self)
+
+        self.idnode_entry.insert(0, "default value")
+        self.countrynode_entry.insert(0, "default value")
+        self.network_entry.insert(0, "default value")
+        self.label_node_entry.insert(0, "default value")
+        self.asn_entry.insert(0, "default value")
+        self.serviceload_entry.insert(0, "default value")
+
+        vertex_information.place(x=0, y=0)
+        id_node.place(x=0, y=30)
+        country_node.place(x=0, y=60)
+        network.place(x=0, y=90)
+        label_node.place(x=0, y=120)
+        asn.place(x=0, y=150)
+        service_load.place(x=0, y=180)
+
+        self.idnode_entry.place(x=100, y=30)
+        self.countrynode_entry.place(x=100, y=60)
+        self.network_entry.place(x=100, y=90)
+        self.label_node_entry.place(x=100, y=120)
+        self.asn_entry.place(x=100, y=150)
+        self.serviceload_entry.place(x=100, y=180)
+
+        vertex_apply = Button(self, text="Apply change", command=lambda: self.gui_support.set_vertex_value())
+        vertex_apply.place(x=60, y=210)
+        # x=0, y=210##############################################
+
     def popup_group_vertex(self):
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Window")
@@ -60,6 +104,23 @@ class Window(Frame):
         input_entry.grid(row=0, column=1)
         B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.Groupvertex(input_entry.get()))
         B1.grid(row=0, column=2)
+
+    def get_vertex_value(self, list_value):
+        self.idnode_entry.delete(0, "end")
+        self.countrynode_entry.delete(0, "end")
+        self.network_entry.delete(0, "end")
+        self.label_node_entry.delete(0, "end")
+        self.asn_entry.delete(0, "end")
+        self.serviceload_entry.delete(0, "end")
+
+        self.idnode_entry.insert(0, list_value[0])
+        self.countrynode_entry.insert(0, list_value[1])
+        self.network_entry.insert(0, list_value[2])
+        self.label_node_entry.insert(0, list_value[3])
+        self.asn_entry.insert(0, list_value[4])
+        self.serviceload_entry.insert(0, list_value[5])
+
+
 
 
     # def Groupvertex(self):
