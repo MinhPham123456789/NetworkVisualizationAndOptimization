@@ -25,8 +25,15 @@ class GUI_support():
         self.gui.drawTk = ObjDrawTkinter(300, self.gui.mg, self.gui.frame)
         self.gui.layout = GraphLayout(NREN)
         # GENERATE ADDITIONAL ATTRIBUTES TODO: create check method before use this
-        self.gui.mg.add_attribute("color", "red", True)
-        self.gui.mg.add_attribute("color", "gray", False)
+        try:
+            NREN.vs["color"]
+        except KeyError:
+            self.gui.mg.add_attribute("color", "red", True)
+
+        try:
+            NREN.es["color"]
+        except KeyError:
+            self.gui.mg.add_attribute("color", "gray", False)
         self.gui.mg.add_attribute("vertex_size", 0.06, True)
         self.gui.mg.add_attribute_list("service_load", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
 
