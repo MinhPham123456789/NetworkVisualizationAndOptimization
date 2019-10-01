@@ -24,6 +24,7 @@ class GUI_support():
 
         NREN = Graph.Read_GraphML(graph_name)
         self.graph = NREN
+        self.graph_path = graph_name    # Help in geo window
         self.gui.mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
@@ -39,7 +40,7 @@ class GUI_support():
         try:
             NREN.es["color"]
         except KeyError:
-            self.gui.mg.add_attribute("color", "gray", False)
+            self.gui.mg.add_attribute("color", "#fafafa", False)
         self.gui.mg.add_attribute("vertex_size", 0.06, True)
         self.gui.mg.add_attribute_list("service_load", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
 
@@ -137,28 +138,27 @@ class GUI_support():
         else:
             print("not edge")
 
-    def open_throughput(self):
+    def open_throughput(self,):
         throughput_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
                                                      filetypes=[("throughput", "*.csv")])
         return throughput_name
 
-    def get_throughput_time(self, value):
-        print("value", value)
-        # # print(get_path_vertices_object(self.graph, 0, 1102))
-        # edge_count = {}
-        # for i in range(len(self.gui.mg.vertex)):
-        #     print("i", i)
-        #     for u in range(i+1, len(self.gui.mg.vertex)):
-        #         edge_list = get_path_edge_object(self.graph, i, u)
-        #         for e in edge_list:
-        #             try:
-        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] += 1
-        #             except KeyError:
-        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] = 1
-        #         # self.gui.drawTk.resize_vertex_list(get_path_vertices_object(self.graph, 0, 1102), self.gui.mg, 0.12)
-        #         self.gui.drawTk.recolor_edge_list(get_path_edge_object(self.graph, i, u), self.gui.mg, "#11fb09")
-        #         # for i in edge_list:
-        #         #     self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i.index]], fill=self.gui.mg.edge[i.index].properties["color"])
+    def get_throughput_time(self, value, csv_table):
+        import pandas as pd
+        value = int(value)
+        threshold_ratio = 2
+        csv_table = pd.read_csv(csv_table, names=[i for i in range(24)])
+        throughput_list = csv_table[value].tolist()
+        bandwidth_list = self.gui.mg.get_all_attribute_value("LinkSpeedRaw", False)
+        print("throughput_list", throughput_list)
+        print("bandwidth_list", bandwidth_list)
+        edge_index_list = []
+        for i in range(len(throughput_list)):
+            if float(throughput_list[i] / bandwidth_list[i]) > threshold_ratio:
+                edge_index_list.append(i)
+        self.gui.drawTk.recolor_edge_current()
+        self.gui.drawTk.recolor_edge_index_list(edge_index_list, self.gui.mg, "#a02aa9")
+        pass
 
     def group_vertex(self, value):
         att_name = str(value)
@@ -246,3 +246,20 @@ class GUI_support():
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]
     return result
+
+# Storage
+# # print(get_path_vertices_object(self.graph, 0, 1102))
+        # edge_count = {}
+        # for i in range(len(self.gui.mg.vertex)):
+        #     print("i", i)
+        #     for u in range(i+1, len(self.gui.mg.vertex)):
+        #         edge_list = get_path_edge_object(self.graph, i, u)
+        #         for e in edge_list:
+        #             try:
+        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] += 1
+        #             except KeyError:
+        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] = 1
+        #         # self.gui.drawTk.resize_vertex_list(get_path_vertices_object(self.graph, 0, 1102), self.gui.mg, 0.12)
+        #         self.gui.drawTk.recolor_edge_list(get_path_edge_object(self.graph, i, u), self.gui.mg, "#11fb09")
+        #         # for i in edge_list:
+        #         #     self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i.index]], fill=self.gui.mg.edge[i.index].properties["color"])

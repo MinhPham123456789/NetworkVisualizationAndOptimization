@@ -6,11 +6,12 @@ from ObjectTk.ObjectTkinter import *
 from ZoomAndDrag import *
 from bidict import bidict
 
+
 class ObjDrawTkinter:
     def __init__(self, center, manager: ObjManager, tk_frame: tk.Frame):
         self.center = center
         self.mg = manager
-        self.tk_frame =tk_frame
+        self.tk_frame = tk_frame
         self.items_table = bidict()
         self.current_max = 0
         self.rectangle_switch = False
@@ -77,12 +78,12 @@ class ObjDrawTkinter:
         height_mid = (coords[1] + coords[3]) / 2
         height_len = (height_mid - coords[1]) / 2
         width_mid = (coords[0] + coords[2]) / 2
-        width_len = (width_mid - coords[0])*2
-        position = [width_mid - width_len, coords[3], width_mid + width_len, coords[3] + height_len*2]
+        width_len = (width_mid - coords[0]) * 2
+        position = [width_mid - width_len, coords[3], width_mid + width_len, coords[3] + height_len * 2]
         # print(position[0] - position[2], index)
         # print(coords[0] - position[0], coords[2] - position[2])
         # print((position[0] - position[2]) / (coords[0] - coords[2]))
-        new = [width_mid, height_mid + height_len*3]
+        new = [width_mid, height_mid + height_len * 3]
         return new
 
     def load_vertex_text_weight(self, vertex_weight: str):
@@ -107,14 +108,16 @@ class ObjDrawTkinter:
             # print(graph.vs[i]["x"])
             # print(transform_to_oval_position(graph.vs[i]["x"], graph.vs[i]["y"], 10))
             self.tk_frame.canvas.create_oval(self.transform_to_oval_position(self.mg.vertex[i], self.mg),
-                                        fill=self.mg.vertex[i].get_attribute("color"))
+                                             fill=self.mg.vertex[i].get_attribute("color"))
         self.add_items_table(self.mg.vertex)
         return self.tk_frame
 
     # Edge utilities ##################################################################################################
     def transform_to_line_position(self, edge: EdgeObj, MG: ObjManager):
-        min_x = math.fabs(min(MG.get_all_attribute_value("x", True))) + self.center # move the graph to all positive side
-        min_y = math.fabs(min(MG.get_all_attribute_value("y", True))) +self.center # move the graph to all positive side
+        min_x = math.fabs(
+            min(MG.get_all_attribute_value("x", True))) + self.center  # move the graph to all positive side
+        min_y = math.fabs(
+            min(MG.get_all_attribute_value("y", True))) + self.center  # move the graph to all positive side
 
         begin = [MG.vertex[edge.get_attribute("source")].get_attribute("x") + min_x +
                  MG.vertex[edge.get_attribute("source")].get_attribute("vertex_size"),
@@ -129,6 +132,16 @@ class ObjDrawTkinter:
     def recolor_edge_list(self, edge_list, MG: ObjManager, color: str):
         for i in edge_list:
             MG.edge[i.index].set_attribute("color", color)
+            self.tk_frame.canvas.itemconfigure(self.items_table[MG.edge[i.index]], fill=color)
+
+    def recolor_edge_index_list(self, edge_index_list, MG: ObjManager, color: str):
+        for i in edge_index_list:
+            # MG.edge[i].set_attribute("color", color)
+            self.tk_frame.canvas.itemconfigure(self.items_table[MG.edge[i]], fill=color)
+
+    def recolor_edge_current(self):
+        for one_edge in self.mg.edge:
+            self.tk_frame.canvas.itemconfigure(self.items_table[one_edge], fill=one_edge.properties["color"])
 
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
         min_weight = min(MG.get_all_attribute_value(edge_weight, False))
@@ -162,16 +175,16 @@ class ObjDrawTkinter:
         maxweight = max(weight_list)
         minweight = min(weight_list)
         rangeweight = maxweight - minweight
-        onethird = rangeweight/3
+        onethird = rangeweight / 3
         for i in range(len(MG.edge)):
             if weight_list[i] < minweight + onethird:
-                percent = (weight_list[i] - minweight)/onethird
+                percent = (weight_list[i] - minweight) / onethird
                 color = self.rgb_2_hex(255, int(percent * 255), 0)
-            elif weight_list[i] < minweight + onethird*2:
-                percent = (weight_list[i] - minweight - onethird)/onethird
+            elif weight_list[i] < minweight + onethird * 2:
+                percent = (weight_list[i] - minweight - onethird) / onethird
                 color = self.rgb_2_hex(int(255 - 255 * percent), 255, 0)
             else:
-                percent = (weight_list[i] - minweight - onethird*2) / onethird
+                percent = (weight_list[i] - minweight - onethird * 2) / onethird
                 color = self.rgb_2_hex(0, 255, int(255 * percent))
             color_list.append(color)
         MG.change_attribute_value_list("color", color_list, False)
@@ -181,13 +194,14 @@ class ObjDrawTkinter:
     def edge_color_by_delay(self, MG: ObjManager):
         delay_list = []
         for edge in MG.edge:
-            delay = edge.get_attribute("tranmissionDelay") + edge.get_attribute("bufferDelay") + edge.get_attribute("propagationDelay")
+            delay = edge.get_attribute("tranmissionDelay") + edge.get_attribute("bufferDelay") + edge.get_attribute(
+                "propagationDelay")
             delay_list.append(delay)
         return delay_list
 
     def load_edges(self):
         for i in range(len(self.mg.edge)):
             self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
-                                        fill=self.mg.edge[i].get_attribute("color"))
+                                             fill=self.mg.edge[i].get_attribute("color"))
         self.add_items_table(self.mg.edge)
         return self.tk_frame

@@ -10,7 +10,7 @@ from ObjectTk.ObjTkLayout import GraphLayout
 from GUI_support import *
 import tk_tools as tkt
 import numpy as np
-
+import GeoPage
 
 class Window(Frame):
     def __init__(self,
@@ -36,7 +36,8 @@ class Window(Frame):
         File = Menu(menu)
         Edit = Menu(menu)
         Layout_menu = Menu(menu)
-        Test = Menu(menu)
+        Throughput = Menu(menu)
+
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
         File.add_command(label="refresh")
@@ -50,12 +51,13 @@ class Window(Frame):
         Layout_menu.add_command(label="reingold tilford circular",
                                 command=lambda: self.gui_support.reingold_tilford_circular())
 
-        Test.add_command(label="test", command=lambda: self.popup_throughput())
+        Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
 
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Edit", menu=Edit)
         menu.add_cascade(label="Layout", menu=Layout_menu)
-        menu.add_cascade(label="test", menu=Test)
+        menu.add_cascade(label="Throughput", menu=Throughput)
+        menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
 
         # VERTEX x=0, y=0###############################################3
 
@@ -212,8 +214,8 @@ class Window(Frame):
         Btn = tk.Button(popup_window, text="Okay", command=lambda: self.gui_support.edge_color(inputentry.get()))
         Btn.grid(row=0, column=2)
 
-    def callback(self, value):
-        print("value", value)
+    def get_throughput_name(self, value):
+        self.gui_support.throughput = value
 
     def popup_throughput(self):
         popup_bonus_window = Tk()
@@ -222,13 +224,23 @@ class Window(Frame):
         input_name.grid(row=0)
         input_entry = Entry(popup_bonus_window)
         input_entry.grid(row=0, column=1)
-        B1 = Button(popup_bonus_window, text="Okay",
-                    command=lambda: [input_entry.delete(0, "end"), input_entry.insert(0, self.gui_support.open_throughput())])
+        B1 = Button(popup_bonus_window, text="Browse",
+                    command=lambda: [input_entry.delete(0, "end"),
+                                     self.get_throughput_name(self.gui_support.open_throughput()),
+                                     input_entry.insert(0, self.gui_support.throughput)])
         B1.grid(row=0, column=2)
-        spin_box_1 = tkt.SmartSpinBox(popup_bonus_window, from_=0, to=23, width=18, callback=lambda: print("ok"))
+        # TODO: Consider set range based on the range of the csv input
+        spin_box_1 = tk.Spinbox(popup_bonus_window, from_=0, to=23, width=18,
+                                command=lambda: self.gui_support.get_throughput_time(spin_box_1.get(),
+                                                                                     self.gui_support.throughput))
         spin_box_1.grid(row=1, column=1)
-        spin_box_1.add_callback(self.callback(1))
 
+    def popup_geo_window(self):
+        window = Toplevel(self.master)
+        window.wm_title("Geo Window")
+        frame = tk.Frame(window)
+        frame.pack(side="top", fill="both", expand=True)
+        GeoPage.GeoPage(frame, window, self.gui_support.graph_path)
 
 
 
