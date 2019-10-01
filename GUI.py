@@ -8,6 +8,7 @@ from DragObject import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from GUI_support import *
+import tk_tools as tkt
 import numpy as np
 
 
@@ -35,8 +36,9 @@ class Window(Frame):
         File = Menu(menu)
         Edit = Menu(menu)
         Layout_menu = Menu(menu)
+        Test = Menu(menu)
+        File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
-        File.add_command(label="load", command=lambda: self.gui_support.load())
         File.add_command(label="refresh")
 
         Edit.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
@@ -48,9 +50,12 @@ class Window(Frame):
         Layout_menu.add_command(label="reingold tilford circular",
                                 command=lambda: self.gui_support.reingold_tilford_circular())
 
+        Test.add_command(label="test", command=lambda: self.popup_throughput())
+
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Edit", menu=Edit)
         menu.add_cascade(label="Layout", menu=Layout_menu)
+        menu.add_cascade(label="test", menu=Test)
 
         # VERTEX x=0, y=0###############################################3
 
@@ -95,14 +100,62 @@ class Window(Frame):
         vertex_apply.place(x=60, y=210)
         # x=0, y=210##############################################
 
+        # EDGE x = 0, y = 240 ###################################
+        edge_infomation = Label(self, text="Edge")
+        link_type = Label(self, text="LinkType")
+        link_node = Label(self, text="LinkNode")
+        link_label = Label(self, text="LinkLabel")
+        link_speed_raw = Label(self, text="LinkSpeedRaw")
+        buffer_delay = Label(self, text="BufferDelay")
+        transmission_delay = Label(self, text="TransDelay")
+        propagation_delay = Label(self, text="PropDelay")
+
+        self.link_type_entry = Entry(self)
+        self.link_note_entry = Entry(self)
+        self.link_label_entry = Entry(self)
+        self.link_speed_raw_entry = Entry(self)
+        self.buffer_delay_entry = Entry(self)
+        self.transmission_delay_entry = Entry(self)
+        self.propagation_delay_entry = Entry(self)
+
+        self.link_type_entry.insert(0, "default value")
+        self.link_note_entry.insert(0, "default value")
+        self.link_label_entry.insert(0, "default value")
+        self.link_speed_raw_entry.insert(0, "default value")
+        self.buffer_delay_entry.insert(0, "default value")
+        self.transmission_delay_entry.insert(0, "default value")
+        self.propagation_delay_entry.insert(0, "default value")
+
+        edge_infomation.place(x=0, y=240)
+        link_type.place(x=0, y=270)
+        link_node.place(x=0, y=300)
+        link_label.place(x=0, y=330)
+        link_speed_raw.place(x=0, y=360)
+        buffer_delay.place(x=0, y=390)
+        transmission_delay.place(x=0, y=420)
+        propagation_delay.place(x=0, y=450)
+
+        self.link_type_entry.place(x=100, y=270)
+        self.link_note_entry.place(x=100, y=300)
+        self.link_label_entry.place(x=100, y=330)
+        self.link_speed_raw_entry.place(x=100, y=360)
+        self.buffer_delay_entry.place(x=100, y=390)
+        self.transmission_delay_entry.place(x=100, y=420)
+        self.propagation_delay_entry.place(x=100, y=450)
+
+        edge_apply = Button(self, text="Apply change", command=lambda: self.gui_support.set_edge_value())
+        edge_apply.place(x=60, y=480)
+
+        # x=0, y=420 ##############################
+
     def popup_group_vertex(self):
         popupBonusWindow = tk.Tk()
-        popupBonusWindow.wm_title("Window")
+        popupBonusWindow.wm_title("Vertex color")
         input_name = tk.Label(popupBonusWindow, text="Attribute")
         input_name.grid(row=0)
         input_entry = tk.Entry(popupBonusWindow)
         input_entry.grid(row=0, column=1)
-        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.Groupvertex(input_entry.get()))
+        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.group_vertex(input_entry.get()))
         B1.grid(row=0, column=2)
 
     def get_vertex_value(self, list_value):
@@ -120,25 +173,64 @@ class Window(Frame):
         self.asn_entry.insert(0, list_value[4])
         self.serviceload_entry.insert(0, list_value[5])
 
+    ##new##
+    def get_edge_value(self, list_value):
+        self.link_type_entry.delete(0, "end")
+        self.link_note_entry.delete(0, "end")
+        self.link_label_entry.delete(0, "end")
+        self.link_speed_raw_entry.delete(0, "end")
+        self.buffer_delay_entry.delete(0, "end")
+        self.transmission_delay_entry.delete(0, "end")
+        self.propagation_delay_entry.delete(0, "end")
+
+        self.link_type_entry.insert(0, list_value[0])
+        self.link_note_entry.insert(0, list_value[1])
+        self.link_label_entry.insert(0, list_value[2])
+        self.link_speed_raw_entry.insert(0, list_value[3])
+        self.buffer_delay_entry.insert(0, list_value[4])
+        self.transmission_delay_entry.insert(0, list_value[5])
+        self.propagation_delay_entry.insert(0, list_value[6])
+
     def popup_group_edge_width(self):
-        popupBonusWindow = Tk()
-        input_name = Label(popupBonusWindow, text="Attribute")
+        popup_bonus_window = Tk()
+        popup_bonus_window.wm_title("Edge width")
+        input_name = Label(popup_bonus_window, text="Attribute")
         input_name.grid(row=0)
-        input_entry = Entry(popupBonusWindow)
+        input_entry = Entry(popup_bonus_window)
         input_entry.grid(row=0, column=1)
-        B1 = Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.edge_width(input_entry.get()))
+        B1 = Button(popup_bonus_window, text="Okay", command=lambda: self.gui_support.edge_width(input_entry.get()))
         B1.grid(row=0, column=2)
 
     def popup_group_edge_color(self):
         print("into func. self.Delay")
-        popupWindow = tk.Tk()
-        popupWindow.wm_title("Attribute Input")
-        input_name = tk.Label(popupWindow, text="Attribute")
+        popup_window = tk.Tk()
+        popup_window.wm_title("Edge color")
+        input_name = tk.Label(popup_window, text="Attribute")
         input_name.grid(row=0)
-        inputentry = tk.Entry(popupWindow)
+        inputentry = tk.Entry(popup_window)
         inputentry.grid(row=0, column=1)
-        Btn = tk.Button(popupWindow, text="Enter", command=lambda: self.gui_support.edge_color(inputentry.get()))
+        Btn = tk.Button(popup_window, text="Okay", command=lambda: self.gui_support.edge_color(inputentry.get()))
         Btn.grid(row=0, column=2)
+
+    def callback(self, value):
+        print("value", value)
+
+    def popup_throughput(self):
+        popup_bonus_window = Tk()
+        popup_bonus_window.wm_title("Throughput window")
+        input_name = Label(popup_bonus_window, text="Throughput file")
+        input_name.grid(row=0)
+        input_entry = Entry(popup_bonus_window)
+        input_entry.grid(row=0, column=1)
+        B1 = Button(popup_bonus_window, text="Okay",
+                    command=lambda: [input_entry.delete(0, "end"), input_entry.insert(0, self.gui_support.open_throughput())])
+        B1.grid(row=0, column=2)
+        spin_box_1 = tkt.SmartSpinBox(popup_bonus_window, from_=0, to=23, width=18, callback=lambda: print("ok"))
+        spin_box_1.grid(row=1, column=1)
+        spin_box_1.add_callback(self.callback(1))
+
+
+
 
     # def Groupvertex(self):
     #     color_list = self.drawTk.group_vertex_color("GeoLocation", self.mg)

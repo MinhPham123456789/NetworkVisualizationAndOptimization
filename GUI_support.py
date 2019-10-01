@@ -8,19 +8,22 @@ from ObjectTk.ObjectDrawTkinter import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from tkinter import filedialog
-
+from igraphNewModules import get_path_edge_object, get_path_vertices_object
 
 class GUI_support():
     def __init__(self, gui):
         self.gui = gui
         self.selected_vertex = None
+        self.selected_edge = None
+        self.is_vertex = False
 
-    def load(self):
+    def open(self):
         print("Loading")
         graph_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
                                                 filetypes=[("graph", "*.graphml")])
 
         NREN = Graph.Read_GraphML(graph_name)
+        self.graph = NREN
         self.gui.mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
@@ -69,7 +72,7 @@ class GUI_support():
         new_graph.write_graphml(graph_name)
 
     def get_vertex_value(self, vertex_item_index):
-        vertex_obj = self.gui.drawTk.items_table.inverse[vertex_item_index]
+        vertex_obj: VertexObj = self.gui.drawTk.items_table.inverse[vertex_item_index]
         self.selected_vertex = vertex_obj
         node_id = str(vertex_obj.get_attribute("id"))
         country = str(vertex_obj.get_attribute("GeoLocation"))
@@ -81,20 +84,83 @@ class GUI_support():
         self.gui.get_vertex_value(result_list)
 
     def set_vertex_value(self):
-        new_country = self.gui.countrynode_entry.get()
-        new_network = self.gui.network_entry.get()
-        new_label = self.gui.label_node_entry.get()
-        new_asn = self.gui.asn_entry.get()
-        new_service_load = self.gui.serviceload_entry.get()
-        self.selected_vertex.set_attribute("GeoLocation", new_country)
-        self.selected_vertex.set_attribute("Network", new_network)
-        self.selected_vertex.set_attribute("label", new_label)
-        self.selected_vertex.set_attribute("asn", new_asn)
-        self.selected_vertex.set_attribute("service_load", new_service_load)
-        result = [new_country, new_network, new_label, new_asn, new_service_load]
-        print(result)
+        if self.is_vertex:
+            new_country = self.gui.countrynode_entry.get()
+            new_network = self.gui.network_entry.get()
+            new_label = self.gui.label_node_entry.get()
+            new_asn = self.gui.asn_entry.get()
+            new_service_load = self.gui.serviceload_entry.get()
+            self.selected_vertex.set_attribute("GeoLocation", new_country)
+            self.selected_vertex.set_attribute("Network", new_network)
+            self.selected_vertex.set_attribute("label", new_label)
+            self.selected_vertex.set_attribute("asn", new_asn)
+            self.selected_vertex.set_attribute("service_load", new_service_load)
+            result = [new_country, new_network, new_label, new_asn, new_service_load]
+            print(result)
+        else:
+            print("not vertex")
 
-    def Groupvertex(self, value):
+        ##new##
+    def get_edge_value(self, edge_item_index):
+        edge_obj: EdgeObj = self.gui.drawTk.items_table.inverse[edge_item_index]
+        self.selected_edge = edge_obj
+        link_type = str(edge_obj.get_attribute("LinkType"))
+        link_node = str(edge_obj.get_attribute("LinkNote"))
+        link_label = str(edge_obj.get_attribute("LinkLabel"))
+        link_speed_raw = str(edge_obj.get_attribute("LinkSpeedRaw"))
+        buffer_delay = str(edge_obj.get_attribute("bufferDelay"))
+        transmission_delay = str(edge_obj.get_attribute("tranmissionDelay"))
+        propagation_delay = str(edge_obj.get_attribute("propagationDelay"))
+        result_list: List[str] = [link_type, link_node, link_label, link_speed_raw, buffer_delay,
+                                  transmission_delay, propagation_delay]
+        self.gui.get_edge_value(result_list)
+
+    def set_edge_value(self):
+        if not self.is_vertex:
+            new_link_type = self.gui.link_type_entry.get()
+            new_link_note = self.gui.link_note_entry.get()
+            new_link_label = self.gui.link_label_entry.get()
+            new_link_speed_raw = self.gui.link_speed_raw_entry.get()
+            new_buffer_delay = self.gui.buffer_delay_entry.get()
+            new_transmission_delay = self.gui.transmission_delay_entry.get()
+            new_propagation_delay = self.gui.propagation_delay_entry.get()
+            self.selected_edge.set_attribute("LinkType", new_link_type)
+            self.selected_edge.set_attribute("LinkNote", new_link_note)
+            self.selected_edge.set_attribute("LinkLabel", new_link_label)
+            self.selected_edge.set_attribute("LinkSpeedRaw", new_link_speed_raw)
+            self.selected_edge.set_attribute("bufferDelay", new_buffer_delay)
+            self.selected_edge.set_attribute("tranmissionDelay", new_transmission_delay)
+            self.selected_edge.set_attribute("propagationDelay", new_propagation_delay)
+            result = [new_link_type, new_link_note, new_link_label, new_link_speed_raw, new_buffer_delay,
+                      new_transmission_delay, new_propagation_delay]
+            print(result)
+        else:
+            print("not edge")
+
+    def open_throughput(self):
+        throughput_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
+                                                     filetypes=[("throughput", "*.csv")])
+        return throughput_name
+
+    def get_throughput_time(self, value):
+        print("value", value)
+        # # print(get_path_vertices_object(self.graph, 0, 1102))
+        # edge_count = {}
+        # for i in range(len(self.gui.mg.vertex)):
+        #     print("i", i)
+        #     for u in range(i+1, len(self.gui.mg.vertex)):
+        #         edge_list = get_path_edge_object(self.graph, i, u)
+        #         for e in edge_list:
+        #             try:
+        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] += 1
+        #             except KeyError:
+        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] = 1
+        #         # self.gui.drawTk.resize_vertex_list(get_path_vertices_object(self.graph, 0, 1102), self.gui.mg, 0.12)
+        #         self.gui.drawTk.recolor_edge_list(get_path_edge_object(self.graph, i, u), self.gui.mg, "#11fb09")
+        #         # for i in edge_list:
+        #         #     self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i.index]], fill=self.gui.mg.edge[i.index].properties["color"])
+
+    def group_vertex(self, value):
         att_name = str(value)
         print(att_name)
         color_list = self.gui.drawTk.group_vertex_color(att_name, self.gui.mg)

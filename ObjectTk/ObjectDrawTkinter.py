@@ -1,4 +1,5 @@
 from igraph import *
+import tkinter as tk
 import numpy as np
 from ObjectTk.ObjectManager import ObjManager
 from ObjectTk.ObjectTkinter import *
@@ -6,7 +7,7 @@ from ZoomAndDrag import *
 from bidict import bidict
 
 class ObjDrawTkinter:
-    def __init__(self, center, manager: ObjManager, tk_frame: ZoomAndDrag):
+    def __init__(self, center, manager: ObjManager, tk_frame: tk.Frame):
         self.center = center
         self.mg = manager
         self.tk_frame =tk_frame
