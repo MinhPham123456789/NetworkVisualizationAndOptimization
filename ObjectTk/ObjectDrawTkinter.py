@@ -66,14 +66,16 @@ class ObjDrawTkinter:
         MG.change_attribute_value_list("color", new_color, True)
         return new_color
 
+    def recolor_vertex_list(self, vertex_obj_list: list, mg: ObjManager, color: str):
+        for i in range(len(vertex_obj_list)):
+            mg.vertex[i].set_attribute("color", color)
+            self.tk_frame.canvas.itemconfigure(self.items_table[mg.vertex[i]], fill=color)
+
     def resize_vertex_list(self, vertex_list, MG: ObjManager, size):
         for i in vertex_list:
             MG.vertex[i.index].set_attribute("vertex_size", size)
 
-    def set_weight_text_position(self, index: int, vertex_weight: str, mg: ObjManager):
-        min_weight = min(mg.get_all_attribute_value(vertex_weight, True))
-        max_weight = max(mg.get_all_attribute_value(vertex_weight, True))
-        ratio = (mg.vertex[index].get_attribute(vertex_weight) - min_weight) / (max_weight - min_weight)
+    def set_weight_text_position(self, index: int, mg: ObjManager):
         coords = self.tk_frame.canvas.coords(self.items_table[mg.vertex[index]])
         height_mid = (coords[1] + coords[3]) / 2
         height_len = (height_mid - coords[1]) / 2
@@ -88,18 +90,18 @@ class ObjDrawTkinter:
 
     def load_vertex_text_weight(self, vertex_weight: str):
         self.rectangle_switch = True
-        min_weight = min(self.mg.get_all_attribute_value(vertex_weight, True))
-        max_weight = max(self.mg.get_all_attribute_value(vertex_weight, True))
+        # min_weight = min(self.mg.get_all_attribute_value(vertex_weight, True))
+        # max_weight = max(self.mg.get_all_attribute_value(vertex_weight, True))
         items_table_list = []
         for index in range(len(self.mg.vertex)):
-            ratio = (self.mg.vertex[index].get_attribute(vertex_weight) - min_weight) / (max_weight - min_weight)
-            position = self.set_weight_text_position(index, vertex_weight, self.mg)
+            ratio = 1 # (self.mg.vertex[index].get_attribute(vertex_weight) - min_weight) / (max_weight - min_weight)
+            position = self.set_weight_text_position(index, self.mg)
             if ratio < 0.8:
                 self.tk_frame.canvas.create_text(position, fill="red",
                                                  text=str(round(self.mg.vertex[index].get_attribute(vertex_weight), 2)))
             else:
                 self.tk_frame.canvas.create_text(position, fill="green",
-                                                 text=str(round(self.mg.vertex[index].get_attribute(vertex_weight), 2)))
+                                                 text=str(self.mg.vertex[index].get_attribute(vertex_weight)))
             items_table_list.append("r" + str(index))
         self.add_items_table(items_table_list)
 
@@ -130,9 +132,9 @@ class ObjDrawTkinter:
         return begin, end
 
     def recolor_edge_list(self, edge_list, MG: ObjManager, color: str):
-        for i in edge_list:
-            MG.edge[i.index].set_attribute("color", color)
-            self.tk_frame.canvas.itemconfigure(self.items_table[MG.edge[i.index]], fill=color)
+        for i in range(len(edge_list)):
+            MG.edge[i].set_attribute("color", color)
+            self.tk_frame.canvas.itemconfigure(self.items_table[MG.edge[i]], fill=color)
 
     def recolor_edge_index_list(self, edge_index_list, MG: ObjManager, color: str):
         for i in edge_index_list:

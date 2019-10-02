@@ -68,4 +68,7 @@ class ObjManager:
             x1, y1, x2, y2 = canvas_frame.coords(drawTk.items_table[self.vertex[index]])
             self.graph.vs[index]["x"] = ((x1 + x2) / 2 - drawTk.get_moved_center()) / 12
             self.graph.vs[index]["y"] = ((y1 + y2) / 2 - drawTk.get_moved_center()) / 12
+        for edge_index in range(len(self.edge)):
+            self.graph.es[edge_index]["color"] = canvas_frame.itemcget(drawTk.items_table[self.edge[edge_index]], "fill")
+            # print(canvas_frame.itemcget(drawTk.items_table[self.edge[edge_index]], "fill"))
         return self.graph

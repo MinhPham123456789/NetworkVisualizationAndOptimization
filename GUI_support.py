@@ -81,7 +81,9 @@ class GUI_support():
         label = str(vertex_obj.get_attribute("label"))
         asn = str(vertex_obj.get_attribute("asn"))
         service_load = str(vertex_obj.get_attribute("service_load"))
-        result_list: List[str] = [node_id, country, network, label, asn, service_load]
+        longitude = str(vertex_obj.get_attribute("Longitude"))
+        latitude = str(vertex_obj.get_attribute("Latitude"))
+        result_list: List[str] = [node_id, country, network, label, asn, service_load, longitude, latitude]
         self.gui.get_vertex_value(result_list)
 
     def set_vertex_value(self):
@@ -139,15 +141,18 @@ class GUI_support():
             print("not edge")
 
     def open_throughput(self,):
+        import pandas as pd
         throughput_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
                                                      filetypes=[("throughput", "*.csv")])
-        return throughput_name
+        csv_test = pd.read_csv(throughput_name)
+        return throughput_name, len(csv_test.columns)
 
     def get_throughput_time(self, value, csv_table):
         import pandas as pd
         value = int(value)
         threshold_ratio = 2
-        csv_table = pd.read_csv(csv_table, names=[i for i in range(24)])
+        csv_test = pd.read_csv(csv_table)
+        csv_table = pd.read_csv(csv_table, names=[i for i in range(len(csv_test.columns))])
         throughput_list = csv_table[value].tolist()
         bandwidth_list = self.gui.mg.get_all_attribute_value("LinkSpeedRaw", False)
         print("throughput_list", throughput_list)
@@ -168,6 +173,15 @@ class GUI_support():
         print(self.gui.drawTk.group_vertex_color(att_name, self.gui.mg))
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
+
+    def vertex_text_box(self, weight):
+        att_name = str(weight)
+        self.gui.drawTk.load_vertex_text_weight(att_name)
+
+    def clear_vertex_text_box(self):
+        for i in range(len(self.gui.mg.vertex)):
+            index = "r" + str(i)
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
     # kiet linkspeedraw:
     def edge_width(self,value):
@@ -232,7 +246,7 @@ class GUI_support():
         self.gui.canvas.coords(vertex_item_index, vx1, vy1, vx2, vy2)
         if self.gui.drawTk.rectangle_switch:
             rectangle_index = "r" + str(vertex_obj_index)
-            position = self.gui.drawTk.set_weight_text_position(vertex_obj_index, "service_load", self.gui.mg)
+            position = self.gui.drawTk.set_weight_text_position(vertex_obj_index, self.gui.mg)
             self.gui.canvas.coords(self.gui.drawTk.items_table[rectangle_index], position)
         items = self.gui.canvas.find_withtag("all")
         # print(len(items))

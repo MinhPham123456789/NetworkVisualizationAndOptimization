@@ -1,3 +1,4 @@
+import pandas as pd
 from igraph import *
 from ObjectTk.ObjectManager import *
 from ObjectTk.ObjectDrawTkinter import *
@@ -34,7 +35,8 @@ class Window(Frame):
         menu = Menu(self.master)
         self.master.config(menu=menu)
         File = Menu(menu)
-        Edit = Menu(menu)
+        Vertex_highlight = Menu(menu)
+        Edge_highlight = Menu(menu)
         Layout_menu = Menu(menu)
         Throughput = Menu(menu)
 
@@ -42,9 +44,11 @@ class Window(Frame):
         File.add_command(label="save", command=lambda: self.gui_support.save())
         File.add_command(label="refresh")
 
-        Edit.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
-        Edit.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
-        Edit.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
+        Vertex_highlight.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
+        Vertex_highlight.add_command(label="vertex_text_box", command=lambda: self.popup_vertex_text())
+
+        Edge_highlight.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
+        Edge_highlight.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
 
         Layout_menu.add_command(label="original layout",
                                 command=lambda: self.gui_support.start_graph())
@@ -54,7 +58,8 @@ class Window(Frame):
         Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
 
         menu.add_cascade(label="File", menu=File)
-        menu.add_cascade(label="Edit", menu=Edit)
+        menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
+        menu.add_cascade(label="Edge Highlight", menu=Edge_highlight)
         menu.add_cascade(label="Layout", menu=Layout_menu)
         menu.add_cascade(label="Throughput", menu=Throughput)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
@@ -68,6 +73,8 @@ class Window(Frame):
         label_node = Label(self, text="Label")
         asn = Label(self, text="ASN")
         service_load = Label(self, text="Service load")
+        longitude = Label(self, text="Longitude")
+        latitude = Label(self, text="Latitude")
 
         self.idnode_entry = Entry(self)
         self.countrynode_entry = Entry(self)
@@ -75,6 +82,8 @@ class Window(Frame):
         self.label_node_entry = Entry(self)
         self.asn_entry = Entry(self)
         self.serviceload_entry = Entry(self)
+        self.longitude_entry = Entry(self)
+        self.latitude_entry = Entry(self)
 
         self.idnode_entry.insert(0, "default value")
         self.countrynode_entry.insert(0, "default value")
@@ -82,6 +91,8 @@ class Window(Frame):
         self.label_node_entry.insert(0, "default value")
         self.asn_entry.insert(0, "default value")
         self.serviceload_entry.insert(0, "default value")
+        self.longitude_entry.insert(0, "")
+        self.latitude_entry.insert(0, "")
 
         vertex_information.place(x=0, y=0)
         id_node.place(x=0, y=30)
@@ -90,6 +101,8 @@ class Window(Frame):
         label_node.place(x=0, y=120)
         asn.place(x=0, y=150)
         service_load.place(x=0, y=180)
+        longitude.place(x=0, y=210)
+        latitude.place(x=0, y=240)
 
         self.idnode_entry.place(x=100, y=30)
         self.countrynode_entry.place(x=100, y=60)
@@ -97,12 +110,14 @@ class Window(Frame):
         self.label_node_entry.place(x=100, y=120)
         self.asn_entry.place(x=100, y=150)
         self.serviceload_entry.place(x=100, y=180)
+        self.longitude_entry.place(x=100, y=210)
+        self.latitude_entry.place(x=100, y=240)
 
         vertex_apply = Button(self, text="Apply change", command=lambda: self.gui_support.set_vertex_value())
-        vertex_apply.place(x=60, y=210)
-        # x=0, y=210##############################################
+        vertex_apply.place(x=60, y=270)
+        # x=0, y=270##############################################
 
-        # EDGE x = 0, y = 240 ###################################
+        # EDGE x = 0, y = 300 ###################################
         edge_infomation = Label(self, text="Edge")
         link_type = Label(self, text="LinkType")
         link_node = Label(self, text="LinkNode")
@@ -128,27 +143,38 @@ class Window(Frame):
         self.transmission_delay_entry.insert(0, "default value")
         self.propagation_delay_entry.insert(0, "default value")
 
-        edge_infomation.place(x=0, y=240)
-        link_type.place(x=0, y=270)
-        link_node.place(x=0, y=300)
-        link_label.place(x=0, y=330)
-        link_speed_raw.place(x=0, y=360)
-        buffer_delay.place(x=0, y=390)
-        transmission_delay.place(x=0, y=420)
-        propagation_delay.place(x=0, y=450)
+        edge_infomation.place(x=0, y=300)
+        link_type.place(x=0, y=330)
+        link_node.place(x=0, y=360)
+        link_label.place(x=0, y=390)
+        link_speed_raw.place(x=0, y=420)
+        buffer_delay.place(x=0, y=450)
+        transmission_delay.place(x=0, y=480)
+        propagation_delay.place(x=0, y=510)
 
-        self.link_type_entry.place(x=100, y=270)
-        self.link_note_entry.place(x=100, y=300)
-        self.link_label_entry.place(x=100, y=330)
-        self.link_speed_raw_entry.place(x=100, y=360)
-        self.buffer_delay_entry.place(x=100, y=390)
-        self.transmission_delay_entry.place(x=100, y=420)
-        self.propagation_delay_entry.place(x=100, y=450)
+        self.link_type_entry.place(x=100, y=330)
+        self.link_note_entry.place(x=100, y=360)
+        self.link_label_entry.place(x=100, y=390)
+        self.link_speed_raw_entry.place(x=100, y=420)
+        self.buffer_delay_entry.place(x=100, y=450)
+        self.transmission_delay_entry.place(x=100, y=480)
+        self.propagation_delay_entry.place(x=100, y=510)
 
         edge_apply = Button(self, text="Apply change", command=lambda: self.gui_support.set_edge_value())
-        edge_apply.place(x=60, y=480)
+        edge_apply.place(x=60, y=540)
 
-        # x=0, y=420 ##############################
+        # x=0, y=540 ##############################
+
+        # RESET Buttons x=15, y=600 ###########################
+        # TODO: clear out or bring back to the original
+        vertex_color_reset = Button(self, text="Reset vertex color",
+                                    command=lambda: self.drawTk.recolor_vertex_list(self.mg.vertex, self.mg, "red"))
+        vertex_color_reset.place(x=1, y=600)
+        edge_color_reset = Button(self, text="Reset edge color",
+                                  command=lambda: self.drawTk.recolor_edge_list(self.mg.edge, self.mg, "#fafafa"))
+        edge_color_reset.place(x=150, y=600)
+
+        # x=15, y=600 #########################################
 
     def popup_group_vertex(self):
         popupBonusWindow = tk.Tk()
@@ -160,6 +186,18 @@ class Window(Frame):
         B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.group_vertex(input_entry.get()))
         B1.grid(row=0, column=2)
 
+    def popup_vertex_text(self):    # TODO: generalize
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Vertex text box")
+        input_name = tk.Label(popupBonusWindow, text="Attribute")
+        input_name.grid(row=0)
+        input_entry = tk.Entry(popupBonusWindow)
+        input_entry.grid(row=0, column=1)
+        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.vertex_text_box("id"))
+        B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_vertex_text_box())
+        B1.grid(row=0, column=2)
+        B2.grid(row=1, column=1)
+
     def get_vertex_value(self, list_value):
         self.idnode_entry.delete(0, "end")
         self.countrynode_entry.delete(0, "end")
@@ -167,6 +205,8 @@ class Window(Frame):
         self.label_node_entry.delete(0, "end")
         self.asn_entry.delete(0, "end")
         self.serviceload_entry.delete(0, "end")
+        self.longitude_entry.delete(0, "end")
+        self.latitude_entry.delete(0, "end")
 
         self.idnode_entry.insert(0, list_value[0])
         self.countrynode_entry.insert(0, list_value[1])
@@ -174,6 +214,8 @@ class Window(Frame):
         self.label_node_entry.insert(0, list_value[3])
         self.asn_entry.insert(0, list_value[4])
         self.serviceload_entry.insert(0, list_value[5])
+        self.longitude_entry.insert(0, list_value[6])
+        self.latitude_entry.insert(0, list_value[7])
 
     ##new##
     def get_edge_value(self, list_value):
@@ -215,7 +257,8 @@ class Window(Frame):
         Btn.grid(row=0, column=2)
 
     def get_throughput_name(self, value):
-        self.gui_support.throughput = value
+        self.gui_support.throughput = value[0]
+        self.gui_support.throughput_len = value[1]
 
     def popup_throughput(self):
         popup_bonus_window = Tk()
@@ -227,13 +270,16 @@ class Window(Frame):
         B1 = Button(popup_bonus_window, text="Browse",
                     command=lambda: [input_entry.delete(0, "end"),
                                      self.get_throughput_name(self.gui_support.open_throughput()),
-                                     input_entry.insert(0, self.gui_support.throughput)])
+                                     input_entry.insert(0, self.gui_support.throughput),
+                                     self.gui_support.get_throughput_time(spin_box_1.get(),
+                                                                          self.gui_support.throughput)])
         B1.grid(row=0, column=2)
-        # TODO: Consider set range based on the range of the csv input
         spin_box_1 = tk.Spinbox(popup_bonus_window, from_=0, to=23, width=18,
                                 command=lambda: self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                                      self.gui_support.throughput))
         spin_box_1.grid(row=1, column=1)
+        # TODO clear when close
+        # popup_bonus_window.protocol("WM_DELETE_WINDOW", print("hello"))
 
     def popup_geo_window(self):
         window = Toplevel(self.master)
@@ -242,71 +288,3 @@ class Window(Frame):
         frame.pack(side="top", fill="both", expand=True)
         GeoPage.GeoPage(frame, window, self.gui_support.graph_path)
 
-
-
-    # def Groupvertex(self):
-    #     color_list = self.drawTk.group_vertex_color("GeoLocation", self.mg)
-    #     for i in range(len(color_list)):
-    #         self.canvas.itemconfigure(self.drawTk.items_table[self.mg.vertex[i]], fill=color_list[i])
-    #     # self.canvas_frame.canvas.create_oval(0, 0, 100, 100)
-    #
-    # # def Bandwidth(self, c):
-    # #     c.create_oval(150, 150, 200, 200)
-    #
-    # def reingold_tilford_circular(self):
-    #     coords = self.layout.reingold_tilford_circular_layout()
-    #     for i in range(len(coords)):
-    #         self.change_position_instantly2(coords[i], self.drawTk.items_table.inverse[i+1])
-
-    # def change_position_instantly2(self, new_coord, vertex_obj):  # Use the new bidict
-    #     source_list = []
-    #     target_list = []
-    #     center = self.drawTk.get_moved_center()
-    #     vertex_item_index = self.drawTk.items_table[vertex_obj]
-    #     xs, ys, xt, yt = self.canvas.coords(vertex_item_index)
-    #     old_width_len = 0.03
-    #     old_height_len = 0.03
-    #     x = (xs + xt) / 2
-    #     y = (ys + yt) / 2
-    #     x = new_coord[0] + center
-    #     y = new_coord[1] + center
-    #     # print("item:", self.item[0])
-    #     # vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
-    #     # print("vertex item:", vertex_obj)
-    #     # print("verify:", self.mg.vertex[self.item[0] - 1])
-    #     vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
-    #     print("vertex item:", vertex_obj_index)
-    #     for edge in self.mg.edge:
-    #         if edge.get_attribute("source") == vertex_obj_index:
-    #             source_list.append(edge)
-    #     for edge in self.mg.edge:
-    #         if edge.get_attribute("target") == vertex_obj_index:
-    #             target_list.append(edge)
-    #     for i in source_list:
-    #         edge_item_index = self.drawTk.items_table[i]  # In item index, it starts from 1
-    #         # and it adds vertices then edges
-    #         print("sedge:", edge_item_index)
-    #         x1, y1, x2, y2 = self.canvas.coords(edge_item_index)
-    #         self.canvas.coords(edge_item_index, x, y, x2, y2)
-    #     for u in target_list:
-    #         edge_item_index = self.drawTk.items_table[u]  # In item index, it starts from 1
-    #         # and it adds vertices then edges
-    #         print("tedge:", edge_item_index)
-    #         x1, y1, x2, y2 = self.canvas.coords(edge_item_index)
-    #         self.canvas.coords(edge_item_index, x1, y1, x, y)
-    #     vx1 = x - old_width_len
-    #     vy1 = y - old_height_len
-    #     vx2 = x + old_width_len
-    #     vy2 = y + old_height_len
-    #     self.canvas.coords(vertex_item_index, vx1, vy1, vx2, vy2)
-    #     if self.drawTk.rectangle_switch:
-    #         rectangle_index = "r" + str(vertex_obj_index)
-    #         position = self.drawTk.set_weight_text_position(vertex_obj_index, "service_load", self.mg)
-    #         self.canvas.coords(self.drawTk.items_table[rectangle_index], position)
-    #     items = self.canvas.find_withtag("all")
-    #     # print(len(items))
-    #     # print(len(self.mg.vertex))
-    #     # print(len(self.mg.edge))
-    #     # print(source_list)
-    #     # print(target_list)
-    #     print("test")
