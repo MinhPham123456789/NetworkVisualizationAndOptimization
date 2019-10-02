@@ -64,7 +64,7 @@ class ObjDrawTkinter:
         for key in the_list:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, True)
-        return new_color
+        return [color_dict,new_color]
 
     def recolor_vertex_list(self, vertex_obj_list: list, mg: ObjManager, color: str):
         for i in range(len(vertex_obj_list)):
@@ -145,16 +145,17 @@ class ObjDrawTkinter:
         for one_edge in self.mg.edge:
             self.tk_frame.canvas.itemconfigure(self.items_table[one_edge], fill=one_edge.properties["color"])
 
+    #change return value
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
-        min_weight = min(MG.get_all_attribute_value(edge_weight, False))
-        max_weight = max(MG.get_all_attribute_value(edge_weight, False))
+        the_list = list(map(int, MG.get_all_attribute_value(edge_weight, False)))
+        min_weight = min(the_list)
+        max_weight = max(the_list)
         print(min_weight)
         print(max_weight)
         threshold1 = (max_weight - min_weight) / 3 + min_weight
         threshold2 = (max_weight - min_weight) / 3 * 2 + min_weight
         print(threshold1)
         print(threshold2)
-        the_list = MG.get_all_attribute_value(edge_weight, False)
         width_dict = []
         print(np.unique(the_list))
         print(type(the_list[0]))
@@ -165,14 +166,15 @@ class ObjDrawTkinter:
                 width_dict.append(3)
             else:
                 width_dict.append(6)
-        return width_dict
+        return [threshold1,threshold2,max_weight,width_dict]
 
+    #change return value
     def edge_color(self, edge_weight: str, MG: ObjManager):
         print("----ObjectDrawTkinter----")
         if edge_weight == "delay":
             weight_list = self.edge_color_by_delay(MG)
         else:
-            weight_list = MG.get_all_attribute_value(edge_weight, False)
+            weight_list = list(map(int,MG.get_all_attribute_value(edge_weight, False)))
         color_list = []
         maxweight = max(weight_list)
         minweight = min(weight_list)
@@ -191,7 +193,11 @@ class ObjDrawTkinter:
             color_list.append(color)
         MG.change_attribute_value_list("color", color_list, False)
         print("//----ObjectDrawTkinter----")
-        return color_list
+        threshold1 = float("{0:.2f}".format(onethird))
+        threshold2 = float("{0:.2f}".format(onethird*2))
+        threshold3 = float("{0:.2f}".format(onethird*3))
+        color_dict = {threshold1:[self.rgb_2_hex(0,255,255),self.rgb_2_hex(0,255,0)],threshold2:[self.rgb_2_hex(0,255,0),self.rgb_2_hex(255,255,0)],threshold3:[self.rgb_2_hex(255,255,0),self.rgb_2_hex(255,0,0)]}
+        return [color_dict,color_list]
 
     def edge_color_by_delay(self, MG: ObjManager):
         delay_list = []

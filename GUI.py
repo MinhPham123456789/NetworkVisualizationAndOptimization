@@ -171,7 +171,8 @@ class Window(Frame):
                                     command=lambda: self.drawTk.recolor_vertex_list(self.mg.vertex, self.mg, "red"))
         vertex_color_reset.place(x=1, y=600)
         edge_color_reset = Button(self, text="Reset edge color",
-                                  command=lambda: self.drawTk.recolor_edge_list(self.mg.edge, self.mg, "#fafafa"))
+                                  command=lambda: [self.drawTk.recolor_edge_list(self.mg.edge, self.mg, "#fafafa"),
+                                                   self.gui_support.resetNote()])
         edge_color_reset.place(x=150, y=600)
 
         # x=15, y=600 #########################################

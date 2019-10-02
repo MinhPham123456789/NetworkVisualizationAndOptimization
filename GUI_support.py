@@ -9,6 +9,7 @@ from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from tkinter import filedialog
 from igraphNewModules import get_path_edge_object, get_path_vertices_object
+from Note import *
 
 class GUI_support():
     def __init__(self, gui):
@@ -16,7 +17,7 @@ class GUI_support():
         self.selected_vertex = None
         self.selected_edge = None
         self.is_vertex = False
-
+        self.list_note = []
     def open(self):
         print("Loading")
         graph_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
@@ -40,7 +41,7 @@ class GUI_support():
         try:
             NREN.es["color"]
         except KeyError:
-            self.gui.mg.add_attribute("color", "#fafafa", False)
+            self.gui.mg.add_attribute("color", "white", False)
         self.gui.mg.add_attribute("vertex_size", 0.06, True)
         self.gui.mg.add_attribute_list("service_load", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
 
@@ -63,8 +64,9 @@ class GUI_support():
         self.gui.drawTk.load_edges()
         # DrawTk.load_vertex_text_weight("service_load")
         self.gui.drawTk.test()
-
+        #self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
+
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -168,11 +170,37 @@ class GUI_support():
     def group_vertex(self, value):
         att_name = str(value)
         print(att_name)
-        color_list = self.gui.drawTk.group_vertex_color(att_name, self.gui.mg)
+        result = self.gui.drawTk.group_vertex_color(att_name, self.gui.mg)
+        color_list = result[1]
+        color_dict = result[0]
         print(self.gui.drawTk)
         print(self.gui.drawTk.group_vertex_color(att_name, self.gui.mg))
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
+        for note in self.list_note:
+            if note.title=="edge_width":
+                self.list_note.remove(note)
+                self.updateNote()
+                note.regenerate(color_dict)
+                note.display()
+                self.list_note.append(note)
+                return
+        note = Note(self.gui.master,color_dict,"edge_width")
+        self.list_note.append(note)
+        note.display()
+
+    #update existing node
+    def updateNote(self):
+        Note.x=1520
+        Note.y=0
+        for note in self.list_note:
+            note.display()
+
+    def resetNote(self):
+        for i in range(len(self.list_note)):
+            self.list_note[i].hideframe()
+        self.list_note = []
+
 
     def vertex_text_box(self, weight):
         att_name = str(weight)
@@ -184,20 +212,50 @@ class GUI_support():
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
     # kiet linkspeedraw:
+
     def edge_width(self,value):
         att_name = str(value)
-        width_dict = self.gui.drawTk.group_edge_bandwidth(att_name, self.gui.mg)
+        result = self.gui.drawTk.group_edge_bandwidth(att_name, self.gui.mg)
+        threshold1 = float("{0:.2f}".format(result[0]))
+        threshold2 = float("{0:.2f}".format(result[1]))
+        threshold3 = float("{0:.2f}".format(result[2]))
+        width_dict = result[3]
         for i in range(len(width_dict)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], width = width_dict[i])
+        note_dict = {threshold1:1,threshold2:3,threshold3:6}
+        for note in self.list_note:
+            if note.title=="edge_width":
+                self.list_note.remove(note)
+                self.updateNote()
+                note.regenerate(note_dict)
+                note.display()
+                self.list_note.append(note)
+                return
+        note = Note(self.gui.master,note_dict,"edge_width")
+        self.list_note.append(note)
+        note.display()
 
-    # thao
+    # thao          ##add note to function
     def edge_color(self, value):
         attribute = str(value)
         print("----GUI_support.edgewidthdelay()----")
-        edge_color_list = self.gui.drawTk.edge_color(attribute, self.gui.mg)
+        result = self.gui.drawTk.edge_color(attribute, self.gui.mg)
+        edge_color_list = result[1]
         for i in range(len(edge_color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], fill=edge_color_list[i])
         print("//----GUI_support.edgewidthdelay()----")
+        note_dict = result[0]
+        for note in self.list_note:
+            if note.title == "edge_color":
+                self.list_note.remove(note)
+                self.updateNote()
+                note.regenerate(note_dict)
+                note.display()
+                self.list_note.append(note)
+                return
+        note = Note(self.gui.master, note_dict, "edge_color")
+        self.list_note.append(note)
+        note.display()
 
     def start_graph(self):
         coords = self.gui.layout.start_layout()
