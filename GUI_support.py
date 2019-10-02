@@ -65,7 +65,7 @@ class GUI_support():
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
         self.gui.drawTk.load_vertices()
         self.gui.drawTk.load_edges()
-        # DrawTk.load_vertex_text_weight("service_load")
+        self.gui.drawTk.load_vertex_text_weight("service_load")
         self.gui.drawTk.test()
         #self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
@@ -209,13 +209,19 @@ class GUI_support():
         att_name = str(weight)
         self.gui.drawTk.load_vertex_text_weight(att_name)
 
+    def set_vertex_box(self,vertex_weight):
+        self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
+
     def clear_vertex_text_box(self):
         for i in range(len(self.gui.mg.vertex)):
             index = "r" + str(i)
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
-    # kiet linkspeedraw:
+    def reset_edge_width(self):
+        for edge in self.gui.mg.edge:
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
 
+    # kiet linkspeedraw:
     def edge_width(self,value):
         att_name = str(value)
         result = self.gui.drawTk.group_edge_bandwidth(att_name, self.gui.mg)

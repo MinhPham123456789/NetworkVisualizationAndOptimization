@@ -170,12 +170,13 @@ class Window(Frame):
 
         # RESET Buttons x=15, y=600 ###########################
         # TODO: clear out or bring back to the original
-        vertex_color_reset = Button(self, text="Reset vertex color",
+        vertex_color_reset = Button(self, text="Reset vertex",
                                     command=lambda: self.drawTk.recolor_vertex_list(self.mg.vertex, self.mg, "red"))
         vertex_color_reset.place(x=1, y=600)
-        edge_color_reset = Button(self, text="Reset edge color",
+        edge_color_reset = Button(self, text="Reset edge",
                                   command=lambda: [self.drawTk.recolor_edge_list(self.mg.edge, self.mg, "#fafafa"),
-                                                   self.gui_support.resetNote()])
+                                                   self.gui_support.resetNote(),
+                                                   self.gui_support.reset_edge_width()])
         edge_color_reset.place(x=150, y=600)
 
         # x=15, y=600 #########################################
@@ -197,7 +198,7 @@ class Window(Frame):
         input_name.grid(row=0)
         input_entry = tk.Entry(popupBonusWindow)
         input_entry.grid(row=0, column=1)
-        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.vertex_text_box("id"))
+        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.set_vertex_box(input_entry.get()))
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_vertex_text_box())
         B1.grid(row=0, column=2)
         B2.grid(row=1, column=1)

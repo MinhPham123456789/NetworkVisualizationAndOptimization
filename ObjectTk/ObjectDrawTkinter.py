@@ -94,16 +94,20 @@ class ObjDrawTkinter:
         # max_weight = max(self.mg.get_all_attribute_value(vertex_weight, True))
         items_table_list = []
         for index in range(len(self.mg.vertex)):
-            ratio = 1 # (self.mg.vertex[index].get_attribute(vertex_weight) - min_weight) / (max_weight - min_weight)
             position = self.set_weight_text_position(index, self.mg)
-            if ratio < 0.8:
-                self.tk_frame.canvas.create_text(position, fill="red",
-                                                 text=str(round(self.mg.vertex[index].get_attribute(vertex_weight), 2)))
-            else:
-                self.tk_frame.canvas.create_text(position, fill="green",
-                                                 text=str(self.mg.vertex[index].get_attribute(vertex_weight)))
+            self.tk_frame.canvas.create_text(position, fill="green",
+                                             text=str(self.mg.vertex[index].get_attribute(vertex_weight)),
+                                             state="hidden")
             items_table_list.append("r" + str(index))
         self.add_items_table(items_table_list)
+
+    def change_vertex_text_weight(self,vertex_weight: str, canvas):
+        for index in range(len(self.mg.vertex)):
+            text_index = "r" + str(index)
+            text_item_index = self.items_table[text_index]
+            canvas.itemconfigure(text_item_index,
+                                 text=str(self.mg.vertex[index].properties[vertex_weight]),
+                                 state="normal")
 
     def load_vertices(self):
         for i in range(len(self.mg.vertex)):
