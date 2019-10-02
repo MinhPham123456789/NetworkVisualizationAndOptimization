@@ -8,6 +8,8 @@ from ObjectTk.ObjectDrawTkinter import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from tkinter import filedialog
+import MapLocate as maplocate
+from MapLocate import *
 from igraphNewModules import get_path_edge_object, get_path_vertices_object
 from Note import *
 
@@ -18,6 +20,7 @@ class GUI_support():
         self.selected_edge = None
         self.is_vertex = False
         self.list_note = []
+        self.maplocate = None
     def open(self):
         print("Loading")
         graph_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
@@ -313,6 +316,13 @@ class GUI_support():
         # print(source_list)
         # print(target_list)
         print("test")
+
+    def open_map(self):
+        if self.is_vertex:
+            print("----GUI Support func openmap()-----")
+            self.maplocate = MapLocate(self.selected_vertex)
+            self.maplocate.get_map()
+            print("//----GUI Support func openmap()-----")
 
 
 def random_value(min_point: float, max_point: float, size: int):

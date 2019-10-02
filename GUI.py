@@ -10,6 +10,7 @@ from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from GUI_support import *
 import tk_tools as tkt
+from MapLocate import *
 import numpy as np
 import GeoPage
 
@@ -114,7 +115,9 @@ class Window(Frame):
         self.latitude_entry.place(x=100, y=240)
 
         vertex_apply = Button(self, text="Apply change", command=lambda: self.gui_support.set_vertex_value())
-        vertex_apply.place(x=60, y=270)
+        vertex_apply.place(x=17, y=270)
+        vertext_locate = Button(self, text="Map Locate", command=lambda: self.gui_support.open_map())
+        vertext_locate.place(x=147, y=270)
         # x=0, y=270##############################################
 
         # EDGE x = 0, y = 300 ###################################
