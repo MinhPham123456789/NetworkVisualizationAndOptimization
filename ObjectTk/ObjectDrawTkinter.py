@@ -181,13 +181,13 @@ class ObjDrawTkinter:
         for i in range(len(MG.edge)):
             if weight_list[i] < minweight + onethird:
                 percent = (weight_list[i] - minweight) / onethird
-                color = self.rgb_2_hex(255, int(percent * 255), 0)
+                color = self.rgb_2_hex(0, 255, int(255 - 255 * percent))
             elif weight_list[i] < minweight + onethird * 2:
                 percent = (weight_list[i] - minweight - onethird) / onethird
-                color = self.rgb_2_hex(int(255 - 255 * percent), 255, 0)
+                color = self.rgb_2_hex(int(255 * percent), 255, 0)
             else:
                 percent = (weight_list[i] - minweight - onethird * 2) / onethird
-                color = self.rgb_2_hex(0, 255, int(255 * percent))
+                color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
             color_list.append(color)
         MG.change_attribute_value_list("color", color_list, False)
         print("//----ObjectDrawTkinter----")
