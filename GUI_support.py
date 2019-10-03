@@ -1,10 +1,14 @@
+import random
 from tkinter import filedialog
 from typing import List
 
+from DragObject import MouseMover
 from MapLocate import *
 from Note import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
+from ObjectTk.ObjectDrawTkinter import ObjDrawTkinter
+from ZoomAndDrag import ZoomAndDrag
 
 
 class GUI_support():

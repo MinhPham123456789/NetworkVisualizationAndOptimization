@@ -1,12 +1,13 @@
-from DragObject import *
+import tkinter as tk
+from tkinter import Label
 
 
-class Note(Frame):
+class Note():
     x = 1520
     y = 0
     def __init__(self, master,note_dict,title):
         self.master = master
-        self.frame = Frame(self.master)
+        self.frame = tk.Frame(self.master)
         self.check = 0
         self.dict = note_dict
         self.title = title

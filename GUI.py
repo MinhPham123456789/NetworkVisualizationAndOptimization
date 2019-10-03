@@ -14,9 +14,9 @@ from MapLocate import *
 import numpy as np
 import GeoPage
 
+
 class Window(Frame):
-    def __init__(self,
-                 master):  # canvas_frame, drawTk: ObjDrawTkinter, mg: ObjManager, layout_class: GraphLayout, master=None):
+    def __init__(self, master):
         Frame.__init__(self, master)
         self.gui_frame = tk.Frame(self.master)
         self.frame = tk.Frame(self.master)
