@@ -37,6 +37,17 @@ class GUI_support():
         self.gui.layout = GraphLayout(NREN)
         # GENERATE ADDITIONAL ATTRIBUTES TODO: create check method before use this
         try:
+            NREN.vs["x"]
+        except KeyError:
+            self.gui.mg.add_attribute_list("x", NREN.vs["Latitude"],True)
+            NREN.vs["x"] = NREN.vs["Latitude"]
+
+        try:
+            NREN.vs["y"]
+        except KeyError:
+            self.gui.mg.add_attribute_list("y", NREN.vs["Longitude"],True)
+            NREN.vs["y"] = NREN.vs["Longitude"]
+        try:
             NREN.vs["color"]
         except KeyError:
             self.gui.mg.add_attribute("color", "red", True)
