@@ -44,6 +44,12 @@ class GUI_support():
             NREN.vs["y"] = NREN.vs["Longitude"]
 
         try:
+            NREN["Network"]
+            self.gui.mg.add_attribute("Network", NREN["Network"], True)
+        except KeyError:
+            pass
+
+        try:
             NREN.vs["color"]
         except KeyError:
             self.gui.mg.add_attribute("color", "red", True)
@@ -164,13 +170,13 @@ class GUI_support():
         value = int(value)
         threshold_ratio = threshold
         csv_test = pd.read_csv(csv_table)
-        csv_table = pd.read_csv(csv_table, names=[i for i in range(len(csv_test.columns))])
+        csv_table = pd.read_csv(csv_table, names=[i for i in range(24)])
         throughput_list = csv_table[value].tolist()
         bandwidth_list = self.gui.mg.get_all_attribute_value("LinkSpeedRaw", False)
         print("throughput_list", throughput_list)
         print("bandwidth_list", bandwidth_list)
         edge_index_list = []
-        for i in range(len(throughput_list)):
+        for i in range(len(bandwidth_list)):
             if float(throughput_list[i] / bandwidth_list[i]) > threshold_ratio:
                 edge_index_list.append(i)
         self.gui.drawTk.recolor_edge_current()
