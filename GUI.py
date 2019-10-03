@@ -86,12 +86,12 @@ class Window(Frame):
         self.longitude_entry = Entry(self)
         self.latitude_entry = Entry(self)
 
-        self.idnode_entry.insert(0, "default value")
-        self.countrynode_entry.insert(0, "default value")
-        self.network_entry.insert(0, "default value")
-        self.label_node_entry.insert(0, "default value")
-        self.asn_entry.insert(0, "default value")
-        self.serviceload_entry.insert(0, "default value")
+        self.idnode_entry.insert(0, "")
+        self.countrynode_entry.insert(0, "")
+        self.network_entry.insert(0, "")
+        self.label_node_entry.insert(0, "")
+        self.asn_entry.insert(0, "")
+        self.serviceload_entry.insert(0, "")
         self.longitude_entry.insert(0, "")
         self.latitude_entry.insert(0, "")
 
@@ -138,13 +138,13 @@ class Window(Frame):
         self.transmission_delay_entry = Entry(self)
         self.propagation_delay_entry = Entry(self)
 
-        self.link_type_entry.insert(0, "default value")
-        self.link_note_entry.insert(0, "default value")
-        self.link_label_entry.insert(0, "default value")
-        self.link_speed_raw_entry.insert(0, "default value")
-        self.buffer_delay_entry.insert(0, "default value")
-        self.transmission_delay_entry.insert(0, "default value")
-        self.propagation_delay_entry.insert(0, "default value")
+        self.link_type_entry.insert(0, "")
+        self.link_note_entry.insert(0, "")
+        self.link_label_entry.insert(0, "")
+        self.link_speed_raw_entry.insert(0, "")
+        self.buffer_delay_entry.insert(0, "")
+        self.transmission_delay_entry.insert(0, "")
+        self.propagation_delay_entry.insert(0, "")
 
         edge_infomation.place(x=0, y=300)
         link_type.place(x=0, y=330)
@@ -164,18 +164,18 @@ class Window(Frame):
         self.propagation_delay_entry.place(x=100, y=510)
 
         edge_apply = Button(self, text="Apply change", command=lambda: self.gui_support.set_edge_value())
-        edge_apply.place(x=60, y=540)
+        edge_apply.place(x=17, y=540)
 
         # x=0, y=540 ##############################
 
         # RESET Buttons x=15, y=600 ###########################
         # TODO: clear out or bring back to the original
-        vertex_color_reset = Button(self, text="Reset vertex",
-                                    command=lambda: self.drawTk.recolor_vertex_list(self.mg.vertex, self.mg, "red"))
-        vertex_color_reset.place(x=1, y=600)
-        edge_color_reset = Button(self, text="Reset edge",
-                                  command=lambda: [self.drawTk.recolor_edge_list(self.mg.edge, self.mg, "#fafafa"),
-                                                   self.gui_support.resetNote(),
+        vertex_color_reset = Button(self, text="Reset vertex ",
+                                    command=lambda: self.gui_support.reset_vertex_color())
+        vertex_color_reset.place(x=17, y=600)
+        edge_color_reset = Button(self, text="Reset edge ",
+                                  command=lambda: [self.gui_support.reset_edge_color(),
+                                                   self.gui_support.reset_note(),
                                                    self.gui_support.reset_edge_width()])
         edge_color_reset.place(x=150, y=600)
 
@@ -272,17 +272,30 @@ class Window(Frame):
         input_name.grid(row=0)
         input_entry = Entry(popup_bonus_window)
         input_entry.grid(row=0, column=1)
+        throughput_threshold = Label(popup_bonus_window, text="Threshold")
+        throughput_threshold.grid(row=1, column=0)
+        input_throughput_threshold = Entry(popup_bonus_window)
+        input_throughput_threshold.insert(0, "0.9")
+        input_throughput_threshold.grid(row=1, column=1)
         B1 = Button(popup_bonus_window, text="Browse",
                     command=lambda: [input_entry.delete(0, "end"),
                                      self.get_throughput_name(self.gui_support.open_throughput()),
                                      input_entry.insert(0, self.gui_support.throughput),
                                      self.gui_support.get_throughput_time(spin_box_1.get(),
-                                                                          self.gui_support.throughput)])
+                                                                          self.gui_support.throughput,
+                                                                          float(input_throughput_threshold.get()))])
         B1.grid(row=0, column=2)
         spin_box_1 = tk.Spinbox(popup_bonus_window, from_=0, to=23, width=18,
                                 command=lambda: self.gui_support.get_throughput_time(spin_box_1.get(),
-                                                                                     self.gui_support.throughput))
-        spin_box_1.grid(row=1, column=1)
+                                                                                     self.gui_support.throughput,
+                                                                                     float(input_throughput_threshold.get())))
+        spin_box_1.grid(row=2, column=1)
+        threshold_button = Button(popup_bonus_window, text="Apply",
+                                  command=lambda: [self.gui_support.get_throughput_time(spin_box_1.get(),
+                                                                                        self.gui_support.throughput,
+                                                                                        float(
+                                                                                            input_throughput_threshold.get()))])
+        threshold_button.grid(row=1, column=2)
         # TODO clear when close
         # popup_bonus_window.protocol("WM_DELETE_WINDOW", print("hello"))
 

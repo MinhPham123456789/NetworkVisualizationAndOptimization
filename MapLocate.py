@@ -60,7 +60,7 @@ class MapLocate:
         print(self.lat)
 
         LDN_COORDINATES = [self.lat, self.long]
-        myMap = folium.Map(location=LDN_COORDINATES)
+        myMap = folium.Map(location=LDN_COORDINATES, zoom_start=16, max_zoom=19)
         print(myMap)
         geolocator = Nominatim(timeout=10)
         s = str(self.lat) + "," + str(self.long)
