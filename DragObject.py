@@ -33,7 +33,7 @@ class MouseMover():
         print("Von:")
         print((xc, yc, self.item))
         self.last_pos = self.canvas.coords(self.item)
-        if isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
+        if len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
             self.gui_support.get_vertex_value(self.item[0])
             self.gui_support.is_vertex = True
         elif isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
@@ -107,7 +107,10 @@ class MouseMover():
         vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
         # print("vertex item:", vertex_obj)
         # print("verify:", self.mg.vertex[self.item[0] - 1])
-        vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
+        try:
+            vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
+        except TypeError:
+            vertex_obj_index = int(vertex_obj.get_attribute("id"))
         print("vertex item:", vertex_obj_index)
         for edge in self.mg.edge:
             if edge.get_attribute("source") == vertex_obj_index:

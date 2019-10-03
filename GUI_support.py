@@ -32,6 +32,18 @@ class GUI_support():
         self.gui.layout = GraphLayout(NREN)
         # GENERATE ADDITIONAL ATTRIBUTES TODO: create check method before use this
         try:
+            NREN.vs["x"]
+        except KeyError:
+            self.gui.mg.add_attribute_list("x", NREN.vs["Latitude"], True)
+            NREN.vs["x"] = NREN.vs["Latitude"]
+
+        try:
+            NREN.vs["y"]
+        except KeyError:
+            self.gui.mg.add_attribute_list("y", NREN.vs["Longitude"], True)
+            NREN.vs["y"] = NREN.vs["Longitude"]
+
+        try:
             NREN.vs["color"]
         except KeyError:
             self.gui.mg.add_attribute("color", "red", True)
@@ -75,7 +87,7 @@ class GUI_support():
         vertex_obj: VertexObj = self.gui.drawTk.items_table.inverse[vertex_item_index]
         self.selected_vertex = vertex_obj
         node_id = str(vertex_obj.get_attribute("id"))
-        country = str(vertex_obj.get_attribute("GeoLocation"))
+        country = str(vertex_obj.get_attribute("Country"))
         network = str(vertex_obj.get_attribute("Network"))
         label = str(vertex_obj.get_attribute("label"))
         asn = str(vertex_obj.get_attribute("asn"))
@@ -92,7 +104,7 @@ class GUI_support():
             new_label = self.gui.label_node_entry.get()
             new_asn = self.gui.asn_entry.get()
             new_service_load = self.gui.serviceload_entry.get()
-            self.selected_vertex.set_attribute("GeoLocation", new_country)
+            self.selected_vertex.set_attribute("Country", new_country)
             self.selected_vertex.set_attribute("Network", new_network)
             self.selected_vertex.set_attribute("label", new_label)
             self.selected_vertex.set_attribute("asn", new_asn)
