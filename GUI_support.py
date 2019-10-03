@@ -1,17 +1,11 @@
+from tkinter import filedialog
 from typing import List
 
-from igraph import *
-
-from DragObject import MouseMover
-from ObjectTk.ObjectManager import *
-from ObjectTk.ObjectDrawTkinter import *
+from MapLocate import *
+from Note import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
-from tkinter import filedialog
-import MapLocate as maplocate
-from MapLocate import *
-from igraphNewModules import get_path_edge_object, get_path_vertices_object
-from Note import *
+
 
 class GUI_support():
     def __init__(self, gui):
@@ -21,6 +15,7 @@ class GUI_support():
         self.is_vertex = False
         self.list_note = []
         self.maplocate = None
+
     def open(self):
         print("Loading")
         graph_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
@@ -28,7 +23,7 @@ class GUI_support():
 
         NREN = Graph.Read_GraphML(graph_name)
         self.graph = NREN
-        self.graph_path = graph_name    # Help in geo window
+        self.graph_path = graph_name  # Help in geo window
         self.gui.mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
@@ -39,14 +34,15 @@ class GUI_support():
         try:
             NREN.vs["x"]
         except KeyError:
-            self.gui.mg.add_attribute_list("x", NREN.vs["Latitude"],True)
+            self.gui.mg.add_attribute_list("x", NREN.vs["Latitude"], True)
             NREN.vs["x"] = NREN.vs["Latitude"]
 
         try:
             NREN.vs["y"]
         except KeyError:
-            self.gui.mg.add_attribute_list("y", NREN.vs["Longitude"],True)
+            self.gui.mg.add_attribute_list("y", NREN.vs["Longitude"], True)
             NREN.vs["y"] = NREN.vs["Longitude"]
+
         try:
             NREN.vs["color"]
         except KeyError:
@@ -78,9 +74,8 @@ class GUI_support():
         self.gui.drawTk.load_edges()
         self.gui.drawTk.load_vertex_text_weight("service_load")
         self.gui.drawTk.test()
-        #self.note = Note(self.gui.master)
+        # self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
-
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -92,7 +87,7 @@ class GUI_support():
         vertex_obj: VertexObj = self.gui.drawTk.items_table.inverse[vertex_item_index]
         self.selected_vertex = vertex_obj
         node_id = str(vertex_obj.get_attribute("id"))
-        country = str(vertex_obj.get_attribute("GeoLocation"))
+        country = str(vertex_obj.get_attribute("Country"))
         network = str(vertex_obj.get_attribute("Network"))
         label = str(vertex_obj.get_attribute("label"))
         asn = str(vertex_obj.get_attribute("asn"))
@@ -109,7 +104,7 @@ class GUI_support():
             new_label = self.gui.label_node_entry.get()
             new_asn = self.gui.asn_entry.get()
             new_service_load = self.gui.serviceload_entry.get()
-            self.selected_vertex.set_attribute("GeoLocation", new_country)
+            self.selected_vertex.set_attribute("Country", new_country)
             self.selected_vertex.set_attribute("Network", new_network)
             self.selected_vertex.set_attribute("label", new_label)
             self.selected_vertex.set_attribute("asn", new_asn)
@@ -120,6 +115,7 @@ class GUI_support():
             print("not vertex")
 
         ##new##
+
     def get_edge_value(self, edge_item_index):
         edge_obj: EdgeObj = self.gui.drawTk.items_table.inverse[edge_item_index]
         self.selected_edge = edge_obj
@@ -156,17 +152,17 @@ class GUI_support():
         else:
             print("not edge")
 
-    def open_throughput(self,):
+    def open_throughput(self, ):
         import pandas as pd
         throughput_name = filedialog.askopenfilename(initialdir="/home", title="Select file",
                                                      filetypes=[("throughput", "*.csv")])
         csv_test = pd.read_csv(throughput_name)
         return throughput_name, len(csv_test.columns)
 
-    def get_throughput_time(self, value, csv_table):
+    def get_throughput_time(self, value, csv_table, threshold: float):
         import pandas as pd
         value = int(value)
-        threshold_ratio = 2
+        threshold_ratio = threshold
         csv_test = pd.read_csv(csv_table)
         csv_table = pd.read_csv(csv_table, names=[i for i in range(len(csv_test.columns))])
         throughput_list = csv_table[value].tolist()
@@ -192,35 +188,40 @@ class GUI_support():
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
         for note in self.list_note:
-            if note.title=="edge_width":
+            if note.title == "edge_width":
                 self.list_note.remove(note)
-                self.updateNote()
+                self.update_note()
                 note.regenerate(color_dict)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master,color_dict,"edge_width")
+        note = Note(self.gui.master, color_dict, "edge_width")
         self.list_note.append(note)
         note.display()
 
-    #update existing node
-    def updateNote(self):
-        Note.x=1520
-        Note.y=0
+    # update existing node
+    def update_note(self):
+        Note.x = 1520
+        Note.y = 0
         for note in self.list_note:
             note.display()
 
-    def resetNote(self):
+    def reset_vertex_color(self):
+        self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
+
+    def reset_edge_color(self):
+        self.gui.drawTk.recolor_edge_list(self.gui.mg.edge, self.gui.mg, "#fafafa")
+
+    def reset_edge_width(self):
+        for edge in self.gui.mg.edge:
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
+
+    def reset_note(self):
         for i in range(len(self.list_note)):
             self.list_note[i].hideframe()
         self.list_note = []
 
-
-    def vertex_text_box(self, weight):
-        att_name = str(weight)
-        self.gui.drawTk.load_vertex_text_weight(att_name)
-
-    def set_vertex_box(self,vertex_weight):
+    def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
 
     def clear_vertex_text_box(self):
@@ -228,12 +229,8 @@ class GUI_support():
             index = "r" + str(i)
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
-    def reset_edge_width(self):
-        for edge in self.gui.mg.edge:
-            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
-
     # kiet linkspeedraw:
-    def edge_width(self,value):
+    def edge_width(self, value):
         att_name = str(value)
         result = self.gui.drawTk.group_edge_bandwidth(att_name, self.gui.mg)
         threshold1 = float("{0:.2f}".format(result[0]))
@@ -241,17 +238,17 @@ class GUI_support():
         threshold3 = float("{0:.2f}".format(result[2]))
         width_dict = result[3]
         for i in range(len(width_dict)):
-            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], width = width_dict[i])
-        note_dict = {threshold1:1,threshold2:3,threshold3:6}
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], width=width_dict[i])
+        note_dict = {threshold1: 1, threshold2: 3, threshold3: 6}
         for note in self.list_note:
-            if note.title=="edge_width":
+            if note.title == "edge_width":
                 self.list_note.remove(note)
-                self.updateNote()
+                self.update_note()
                 note.regenerate(note_dict)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master,note_dict,"edge_width")
+        note = Note(self.gui.master, note_dict, "edge_width")
         self.list_note.append(note)
         note.display()
 
@@ -268,7 +265,7 @@ class GUI_support():
         for note in self.list_note:
             if note.title == "edge_color":
                 self.list_note.remove(note)
-                self.updateNote()
+                self.update_note()
                 note.regenerate(note_dict)
                 note.display()
                 self.list_note.append(note)
@@ -348,17 +345,17 @@ def random_value(min_point: float, max_point: float, size: int):
 
 # Storage
 # # print(get_path_vertices_object(self.graph, 0, 1102))
-        # edge_count = {}
-        # for i in range(len(self.gui.mg.vertex)):
-        #     print("i", i)
-        #     for u in range(i+1, len(self.gui.mg.vertex)):
-        #         edge_list = get_path_edge_object(self.graph, i, u)
-        #         for e in edge_list:
-        #             try:
-        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] += 1
-        #             except KeyError:
-        #                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] = 1
-        #         # self.gui.drawTk.resize_vertex_list(get_path_vertices_object(self.graph, 0, 1102), self.gui.mg, 0.12)
-        #         self.gui.drawTk.recolor_edge_list(get_path_edge_object(self.graph, i, u), self.gui.mg, "#11fb09")
-        #         # for i in edge_list:
-        #         #     self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i.index]], fill=self.gui.mg.edge[i.index].properties["color"])
+# edge_count = {}
+# for i in range(len(self.gui.mg.vertex)):
+#     print("i", i)
+#     for u in range(i+1, len(self.gui.mg.vertex)):
+#         edge_list = get_path_edge_object(self.graph, i, u)
+#         for e in edge_list:
+#             try:
+#                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] += 1
+#             except KeyError:
+#                 edge_count[self.gui.drawTk.items_table[self.gui.mg.edge[e.index]]] = 1
+#         # self.gui.drawTk.resize_vertex_list(get_path_vertices_object(self.graph, 0, 1102), self.gui.mg, 0.12)
+#         self.gui.drawTk.recolor_edge_list(get_path_edge_object(self.graph, i, u), self.gui.mg, "#11fb09")
+#         # for i in edge_list:
+#         #     self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i.index]], fill=self.gui.mg.edge[i.index].properties["color"])

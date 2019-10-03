@@ -10,7 +10,10 @@ class VertexObj:
         self.properties = properties_dict
 
     def get_attribute(self, attribute_name: str):
-        return self.properties[attribute_name]
+        try:
+            return self.properties[attribute_name]
+        except KeyError:
+            return None
 
     def add_attribute(self, attribute_name: str, value):
         self.properties.update({attribute_name: value})
@@ -33,7 +36,10 @@ class EdgeObj:
         self.properties = properties_dict
 
     def get_attribute(self, attribute_name: str):
-        return self.properties[attribute_name]
+        try:
+            return self.properties[attribute_name]
+        except KeyError:
+            return None
 
     def add_attribute(self, attribute_name: str, value):
         self.properties.update({attribute_name: value})

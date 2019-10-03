@@ -33,7 +33,7 @@ class MouseMover():
         print("Von:")
         print((xc, yc, self.item))
         self.last_pos = self.canvas.coords(self.item)
-        if isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
+        if len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
             self.gui_support.get_vertex_value(self.item[0])
             self.gui_support.is_vertex = True
         elif isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):

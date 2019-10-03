@@ -214,6 +214,6 @@ class ObjDrawTkinter:
     def load_edges(self):
         for i in range(len(self.mg.edge)):
             self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
-                                             fill=self.mg.edge[i].get_attribute("color"))
+                                             fill=self.mg.edge[i].get_attribute("color"), width=2)
         self.add_items_table(self.mg.edge)
         return self.tk_frame
