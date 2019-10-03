@@ -9,7 +9,7 @@ class ObjTkFrame(tk.Frame):
         self.xsb = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
         self.ysb = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.ysb.set, xscrollcommand=self.xsb.set)
-        self.canvas.configure(scrollregion=(0, 0, 1000, 1000))
+        self.canvas.configure(scrollregion=(0, 0, 1600, 1600))
 
         self.xsb.grid(row=1, column=0, sticky="ew")
         self.ysb.grid(row=0, column=1, sticky="ns")
