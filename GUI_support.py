@@ -196,24 +196,17 @@ class GUI_support():
         print(self.gui.drawTk.group_vertex_color(att_name, self.gui.mg))
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
-        # for note in self.list_note:
-        #     if note.title == "edge_width":
-        #         self.list_note.remove(note)
-        #         self.update_note()
-        #         note.regenerate(color_dict)
-        #         note.display()
-        #         self.list_note.append(note)
-        #         return
-        # note = Note(self.gui.master, color_dict, "edge_width")
-        # self.list_note.append(note)
-        # note.display()
-
-    # update existing node
-    def update_note(self):
-        Note.x = 1520
-        Note.y = 0
         for note in self.list_note:
-            note.display()
+            if note.title == "edge_width":
+                self.list_note.remove(note)
+                self.update_note()
+                note.regenerate(color_dict)
+                note.display()
+                self.list_note.append(note)
+                return
+        note = Note(self.gui.master, color_dict, "edge_width")
+        self.list_note.append(note)
+        note.display()
 
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
@@ -225,11 +218,6 @@ class GUI_support():
         for edge in self.gui.mg.edge:
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
 
-    def reset_note(self):
-        for i in range(len(self.list_note)):
-            self.list_note[i].hideframe()
-        self.list_note = []
-
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
 
@@ -237,6 +225,18 @@ class GUI_support():
         for i in range(len(self.gui.mg.vertex)):
             index = "r" + str(i)
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
+
+    # update existing node
+    def update_note(self):
+        Note.x = 1520
+        Note.y = 0
+        for note in self.list_note:
+            note.display()
+
+    def reset_note(self):
+        for i in range(len(self.list_note)):
+            self.list_note[i].hideframe()
+        self.list_note = []
 
     # kiet linkspeedraw:
     def edge_width(self, value):
