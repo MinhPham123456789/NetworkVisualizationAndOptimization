@@ -170,11 +170,10 @@ class GUI_support():
         return throughput_name, len(csv_test.columns)
 
     def get_throughput_time(self, value, csv_table, threshold: float):
-        import pandas as pd
+        from ThroughputInformation import get_throughput_information
         value = int(value)
         threshold_ratio = threshold
-        csv_test = pd.read_csv(csv_table)
-        csv_table = pd.read_csv(csv_table, names=[i for i in range(24)])
+        csv_table = get_throughput_information(csv_table)
         throughput_list = csv_table[value].tolist()
         bandwidth_list = self.gui.mg.get_all_attribute_value("LinkSpeedRaw", False)
         print("throughput_list", throughput_list)
@@ -197,17 +196,17 @@ class GUI_support():
         print(self.gui.drawTk.group_vertex_color(att_name, self.gui.mg))
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
-        for note in self.list_note:
-            if note.title == "edge_width":
-                self.list_note.remove(note)
-                self.update_note()
-                note.regenerate(color_dict)
-                note.display()
-                self.list_note.append(note)
-                return
-        note = Note(self.gui.master, color_dict, "edge_width")
-        self.list_note.append(note)
-        note.display()
+        # for note in self.list_note:
+        #     if note.title == "edge_width":
+        #         self.list_note.remove(note)
+        #         self.update_note()
+        #         note.regenerate(color_dict)
+        #         note.display()
+        #         self.list_note.append(note)
+        #         return
+        # note = Note(self.gui.master, color_dict, "edge_width")
+        # self.list_note.append(note)
+        # note.display()
 
     # update existing node
     def update_note(self):

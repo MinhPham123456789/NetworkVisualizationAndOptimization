@@ -6,7 +6,7 @@ class ObjTkFrame(tk.Frame):
     def __init__(self, root, gui_canvas=None):
         # gui_canvas here is the gui canvas layer then we overlap the drawing canvas layer on it
         tk.Frame.__init__(self, root)  # TODO: Consider remove this for better structure code
-        self.canvas = tk.Canvas(self, width=1200, height=900, background="#979a9a")
+        self.canvas = tk.Canvas(self, width=1200, height=980, background="#979a9a")
         self.xsb = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
         self.ysb = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.ysb.set, xscrollcommand=self.xsb.set)
