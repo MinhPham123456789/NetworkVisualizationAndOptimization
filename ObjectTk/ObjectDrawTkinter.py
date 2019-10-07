@@ -115,7 +115,7 @@ class ObjDrawTkinter:
             # print(graph.vs[i]["x"])
             # print(transform_to_oval_position(graph.vs[i]["x"], graph.vs[i]["y"], 10))
             self.tk_frame.canvas.create_oval(self.transform_to_oval_position(self.mg.vertex[i], self.mg),
-                                             fill=self.mg.vertex[i].get_attribute("color"))
+                                             fill="red")
         self.add_items_table(self.mg.vertex)
         return self.tk_frame
 

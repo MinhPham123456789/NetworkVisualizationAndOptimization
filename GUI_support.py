@@ -91,11 +91,23 @@ class GUI_support():
         self.gui.frame.place(x=300, y=0)
         #reset note
         self.reset_note()
+        #load_note
+        self.loadnode(NREN)
+
+    def loadnode(self,graph):
+        try:
+            self.edge_width(graph["note_edge_width"])
+        except: pass
+        try:
+            self.edge_color(graph["note_edge_color"])
+        except: pass
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
                                                   filetypes=[("graph", "*.graphml")])
         new_graph = self.gui.mg.save_graph(self.gui.drawTk, self.gui.canvas)
+        new_graph["note_edge_width"] = Note.note_edge_width
+        new_graph["note_edge_color"] = Note.note_edge_color
         new_graph.write_graphml(graph_name)
 
     def get_vertex_value(self, vertex_item_index):

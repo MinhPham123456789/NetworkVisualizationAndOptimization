@@ -5,6 +5,9 @@ from tkinter import Label, GROOVE
 class Note():
     x = 1416
     y = 0
+    note_edge_color = None
+    note_edge_width = None
+    note_vertex_color = None
     def __init__(self, master,note_dict,title,attribute):
         self.master = master
         self.frame_container = tk.Frame(self.master, relief=GROOVE,width=90,height=90,bd=1)
@@ -22,6 +25,7 @@ class Note():
         self.attribute = attribute
         self.generate()
 
+
     def config_method(self,event):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=416, height=90)
 
@@ -36,6 +40,7 @@ class Note():
         title_label = Label(self.frame, text = "Attribute: " + self.attribute)
         title_label.grid(row = 0, column = 0)
         if self.title == "edge_color":
+            Note.note_edge_color = self.attribute
             i = 0
             previous = None
             for key in self.dict:
@@ -67,6 +72,7 @@ class Note():
             # self.frame.config(height=self.ykey+30,width=400)
             return
         if self.title == "edge_width":
+            Note.note_edge_width = self.attribute
             i = 0
             previous = None
             for key in self.dict:
@@ -89,6 +95,7 @@ class Note():
                 self.list_key.append(key_label)
                 # self.frame.config(height=self.ykey+30,width=400)
         if self.title == "group_vertex":
+            Note.note_vertex_color = self.attribute
             for key in self.dict:
                 key_label = Label(self.frame, text = "att = " + str(key))
                 key_entry = Label(self.frame, bg = self.dict[key],padx=5)
