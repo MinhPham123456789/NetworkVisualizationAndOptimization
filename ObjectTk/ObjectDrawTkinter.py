@@ -151,18 +151,14 @@ class ObjDrawTkinter:
 
     #change return value
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
-        the_list = list(map(int, MG.get_all_attribute_value(edge_weight, False)))
+      #  the_list = list(map(int, MG.get_all_attribute_value(edge_weight, False)))
+
+        the_list = MG.get_all_attribute_value(edge_weight, False)
         min_weight = min(the_list)
         max_weight = max(the_list)
-        print(min_weight)
-        print(max_weight)
         threshold1 = (max_weight - min_weight) / 3 + min_weight
         threshold2 = (max_weight - min_weight) / 3 * 2 + min_weight
-        print(threshold1)
-        print(threshold2)
         width_dict = []
-        print(np.unique(the_list))
-        print(type(the_list[0]))
         for key in the_list:
             if key < threshold1:
                 width_dict.append(1)
