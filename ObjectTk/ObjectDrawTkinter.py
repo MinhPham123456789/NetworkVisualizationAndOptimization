@@ -171,6 +171,7 @@ class ObjDrawTkinter:
                 width_dict.append(3)
             else:
                 width_dict.append(6)
+        MG.add_attribute_list("width", width_dict, False)
         return [threshold1,threshold2,max_weight,width_dict]
 
     #change return value
@@ -210,8 +211,16 @@ class ObjDrawTkinter:
         return delay_list
 
     def load_edges(self):
-        for i in range(len(self.mg.edge)):
-            self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
-                                             fill=self.mg.edge[i].get_attribute("color"), width=2)
+        try:
+            self.mg.edge[0].get_attribute("width")
+            for i in range(len(self.mg.edge)):
+                self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
+                                                 fill=self.mg.edge[i].get_attribute("color"),
+                                                 width=self.mg.edge[i].get_attribute("width"))
+        except KeyError:
+            for i in range(len(self.mg.edge)):
+                self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
+                                                 fill=self.mg.edge[i].get_attribute("color"),
+                                                 width=2)
         self.add_items_table(self.mg.edge)
         return self.tk_frame
