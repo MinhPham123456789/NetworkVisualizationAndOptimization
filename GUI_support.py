@@ -197,14 +197,14 @@ class GUI_support():
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
         for note in self.list_note:
-            if note.title == "edge_width":
+            if note.title == "group_vertex":
                 self.list_note.remove(note)
                 self.update_note()
                 note.regenerate(color_dict)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, color_dict, "edge_width")
+        note = Note(self.gui.master, color_dict, "group_vertex")
         self.list_note.append(note)
         note.display()
 

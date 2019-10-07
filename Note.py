@@ -32,8 +32,17 @@ class Note():
             child.destroy()
 
         if self.title == "edge_color":
+            i = 0
+            previous = None
             for key in self.dict:
-                key_label = Label(self.frame, text = "att < " + str(key) )
+                if i==0:
+                    key_label = Label(self.frame, text = "att < " + str(key) )
+                    previous = key
+                    i+=1
+                else:
+                    key_label = Label(self.frame, text = str(previous) + " < att <= " + str(key))
+                    previous = key
+
                 key_label1 = Label(self.frame,text = "from")
                 key_label2 = Label(self.frame, text = "to")
                 key_entry1 = Label(self.frame, bg = self.dict[key][0],padx=5)
@@ -55,7 +64,17 @@ class Note():
             return
         if self.title == "edge_width":
             for key in self.dict:
-                key_label = Label(self.frame,text ="att < "+ str(key))
+                i = 0
+                previous = None
+                for key in self.dict:
+                    if i == 0:
+                        key_label = Label(self.frame, text="att < " + str(key))
+                        previous = key
+                        i += 1
+                    else:
+                        key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
+                        previous = key
+
                 key_label1 = Label(self.frame,text = "line width = " + str(self.dict[key]))
 
                 key_label.grid(row=self.ykey, column=self.xkey)
@@ -66,6 +85,14 @@ class Note():
                 self.ykey += 1
                 self.list_key.append(key_label)
             # self.frame.config(height=self.ykey+30,width=400)
+        if self.title == "group_vertex":
+            for key in self.dict:
+                key_label = Label(self.frame, text = "att = " + str(key))
+                key_entry = Label(self.frame, bg = self.dict[key],padx=5)
+
+                key_label.grid(row=self.ykey, column=self.xkey)
+                key_entry.grid(row=self.ykey, column=self.xkey+1)
+                self.ykey += 1
 
     def regenerate(self,note_dict):
         self.dict = note_dict

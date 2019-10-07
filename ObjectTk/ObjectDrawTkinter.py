@@ -151,9 +151,7 @@ class ObjDrawTkinter:
 
     #change return value
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
-      #  the_list = list(map(int, MG.get_all_attribute_value(edge_weight, False)))
-
-        the_list = MG.get_all_attribute_value(edge_weight, False)
+        the_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
         min_weight = min(the_list)
         max_weight = max(the_list)
         threshold1 = (max_weight - min_weight) / 3 + min_weight
@@ -174,7 +172,7 @@ class ObjDrawTkinter:
         if edge_weight == "delay":
             weight_list = self.edge_color_by_delay(MG)
         else:
-            weight_list = list(map(int,MG.get_all_attribute_value(edge_weight, False)))
+            weight_list = list(map(float,MG.get_all_attribute_value(edge_weight, False)))
         color_list = []
         maxweight = max(weight_list)
         minweight = min(weight_list)
