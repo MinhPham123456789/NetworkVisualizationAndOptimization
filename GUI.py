@@ -14,9 +14,9 @@ from MapLocate import *
 import numpy as np
 import GeoPage
 
+
 class Window(Frame):
-    def __init__(self,
-                 master):  # canvas_frame, drawTk: ObjDrawTkinter, mg: ObjManager, layout_class: GraphLayout, master=None):
+    def __init__(self, master):
         Frame.__init__(self, master)
         self.gui_frame = tk.Frame(self.master)
         self.frame = tk.Frame(self.master)
@@ -67,7 +67,7 @@ class Window(Frame):
 
         # VERTEX x=0, y=0###############################################3
 
-        vertex_information = Label(self, text="Vertex")
+        vertex_information = Label(self, text="Vertex", font="Helvetica 16 bold")
         id_node = Label(self, text="ID")
         country_node = Label(self, text="Geolocation")
         network = Label(self, text="Network")
@@ -95,7 +95,7 @@ class Window(Frame):
         self.longitude_entry.insert(0, "")
         self.latitude_entry.insert(0, "")
 
-        vertex_information.place(x=0, y=0)
+        vertex_information.place(x=90, y=0)
         id_node.place(x=0, y=30)
         country_node.place(x=0, y=60)
         network.place(x=0, y=90)
@@ -121,7 +121,7 @@ class Window(Frame):
         # x=0, y=270##############################################
 
         # EDGE x = 0, y = 300 ###################################
-        edge_infomation = Label(self, text="Edge")
+        edge_infomation = Label(self, text="Edge", font="Helvetica 16 bold")
         link_type = Label(self, text="LinkType")
         link_node = Label(self, text="LinkNode")
         link_label = Label(self, text="LinkLabel")
@@ -146,7 +146,7 @@ class Window(Frame):
         self.transmission_delay_entry.insert(0, "")
         self.propagation_delay_entry.insert(0, "")
 
-        edge_infomation.place(x=0, y=300)
+        edge_infomation.place(x=100, y=300)
         link_type.place(x=0, y=330)
         link_node.place(x=0, y=360)
         link_label.place(x=0, y=390)

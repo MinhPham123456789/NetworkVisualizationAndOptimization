@@ -1,10 +1,14 @@
+import random
 from tkinter import filedialog
 from typing import List
 
+from DragObject import MouseMover
 from MapLocate import *
 from Note import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
+from ObjectTk.ObjectDrawTkinter import ObjDrawTkinter
+from ZoomAndDrag import ZoomAndDrag
 
 
 class GUI_support():
@@ -166,11 +170,10 @@ class GUI_support():
         return throughput_name, len(csv_test.columns)
 
     def get_throughput_time(self, value, csv_table, threshold: float):
-        import pandas as pd
+        from ThroughputInformation import get_throughput_information
         value = int(value)
         threshold_ratio = threshold
-        csv_test = pd.read_csv(csv_table)
-        csv_table = pd.read_csv(csv_table, names=[i for i in range(24)])
+        csv_table = get_throughput_information(csv_table)
         throughput_list = csv_table[value].tolist()
         bandwidth_list = self.gui.mg.get_all_attribute_value("LinkSpeedRaw", False)
         print("throughput_list", throughput_list)
@@ -205,13 +208,6 @@ class GUI_support():
         self.list_note.append(note)
         note.display()
 
-    # update existing node
-    def update_note(self):
-        Note.x = 1520
-        Note.y = 0
-        for note in self.list_note:
-            note.display()
-
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
 
@@ -222,11 +218,6 @@ class GUI_support():
         for edge in self.gui.mg.edge:
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
 
-    def reset_note(self):
-        for i in range(len(self.list_note)):
-            self.list_note[i].hideframe()
-        self.list_note = []
-
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
 
@@ -234,6 +225,18 @@ class GUI_support():
         for i in range(len(self.gui.mg.vertex)):
             index = "r" + str(i)
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
+
+    # update existing node
+    def update_note(self):
+        Note.x = 1520
+        Note.y = 0
+        for note in self.list_note:
+            note.display()
+
+    def reset_note(self):
+        for i in range(len(self.list_note)):
+            self.list_note[i].hideframe()
+        self.list_note = []
 
     # kiet linkspeedraw:
     def edge_width(self, value):

@@ -45,7 +45,7 @@ def random_value(min_point: float, max_point: float, size: int):
 
 if __name__ == "__main__":
     test = tk.Tk()
-
+    test.attributes ("-zoomed", True)
     # NREN = Graph.Read_GraphML("newNREN.graphml")
     # mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
     # imp_draw = ObjTkFrame(test)
