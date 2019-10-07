@@ -16,7 +16,8 @@ class ObjDrawTkinter:
         self.current_max = 0
         self.rectangle_switch = False
 
-    def rgb_2_hex(self, r, g, b):
+    @staticmethod
+    def rgb_2_hex(r, g, b):
         result = '#{:02x}{:02x}{:02x}'.format(r, g, b)
         return result
 

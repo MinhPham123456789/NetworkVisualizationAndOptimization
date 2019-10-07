@@ -73,7 +73,7 @@ class Window(Frame):
         network = Label(self, text="Network")
         label_node = Label(self, text="Label")
         asn = Label(self, text="ASN")
-        service_load = Label(self, text="Service load")
+        service_load = Label(self, text="Internal")
         longitude = Label(self, text="Longitude")
         latitude = Label(self, text="Latitude")
 
@@ -123,7 +123,7 @@ class Window(Frame):
         # EDGE x = 0, y = 300 ###################################
         edge_infomation = Label(self, text="Edge", font="Helvetica 16 bold")
         link_type = Label(self, text="LinkType")
-        link_node = Label(self, text="LinkNode")
+        link_node = Label(self, text="LinkNote")
         link_label = Label(self, text="LinkLabel")
         link_speed_raw = Label(self, text="LinkSpeedRaw")
         buffer_delay = Label(self, text="BufferDelay")
