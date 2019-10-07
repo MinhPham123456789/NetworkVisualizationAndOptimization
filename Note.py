@@ -3,9 +3,9 @@ from tkinter import Label, GROOVE
 
 
 class Note():
-    x = 1516
+    x = 1416
     y = 0
-    def __init__(self, master,note_dict,title):
+    def __init__(self, master,note_dict,title,attribute):
         self.master = master
         self.frame_container = tk.Frame(self.master, relief=GROOVE,width=90,height=90,bd=1)
         self.canvas=tk.Canvas(self.frame_container)
@@ -19,18 +19,22 @@ class Note():
         self.check = 0
         self.dict = note_dict
         self.title = title
+        self.attribute = attribute
         self.generate()
 
     def config_method(self,event):
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=316, height=90)
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=416, height=90)
 
     def generate(self):
         self.list_key = []
         self.list_value = []
-        self.xkey = self.ykey = 0
+        self.xkey = 0
+        self.ykey = 1
         for child in self.frame.winfo_children():
             child.destroy()
-
+        #add title to note
+        title_label = Label(self.frame, text = "Attribute: " + self.attribute)
+        title_label.grid(row = 0, column = 0)
         if self.title == "edge_color":
             i = 0
             previous = None
@@ -63,17 +67,16 @@ class Note():
             # self.frame.config(height=self.ykey+30,width=400)
             return
         if self.title == "edge_width":
+            i = 0
+            previous = None
             for key in self.dict:
-                i = 0
-                previous = None
-                for key in self.dict:
-                    if i == 0:
-                        key_label = Label(self.frame, text="att < " + str(key))
-                        previous = key
-                        i += 1
-                    else:
-                        key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
-                        previous = key
+                if i == 0:
+                    key_label = Label(self.frame, text="att < " + str(key))
+                    previous = key
+                    i += 1
+                else:
+                    key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
+                    previous = key
 
                 key_label1 = Label(self.frame,text = "line width = " + str(self.dict[key]))
 
@@ -84,7 +87,7 @@ class Note():
                 # key_label1.place(x=self.xkey+160,y= self.ykey)
                 self.ykey += 1
                 self.list_key.append(key_label)
-            # self.frame.config(height=self.ykey+30,width=400)
+                # self.frame.config(height=self.ykey+30,width=400)
         if self.title == "group_vertex":
             for key in self.dict:
                 key_label = Label(self.frame, text = "att = " + str(key))

@@ -63,7 +63,10 @@ class GUI_support():
         except KeyError:
             self.gui.mg.add_attribute("color", "white", False)
         self.gui.mg.add_attribute("vertex_size", 0.06, True)
-        self.gui.mg.add_attribute_list("service_load", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
+        try:
+            NREN.vs["Internal"]
+        except KeyError:
+            self.gui.mg.add_attribute_list("Internal", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
 
         # ADD DRAG AND ZOOM
         zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
@@ -86,6 +89,8 @@ class GUI_support():
         self.gui.drawTk.test()
         # self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
+        #reset note
+        self.reset_note()
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -101,7 +106,7 @@ class GUI_support():
         network = str(vertex_obj.get_attribute("Network"))
         label = str(vertex_obj.get_attribute("label"))
         asn = str(vertex_obj.get_attribute("asn"))
-        service_load = str(vertex_obj.get_attribute("service_load"))
+        service_load = str(vertex_obj.get_attribute("Internal"))
         longitude = str(vertex_obj.get_attribute("Longitude"))
         latitude = str(vertex_obj.get_attribute("Latitude"))
         result_list: List[str] = [node_id, country, network, label, asn, service_load, longitude, latitude]
@@ -118,7 +123,7 @@ class GUI_support():
             self.selected_vertex.set_attribute("Network", new_network)
             self.selected_vertex.set_attribute("label", new_label)
             self.selected_vertex.set_attribute("asn", new_asn)
-            self.selected_vertex.set_attribute("service_load", new_service_load)
+            self.selected_vertex.set_attribute("Internal", new_service_load)
             result = [new_country, new_network, new_label, new_asn, new_service_load]
             print(result)
         else:
@@ -204,7 +209,7 @@ class GUI_support():
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, color_dict, "group_vertex")
+        note = Note(self.gui.master, color_dict, "group_vertex",att_name)
         self.list_note.append(note)
         note.display()
 
@@ -228,7 +233,7 @@ class GUI_support():
 
     # update existing node
     def update_note(self):
-        Note.x = 1520
+        Note.x = 1420
         Note.y = 0
         for note in self.list_note:
             note.display()
@@ -257,7 +262,7 @@ class GUI_support():
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_width")
+        note = Note(self.gui.master, note_dict, "edge_width",att_name)
         self.list_note.append(note)
         note.display()
 
@@ -279,7 +284,7 @@ class GUI_support():
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_color")
+        note = Note(self.gui.master, note_dict, "edge_color",attribute)
         self.list_note.append(note)
         note.display()
 
@@ -303,7 +308,10 @@ class GUI_support():
         old_height_len = 0.03
         x = new_coord[0] + center
         y = new_coord[1] + center
-        vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
+        try:
+            vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
+        except TypeError:
+            vertex_obj_index = int(vertex_obj.get_attribute("id"))
         print("vertex item:", vertex_obj_index)
         for edge in self.gui.mg.edge:
             if edge.get_attribute("source") == vertex_obj_index:

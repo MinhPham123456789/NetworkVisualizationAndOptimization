@@ -16,7 +16,8 @@ class ObjDrawTkinter:
         self.current_max = 0
         self.rectangle_switch = False
 
-    def rgb_2_hex(self, r, g, b):
+    @staticmethod
+    def rgb_2_hex(r, g, b):
         result = '#{:02x}{:02x}{:02x}'.format(r, g, b)
         return result
 
@@ -169,10 +170,11 @@ class ObjDrawTkinter:
     #change return value
     def edge_color(self, edge_weight: str, MG: ObjManager):
         print("----ObjectDrawTkinter----")
-        if edge_weight == "delay":
-            weight_list = self.edge_color_by_delay(MG)
-        else:
-            weight_list = list(map(float,MG.get_all_attribute_value(edge_weight, False)))
+       # if edge_weight == "delay":
+       #     weight_list = self.edge_color_by_delay(MG)
+       # else:
+       #     weight_list = list(map(float,MG.get_all_attribute_value(edge_weight, False)))
+        weight_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
         color_list = []
         maxweight = max(weight_list)
         minweight = min(weight_list)
@@ -191,9 +193,9 @@ class ObjDrawTkinter:
             color_list.append(color)
         MG.change_attribute_value_list("color", color_list, False)
         print("//----ObjectDrawTkinter----")
-        threshold1 = float("{0:.2f}".format(onethird))
-        threshold2 = float("{0:.2f}".format(onethird*2))
-        threshold3 = float("{0:.2f}".format(onethird*3))
+        threshold1 = float("{0:.2f}".format(onethird + minweight))
+        threshold2 = float("{0:.2f}".format(onethird*2 + minweight))
+        threshold3 = float("{0:.2f}".format(onethird*3 + minweight))
         color_dict = {threshold1:[self.rgb_2_hex(0,255,255),self.rgb_2_hex(0,255,0)],threshold2:[self.rgb_2_hex(0,255,0),self.rgb_2_hex(255,255,0)],threshold3:[self.rgb_2_hex(255,255,0),self.rgb_2_hex(255,0,0)]}
         return [color_dict,color_list]
 
