@@ -255,8 +255,12 @@ class GUI_support():
         self.search_vertex_list = vertex_obj_list
 
     def clear_search_vertex(self):
-        self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
-        self.search_vertex_list = []
+        try:
+            self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
+            self.search_vertex_list = []
+        except AttributeError:
+            self.gui.drawTk.search_vertex_outline([], 1, False)
+            self.search_vertex_list = []
 
     def search_edge(self, attribute, value):
         edge_obj_list = []
@@ -278,7 +282,7 @@ class GUI_support():
 
     def reset_edge_width(self):
         for edge in self.gui.mg.edge:
-            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=2)
 
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
