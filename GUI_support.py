@@ -244,6 +244,18 @@ class GUI_support():
     def set_vertex_size(self, radius):
         self.gui.drawTk.resize_vertex_list(radius)
 
+    def search_vertex(self, attribute, value):
+        vertex_obj_list = []
+        for vertex in self.gui.mg.vertex:
+            if vertex.get_attribute(attribute) == value:
+                vertex_obj_list.append(vertex)
+        self.gui.drawTk.search_vertex_outline(vertex_obj_list, 3, True)
+        self.search_vertex_list = vertex_obj_list
+
+    def clear_search_vertex(self):
+        self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
+        self.search_vertex_list = []
+
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
 
