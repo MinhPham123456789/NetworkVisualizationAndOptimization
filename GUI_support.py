@@ -34,18 +34,18 @@ class GUI_support():
         self.gui.canvas = self.gui.frame.canvas
         self.gui.drawTk = ObjDrawTkinter(300, self.gui.mg, self.gui.frame)
         self.gui.layout = GraphLayout(NREN)
-        # GENERATE ADDITIONAL ATTRIBUTES TODO: create check method before use this
+        # GENERATE ADDITIONAL ATTRIBUTES TODO: coordinate problem
         try:
             NREN.vs["x"]
         except KeyError:
-            self.gui.mg.add_attribute_list("x", NREN.vs["Latitude"], True)
-            NREN.vs["x"] = NREN.vs["Latitude"]
+            self.gui.mg.add_attribute_list("x", NREN.vs["Longitude"], True)
+            NREN.vs["x"] = NREN.vs["Longitude"]
 
         try:
             NREN.vs["y"]
         except KeyError:
-            self.gui.mg.add_attribute_list("y", NREN.vs["Longitude"], True)
-            NREN.vs["y"] = NREN.vs["Longitude"]
+            self.gui.mg.add_attribute_list("y", NREN.vs["Latitude"], True)
+            NREN.vs["y"] = NREN.vs["Latitude"]
 
         try:
             NREN["Network"]

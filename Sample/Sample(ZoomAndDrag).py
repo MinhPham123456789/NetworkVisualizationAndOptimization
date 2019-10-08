@@ -1,6 +1,4 @@
-import tkinter as tk
-import random
-from DrawTkinter import *
+from Support.DrawTkinter import *
 from igraph import *
 
 class Example(tk.Frame):
