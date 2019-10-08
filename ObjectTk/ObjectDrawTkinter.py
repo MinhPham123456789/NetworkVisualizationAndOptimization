@@ -61,7 +61,7 @@ class ObjDrawTkinter:
         for i in range(len(unique_list)):
             color = self.rgb_2_hex(red[i], green[i], blue[i])
             color_dict.update({unique_list[i]: color})
-        print("color_dict")
+        print("color_dict1")
         print(color_dict)
         new_color = []
         for key in the_list:

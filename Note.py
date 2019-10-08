@@ -97,7 +97,7 @@ class Note():
         if self.title == "group_vertex":
             Note.note_vertex_color = self.attribute
             for key in self.dict:
-                key_label = Label(self.frame, text = "att = " + str(key))#+ " " + str(self.dict[key]))
+                key_label = Label(self.frame, text = "att = " + str(key))
                 key_entry = Label(self.frame, bg = self.dict[key],padx=5)
 
                 key_label.grid(row=self.ykey, column=self.xkey)

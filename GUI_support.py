@@ -226,8 +226,7 @@ class GUI_support():
         result = self.gui.drawTk.group_vertex_color(att_name, self.gui.mg)
         color_list = result[1]
         color_dict = result[0]
-        print(self.gui.drawTk)
-        print(self.gui.drawTk.group_vertex_color(att_name, self.gui.mg))
+
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
         for note in self.list_note:
