@@ -65,6 +65,7 @@ class Window(Frame):
         menu.add_cascade(label="Layout", menu=Layout_menu)
         menu.add_cascade(label="Throughput", menu=Throughput)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
+        menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
 
         # VERTEX x=0, y=0###############################################3
 
@@ -317,3 +318,18 @@ class Window(Frame):
         frame.pack(side="top", fill="both", expand=True)
         GeoPage.GeoPage(frame, window, self.gui_support.graph_path)
 
+    def popup_statistic(self):
+        from Statistic import Statistic
+        window = tk.Tk()
+        window.wm_title("Statistic")
+        frame = tk.Frame(window)
+        input_name = tk.Label(window, text='Attribute')
+        input_name.grid(row=0, column=1)
+        input_entry = tk.Entry(window)
+        input_entry.grid(row=0, column=1)
+        # frame.pack(side="top", fill="both", expand=True)
+        # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
+        B1 = tk.Button(window, text="Stat pls", command=lambda: Statistic(frame, window,
+                                                                            self.mg.get_all_attribute_value(
+                                                                                input_entry.get(), False), input_entry.get()))
+        B1.grid(row=0, column=2)

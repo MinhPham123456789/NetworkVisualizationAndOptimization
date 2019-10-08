@@ -10,11 +10,25 @@ from tkinter import *
 class GeoPage(tk.Frame):
     def __init__(self, parent, controler, graph_path):
         tk.Frame.__init__(self, parent)
-        fig = Figure(figsize=(5, 4), dpi=200)
+        fig = Figure(figsize=(8, 4.5), dpi=200)
         ax = fig.add_subplot(111)
         g = read(graph_path)
-        m = Basemap(projection='cyl', llcrnrlon=-28.4, llcrnrlat=20, urcrnrlon=61.9, urcrnrlat=72.3, resolution='c',
-                    ax=ax)
+        westlimit = 180
+        southlimit = 85
+        eastlimit = -180
+        northlimit = -85
+        for i in range(len(g.vs)):  # loop through every nodes
+            lo, la = g.vs[i]["Longitude"], g.vs[i]["Latitude"]
+            if westlimit > lo:
+                westlimit = lo
+            if southlimit > la:
+                southlimit = la
+            if eastlimit < lo:
+                eastlimit = lo
+            if northlimit < la:
+                northlimit = la
+        m = Basemap(projection='cyl', llcrnrlon=westlimit - 2, llcrnrlat=southlimit - 2, urcrnrlon=eastlimit + 2,
+                    urcrnrlat=northlimit + 2, resolution='c', ax=ax)
         m.drawcoastlines()
         m.drawcountries()
         m.bluemarble()
@@ -25,7 +39,7 @@ class GeoPage(tk.Frame):
             x2, y2 = g.vs[t]["Longitude"], g.vs[t]["Latitude"]
             x = m(x1, x2)
             y = m(y1, y2)
-            ax.plot(x, y, linewidth=0.8, color='cyan', linestyle='-', zorder=1)
+            ax.plot(x, y, linewidth=0.8, color='cyan', linestyle='-', zorder=2)
 
         for i in range(len(g.vs)):  # loop through every nodes
             lo, la = g.vs[i]["Longitude"], g.vs[i]["Latitude"]  # get x and y on i th node
