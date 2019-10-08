@@ -388,7 +388,6 @@ class Window(Frame):
         GeoPage.GeoPage(frame, window, self.gui_support.graph_path)
 
     def popup_statistic(self):
-        from Statistic import Statistic
         window = tk.Tk()
         window.wm_title("Statistic")
         frame = tk.Frame(window)
@@ -398,7 +397,13 @@ class Window(Frame):
         input_entry.grid(row=0, column=1)
         # frame.pack(side="top", fill="both", expand=True)
         # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
-        B1 = tk.Button(window, text="Stat pls", command=lambda: Statistic(frame, window,
-                                                                            self.mg.get_all_attribute_value(
-                                                                                input_entry.get(), False), input_entry.get()))
+        B1 = tk.Button(window, text="Stat pls", command=lambda: self.callstat(input_entry.get()))
         B1.grid(row=0, column=2)
+
+    def callstat(self, att):
+        from Statistic import Statistic
+        window = tk.Tk()
+        window.wm_title("Statistic")
+        frame = tk.Frame(window)
+        frame.pack(side="top", fill="both", expand=True)
+        Statistic(frame, window, self.mg.get_all_attribute_value(att, False), att)

@@ -230,6 +230,15 @@ class ObjDrawTkinter:
             delay_list.append(delay)
         return delay_list
 
+    def search_edge_dash(self, edge_obj_list, check_search):
+        for edge in edge_obj_list:
+            if check_search:
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge])
+            else:
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge])
+
+        pass
+
     def load_edges(self):
         try:
             if self.mg.edge[0].get_attribute("width") is None:
