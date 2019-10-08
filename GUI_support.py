@@ -45,8 +45,8 @@ class GUI_support():
         try:
             NREN.vs["y"]
         except KeyError:
-            self.gui.mg.add_attribute_list("y", NREN.vs["Latitude"], True)
-            NREN.vs["y"] = NREN.vs["Latitude"]
+            NREN.vs["y"] = [i * (-1) for i in NREN.vs["Latitude"]]
+            self.gui.mg.add_attribute_list("y", NREN.vs["y"], True)
 
         try:
             NREN["Network"]
