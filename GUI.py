@@ -47,6 +47,7 @@ class Window(Frame):
 
         Vertex_highlight.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
         Vertex_highlight.add_command(label="vertex_text_box", command=lambda: self.popup_vertex_text())
+        Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
 
         Edge_highlight.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
         Edge_highlight.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
@@ -191,7 +192,7 @@ class Window(Frame):
         B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.group_vertex(input_entry.get()))
         B1.grid(row=0, column=2)
 
-    def popup_vertex_text(self):    # TODO: generalize
+    def popup_vertex_text(self):
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Vertex text box")
         input_name = tk.Label(popupBonusWindow, text="Attribute")
@@ -202,6 +203,16 @@ class Window(Frame):
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_vertex_text_box())
         B1.grid(row=0, column=2)
         B2.grid(row=1, column=1)
+
+    def popup_vertex_size(self):       # TODO: Maybe improve
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Vertex size")
+        input_name = tk.Label(popupBonusWindow, text="Radius")
+        # input_name.grid()
+        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=2,
+                         length=100,
+                         command=lambda x: self.gui_support.set_vertex_size(scale.get()))
+        scale.grid()
 
     def get_vertex_value(self, list_value):
         self.idnode_entry.delete(0, "end")

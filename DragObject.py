@@ -36,7 +36,7 @@ class MouseMover():
         if len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
             self.gui_support.get_vertex_value(self.item[0])
             self.gui_support.is_vertex = True
-        elif isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
+        elif len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
             self.gui_support.get_edge_value(self.item[0])
             self.gui_support.is_vertex = False
         # self.drawTk.set_weight_text_position(

@@ -62,7 +62,12 @@ class GUI_support():
             NREN.es["color"]
         except KeyError:
             self.gui.mg.add_attribute("color", "white", False)
-        self.gui.mg.add_attribute("vertex_size", 0.06, True)
+
+        try:
+            NREN.vs["vertex_size"]
+        except KeyError:
+            self.gui.mg.add_attribute("vertex_size", 0.08, True)
+
         try:
             NREN.vs["Internal"]
         except KeyError:
@@ -224,6 +229,9 @@ class GUI_support():
         note = Note(self.gui.master, color_dict, "group_vertex",att_name)
         self.list_note.append(note)
         note.display()
+
+    def set_vertex_size(self, radius):
+        self.gui.drawTk.resize_vertex_list(radius)
 
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
