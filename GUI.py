@@ -186,24 +186,53 @@ class Window(Frame):
     def popup_group_vertex(self):
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Vertex color")
-        input_name = tk.Label(popupBonusWindow, text="Attribute")
-        input_name.grid(row=0)
-        input_entry = tk.Entry(popupBonusWindow)
-        input_entry.grid(row=0, column=1)
-        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.group_vertex(input_entry.get()))
-        B1.grid(row=0, column=2)
 
-    def popup_vertex_text(self):
+        tkVar = StringVar(popupBonusWindow)
+        vertex_att = self.gui_support.vertex_attributes()
+        tkVar.set(vertex_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *vertex_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.gui_support.group_vertex(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+
+    def popup_vertex_text(self):    # TODO: generalize
+        # popupBonusWindow = tk.Tk()
+        # popupBonusWindow.wm_title("Vertex text box")
+        # input_name = tk.Label(popupBonusWindow, text="Attribute")
+        # input_name.grid(row=0)
+        # input_entry = tk.Entry(popupBonusWindow)
+        # input_entry.grid(row=0, column=1)
+        # B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.set_vertex_box(input_entry.get()))
+        # B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_vertex_text_box())
+        # B1.grid(row=0, column=2)
+        # B2.grid(row=1, column=1)
+
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Vertex text box")
-        input_name = tk.Label(popupBonusWindow, text="Attribute")
-        input_name.grid(row=0)
-        input_entry = tk.Entry(popupBonusWindow)
-        input_entry.grid(row=0, column=1)
-        B1 = tk.Button(popupBonusWindow, text="Okay", command=lambda: self.gui_support.set_vertex_box(input_entry.get()))
+
+        tkVar = StringVar(popupBonusWindow)
+        vertex_att = self.gui_support.vertex_attributes_nofilter()
+        tkVar.set(vertex_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *vertex_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.gui_support.set_vertex_box(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_vertex_text_box())
-        B1.grid(row=0, column=2)
-        B2.grid(row=1, column=1)
+        B2.grid(row=1, column=0, columnspan=2)
 
     def popup_vertex_size(self):       # TODO: Maybe improve
         popupBonusWindow = tk.Tk()
@@ -255,23 +284,41 @@ class Window(Frame):
     def popup_group_edge_width(self):
         popup_bonus_window = Tk()
         popup_bonus_window.wm_title("Edge width")
-        input_name = Label(popup_bonus_window, text="Attribute")
-        input_name.grid(row=0)
-        input_entry = Entry(popup_bonus_window)
-        input_entry.grid(row=0, column=1)
-        B1 = Button(popup_bonus_window, text="Okay", command=lambda: self.gui_support.edge_width(input_entry.get()))
-        B1.grid(row=0, column=2)
+        input_name = tk.Label(popup_bonus_window, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+
+        tkVar = StringVar(popup_bonus_window)
+        edge_att = self.gui_support.edge_attributes()
+        tkVar.set(edge_att[0])
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.gui_support.edge_width(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+
+        input_entry = OptionMenu(popup_bonus_window, tkVar, *edge_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
 
     def popup_group_edge_color(self):
         print("into func. self.Delay")
         popup_window = tk.Tk()
         popup_window.wm_title("Edge color")
-        input_name = tk.Label(popup_window, text="Attribute")
-        input_name.grid(row=0)
-        inputentry = tk.Entry(popup_window)
-        inputentry.grid(row=0, column=1)
-        Btn = tk.Button(popup_window, text="Okay", command=lambda: self.gui_support.edge_color(inputentry.get()))
-        Btn.grid(row=0, column=2)
+        input_name = tk.Label(popup_window, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+
+        tkVar = StringVar(popup_window)
+        edge_att = self.gui_support.edge_attributes()
+        tkVar.set(edge_att[0])
+
+        inputentry = OptionMenu(popup_window, tkVar, *edge_att)
+        inputentry.grid(row=0, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.gui_support.edge_color(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
 
     def get_throughput_name(self, value):
         self.gui_support.throughput = value[0]
