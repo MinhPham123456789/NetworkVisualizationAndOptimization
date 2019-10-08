@@ -252,7 +252,7 @@ class GUI_support():
         for vertex in self.gui.mg.vertex:
             if vertex.get_attribute(attribute) == value:
                 vertex_obj_list.append(vertex)
-        self.gui.drawTk.search_vertex_outline(vertex_obj_list, 3, True)
+        self.gui.drawTk.search_vertex_outline(vertex_obj_list, 9, True)
         self.search_vertex_list = vertex_obj_list
 
     def clear_search_vertex(self):

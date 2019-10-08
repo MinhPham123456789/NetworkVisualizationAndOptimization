@@ -231,12 +231,22 @@ class ObjDrawTkinter:
         return delay_list
 
     def search_edge_dash(self, edge_obj_list, check_search):    #TODO: add color memory
+        color_memory=[]
+        width_memory=[]
+        count = 0
         for edge in edge_obj_list:
+            print(count)
             if check_search:
-                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4,4))
+                color_memory.append(self.tk_frame.canvas.itemcget(self.items_table[edge], "fill"))
+                width_memory.append(self.tk_frame.canvas.itemcget(self.items_table[edge], "width"))
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4,4), width=9, fill="black")
             else:
-                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=())
-
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(),
+                                                   fill=self.color_memory[count],
+                                                   width=self.width_memory[count])
+            count = count + 1
+        self.color_memory = color_memory
+        self.width_memory = width_memory
         pass
 
     def load_edges(self):
