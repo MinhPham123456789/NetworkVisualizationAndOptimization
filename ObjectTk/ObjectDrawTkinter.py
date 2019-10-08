@@ -215,6 +215,9 @@ class ObjDrawTkinter:
                       threshold3: [self.rgb_2_hex(255, 255, 0), self.rgb_2_hex(255, 0, 0)]}
         return [color_dict, color_list]
 
+    #def edge_color_string(self, edge_weight, MG: ObjManager):
+
+
     def edge_color_by_delay(self, MG: ObjManager):
         delay_list = []
         for edge in MG.edge:
