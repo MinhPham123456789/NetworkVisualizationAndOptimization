@@ -230,12 +230,12 @@ class ObjDrawTkinter:
             delay_list.append(delay)
         return delay_list
 
-    def search_edge_dash(self, edge_obj_list, check_search):
+    def search_edge_dash(self, edge_obj_list, check_search):    #TODO: add color memory
         for edge in edge_obj_list:
             if check_search:
-                self.tk_frame.canvas.itemconfigure(self.items_table[edge])
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4,4))
             else:
-                self.tk_frame.canvas.itemconfigure(self.items_table[edge])
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=())
 
         pass
 

@@ -259,6 +259,18 @@ class GUI_support():
         self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
         self.search_vertex_list = []
 
+    def search_edge(self, attribute, value):
+        edge_obj_list = []
+        for edge in self.gui.mg.edge:
+            if edge.get_attribute(attribute) == value:
+                edge_obj_list.append(edge)
+        self.gui.drawTk.search_edge_dash(edge_obj_list, True)
+        self.search_edge_list = edge_obj_list
+
+    def clear_search_edge(self):
+        self.gui.drawTk.search_edge_dash(self.search_edge_list, False)
+        self.search_edge_list = []
+
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
 

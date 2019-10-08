@@ -61,6 +61,7 @@ class Window(Frame):
         Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
 
         Search.add_command(label="Vertex", command= lambda: self.popup_search_vertex())
+        Search.add_command(label="Edge", command=lambda: self.popup_search_edge())
 
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
@@ -266,6 +267,23 @@ class Window(Frame):
         B1.grid(row=2, column=1)
         B2.grid(row=3, column=1)
 
+    def popup_search_edge(self):
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Search edge")
+        input_att = tk.Label(popupBonusWindow, text="Attribute")
+        input_att.grid()
+        att_entry = tk.Entry(popupBonusWindow)
+        att_entry.grid(row=0, column=1)
+        input_value = tk.Label(popupBonusWindow, text="Value")
+        input_value.grid(row=1)
+        att_value_entry = tk.Entry(popupBonusWindow)
+        att_value_entry.grid(row=1, column=1)
+        B1 = tk.Button(popupBonusWindow, text="Okay",
+                       command=lambda: self.gui_support.search_edge(att_entry.get(), att_value_entry.get()))
+        B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_edge())
+        B1.grid(row=2, column=1)
+        B2.grid(row=3, column=1)
+
     def get_vertex_value(self, list_value):
         self.idnode_entry.delete(0, "end")
         self.countrynode_entry.delete(0, "end")
@@ -397,10 +415,11 @@ class Window(Frame):
         input_entry.grid(row=0, column=1)
         # frame.pack(side="top", fill="both", expand=True)
         # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
-        B1 = tk.Button(window, text="Stat pls", command=lambda: self.callstat(input_entry.get()))
+        B1 = tk.Button(window, text="Stat pls", command=lambda: [self.call_statistic_window(input_entry.get()),
+                                                                 window.destroy()])
         B1.grid(row=0, column=2)
 
-    def callstat(self, att):
+    def call_statistic_window(self, att):
         from Statistic import Statistic
         window = tk.Tk()
         window.wm_title("Statistic")
