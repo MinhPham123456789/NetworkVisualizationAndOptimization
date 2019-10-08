@@ -96,7 +96,8 @@ class GUI_support():
         # self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
         #reset note
-        self.reset_note()
+        self.reset_note_vertex()
+        self.reset_note_edge()
         #load_note
         self.loadnode(NREN)
 
@@ -245,6 +246,18 @@ class GUI_support():
     def set_vertex_size(self, radius):
         self.gui.drawTk.resize_vertex_list(radius)
 
+    def search_vertex(self, attribute, value):
+        vertex_obj_list = []
+        for vertex in self.gui.mg.vertex:
+            if vertex.get_attribute(attribute) == value:
+                vertex_obj_list.append(vertex)
+        self.gui.drawTk.search_vertex_outline(vertex_obj_list, 3, True)
+        self.search_vertex_list = vertex_obj_list
+
+    def clear_search_vertex(self):
+        self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
+        self.search_vertex_list = []
+
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
 
@@ -270,10 +283,34 @@ class GUI_support():
         for note in self.list_note:
             note.display()
 
-    def reset_note(self):
+    def reset_note_edge(self):
+        note = None
+        Note.note_edge_width = None
+        Note.note_edge_color = None
         for i in range(len(self.list_note)):
-            self.list_note[i].hideframe()
+            if self.list_note[i].title == "group_vertex":
+                note = self.list_note[i]
+            else: self.list_note[i].hideframe()
         self.list_note = []
+        if note != None:
+            self.list_note.append(note)
+        self.update_note()
+
+    def reset_note_vertex(self):
+        note1 = note2 = None
+        Note.note_vertex_color = None
+        for i in range(len(self.list_note)):
+            if self.list_note[i].title == "edge_width":
+                note1 = self.list_note[i]
+            elif self.list_note[i].title == "edge_color":
+                note2 = self.list_note[i]
+            else: self.list_note[i].hideframe()
+        self.list_note = []
+        if note1 != None:
+            self.list_note.append(note1)
+        if note2 != None:
+            self.list_note.append(note2)
+        self.update_note()
 
     # kiet linkspeedraw:
     def edge_width(self, value):
@@ -327,6 +364,26 @@ class GUI_support():
 
     def reingold_tilford_circular(self):
         coords = self.gui.layout.reingold_tilford_circular_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def fruchterman_reingold(self):
+        coords = self.gui.layout.fruchterman_reingold_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def circle(self):
+        coords = self.gui.layout.circle_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def mds(self):
+        coords = self.gui.layout.mds_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def random_lay(self):
+        coords = self.gui.layout.random_layout()
         for i in range(len(coords)):
             self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
 

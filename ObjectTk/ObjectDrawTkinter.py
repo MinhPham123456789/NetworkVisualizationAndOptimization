@@ -123,6 +123,13 @@ class ObjDrawTkinter:
                                  text=str(self.mg.vertex[index].properties[vertex_weight]),
                                  state="normal")
 
+    def search_vertex_outline(self, vertex_obj_list, width_value, check_search):
+        for vertex in vertex_obj_list:
+            if check_search:
+                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="white")
+            else:
+                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="black")
+
     def load_vertices(self):
         for i in range(len(self.mg.vertex)):
             # print(graph.vs[i]["x"])

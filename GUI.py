@@ -40,6 +40,7 @@ class Window(Frame):
         Edge_highlight = Menu(menu)
         Layout_menu = Menu(menu)
         Throughput = Menu(menu)
+        Search = Menu(menu)
 
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
@@ -56,14 +57,25 @@ class Window(Frame):
                                 command=lambda: self.gui_support.start_graph())
         Layout_menu.add_command(label="reingold tilford circular",
                                 command=lambda: self.gui_support.reingold_tilford_circular())
+        Layout_menu.add_command(label="fruchterman reingold",
+                                command=lambda: self.gui_support.fruchterman_reingold())
+        Layout_menu.add_command(label="circle",
+                                command=lambda: self.gui_support.circle())
+        Layout_menu.add_command(label="mds",
+                                command=lambda: self.gui_support.mds())
+        Layout_menu.add_command(label="random",
+                                command=lambda: self.gui_support.random_lay())
 
         Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
+
+        Search.add_command(label="Vertex", command= lambda: self.popup_search_vertex())
 
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
         menu.add_cascade(label="Edge Highlight", menu=Edge_highlight)
         menu.add_cascade(label="Layout", menu=Layout_menu)
         menu.add_cascade(label="Throughput", menu=Throughput)
+        menu.add_cascade(label="Search", menu=Search)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
 
@@ -173,11 +185,12 @@ class Window(Frame):
         # RESET Buttons x=15, y=600 ###########################
         # TODO: clear out or bring back to the original
         vertex_color_reset = Button(self, text="Reset vertex ",
-                                    command=lambda: self.gui_support.reset_vertex_color())
+                                    command=lambda: [self.gui_support.reset_vertex_color(),
+                                                     self.gui_support.reset_note_vertex()])
         vertex_color_reset.place(x=17, y=600)
         edge_color_reset = Button(self, text="Reset edge ",
                                   command=lambda: [self.gui_support.reset_edge_color(),
-                                                   self.gui_support.reset_note(),
+                                                   self.gui_support.reset_note_edge(),
                                                    self.gui_support.reset_edge_width()])
         edge_color_reset.place(x=150, y=600)
 
@@ -239,10 +252,27 @@ class Window(Frame):
         popupBonusWindow.wm_title("Vertex size")
         input_name = tk.Label(popupBonusWindow, text="Radius")
         # input_name.grid()
-        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=2,
+        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=10,
                          length=100,
                          command=lambda x: self.gui_support.set_vertex_size(scale.get()))
         scale.grid()
+
+    def popup_search_vertex(self):
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Search vertex")
+        input_att = tk.Label(popupBonusWindow, text="Attribute")
+        input_att.grid()
+        att_entry = tk.Entry(popupBonusWindow)
+        att_entry.grid(row=0, column=1)
+        input_value = tk.Label(popupBonusWindow, text="Value")
+        input_value.grid(row=1)
+        att_value_entry = tk.Entry(popupBonusWindow)
+        att_value_entry.grid(row=1, column=1)
+        B1 = tk.Button(popupBonusWindow, text="Okay",
+                       command=lambda: self.gui_support.search_vertex(att_entry.get(), att_value_entry.get()))
+        B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_vertex())
+        B1.grid(row=2, column=1)
+        B2.grid(row=3, column=1)
 
     def get_vertex_value(self, list_value):
         self.idnode_entry.delete(0, "end")
