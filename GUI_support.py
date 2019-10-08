@@ -96,7 +96,8 @@ class GUI_support():
         # self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
         #reset note
-        self.reset_note()
+        self.reset_note_vertex()
+        self.reset_note_edge()
         #load_note
         self.loadnode(NREN)
 
@@ -282,10 +283,34 @@ class GUI_support():
         for note in self.list_note:
             note.display()
 
-    def reset_note(self):
+    def reset_note_edge(self):
+        note = None
+        Note.note_edge_width = None
+        Note.note_edge_color = None
         for i in range(len(self.list_note)):
-            self.list_note[i].hideframe()
+            if self.list_note[i].title == "group_vertex":
+                note = self.list_note[i]
+            else: self.list_note[i].hideframe()
         self.list_note = []
+        if note != None:
+            self.list_note.append(note)
+        self.update_note()
+
+    def reset_note_vertex(self):
+        note1 = note2 = None
+        Note.note_vertex_color = None
+        for i in range(len(self.list_note)):
+            if self.list_note[i].title == "edge_width":
+                note1 = self.list_note[i]
+            elif self.list_note[i].title == "edge_color":
+                note2 = self.list_note[i]
+            else: self.list_note[i].hideframe()
+        self.list_note = []
+        if note1 != None:
+            self.list_note.append(note1)
+        if note2 != None:
+            self.list_note.append(note2)
+        self.update_note()
 
     # kiet linkspeedraw:
     def edge_width(self, value):

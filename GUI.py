@@ -177,11 +177,12 @@ class Window(Frame):
         # RESET Buttons x=15, y=600 ###########################
         # TODO: clear out or bring back to the original
         vertex_color_reset = Button(self, text="Reset vertex ",
-                                    command=lambda: self.gui_support.reset_vertex_color())
+                                    command=lambda: [self.gui_support.reset_vertex_color(),
+                                                     self.gui_support.reset_note_vertex()])
         vertex_color_reset.place(x=17, y=600)
         edge_color_reset = Button(self, text="Reset edge ",
                                   command=lambda: [self.gui_support.reset_edge_color(),
-                                                   self.gui_support.reset_note(),
+                                                   self.gui_support.reset_note_edge(),
                                                    self.gui_support.reset_edge_width()])
         edge_color_reset.place(x=150, y=600)
 
