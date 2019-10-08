@@ -2,6 +2,7 @@ import random
 from tkinter import filedialog
 from typing import List
 
+from AttributeFilter import AttFilter
 from DragObject import MouseMover
 from MapLocate import *
 from Note import *
@@ -325,12 +326,12 @@ class GUI_support():
     # thao          ##add note to function
     def edge_color(self, value):
         attribute = str(value)
-        print("----GUI_support.edgewidthdelay()----")
+        print("----GUI_support.edge_color()----")
         result = self.gui.drawTk.edge_color(attribute, self.gui.mg)
         edge_color_list = result[1]
         for i in range(len(edge_color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.edge[i]], fill=edge_color_list[i])
-        print("//----GUI_support.edgewidthdelay()----")
+        print("//----GUI_support.edge_color()----")
         note_dict = result[0]
         for note in self.list_note:
             if note.title == "edge_color":
@@ -410,6 +411,22 @@ class GUI_support():
             self.maplocate = MapLocate(self.selected_vertex)
             self.maplocate.get_map()
             print("//----GUI Support func openmap()-----")
+
+    def vertex_attributes(self):
+        vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
+        att_filter = AttFilter(vertex_att_list, True)
+        att_list = att_filter.filter()
+        return att_list
+
+    def edge_attributes(self):
+        edge_att_list = list(self.gui.mg.edge[0].properties.keys())
+        att_filter = AttFilter(edge_att_list, False)
+        att_list = att_filter.filter()
+        return att_list
+
+    def vertex_attributes_nofilter(self):
+        vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
+        return vertex_att_list
 
 
 def random_value(min_point: float, max_point: float, size: int):
