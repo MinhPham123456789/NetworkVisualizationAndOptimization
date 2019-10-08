@@ -216,7 +216,7 @@ class GUI_support():
         print("bandwidth_list", bandwidth_list)
         edge_index_list = []
         for i in range(len(bandwidth_list)):
-            if float(throughput_list[i] / bandwidth_list[i]) > threshold_ratio:
+            if float(float(throughput_list[i]) / float(bandwidth_list[i])) > threshold_ratio:
                 edge_index_list.append(i)
         self.gui.drawTk.recolor_edge_current()
         self.gui.drawTk.recolor_edge_index_list(edge_index_list, self.gui.mg, "#a02aa9")
