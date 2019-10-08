@@ -243,7 +243,7 @@ class Window(Frame):
         popupBonusWindow.wm_title("Vertex size")
         input_name = tk.Label(popupBonusWindow, text="Radius")
         # input_name.grid()
-        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=2,
+        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=10,
                          length=100,
                          command=lambda x: self.gui_support.set_vertex_size(scale.get()))
         scale.grid()
