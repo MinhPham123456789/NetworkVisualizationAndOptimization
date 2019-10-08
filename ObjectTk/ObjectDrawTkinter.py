@@ -67,16 +67,27 @@ class ObjDrawTkinter:
         for key in the_list:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, True)
-        return [color_dict,new_color]
+        return [color_dict, new_color]
 
     def recolor_vertex_list(self, vertex_obj_list: list, mg: ObjManager, color: str):
         for i in range(len(vertex_obj_list)):
             mg.vertex[i].set_attribute("color", color)
             self.tk_frame.canvas.itemconfigure(self.items_table[mg.vertex[i]], fill=color)
 
-    def resize_vertex_list(self, vertex_list, MG: ObjManager, size):
-        for i in vertex_list:
-            MG.vertex[i.index].set_attribute("vertex_size", size)
+    def resize_vertex(self, vertex_obj, radius):
+        x1, y1, x2, y2 = self.tk_frame.canvas.coords(self.items_table[vertex_obj])
+        x = (x1 + x2) / 2
+        y = (y1 + y2) / 2
+        nx1 = x - radius
+        nx2 = x + radius
+        ny1 = y - radius
+        ny2 = y + radius
+        return [nx1, ny1, nx2, ny2]
+
+    def resize_vertex_list(self, size):
+        for vertex_obj in self.mg.vertex:
+            vertex_obj.set_attribute("vertex_size", size)
+            self.tk_frame.canvas.coords(self.items_table[vertex_obj], self.resize_vertex(vertex_obj, size))
 
     def set_weight_text_position(self, index: int, mg: ObjManager):
         coords = self.tk_frame.canvas.coords(self.items_table[mg.vertex[index]])
@@ -104,7 +115,7 @@ class ObjDrawTkinter:
             items_table_list.append("r" + str(index))
         self.add_items_table(items_table_list)
 
-    def change_vertex_text_weight(self,vertex_weight: str, canvas):
+    def change_vertex_text_weight(self, vertex_weight: str, canvas):
         for index in range(len(self.mg.vertex)):
             text_index = "r" + str(index)
             text_item_index = self.items_table[text_index]
@@ -152,7 +163,7 @@ class ObjDrawTkinter:
         for one_edge in self.mg.edge:
             self.tk_frame.canvas.itemconfigure(self.items_table[one_edge], fill=one_edge.properties["color"])
 
-    #change return value
+    # change return value
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
         the_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
         min_weight = min(the_list)
@@ -168,15 +179,15 @@ class ObjDrawTkinter:
             else:
                 width_dict.append(6)
         MG.add_attribute_list("width", width_dict, False)
-        return [threshold1,threshold2,max_weight,width_dict]
+        return [threshold1, threshold2, max_weight, width_dict]
 
-    #change return value
+    # change return value
     def edge_color(self, edge_weight: str, MG: ObjManager):
         print("----ObjectDrawTkinter----")
-       # if edge_weight == "delay":
-       #     weight_list = self.edge_color_by_delay(MG)
-       # else:
-       #     weight_list = list(map(float,MG.get_all_attribute_value(edge_weight, False)))
+        # if edge_weight == "delay":
+        #     weight_list = self.edge_color_by_delay(MG)
+        # else:
+        #     weight_list = list(map(float,MG.get_all_attribute_value(edge_weight, False)))
         weight_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
         color_list = []
         maxweight = max(weight_list)
@@ -197,10 +208,12 @@ class ObjDrawTkinter:
         MG.change_attribute_value_list("color", color_list, False)
         print("//----ObjectDrawTkinter----")
         threshold1 = float("{0:.2f}".format(onethird + minweight))
-        threshold2 = float("{0:.2f}".format(onethird*2 + minweight))
-        threshold3 = float("{0:.2f}".format(onethird*3 + minweight))
-        color_dict = {threshold1:[self.rgb_2_hex(0,255,255),self.rgb_2_hex(0,255,0)],threshold2:[self.rgb_2_hex(0,255,0),self.rgb_2_hex(255,255,0)],threshold3:[self.rgb_2_hex(255,255,0),self.rgb_2_hex(255,0,0)]}
-        return [color_dict,color_list]
+        threshold2 = float("{0:.2f}".format(onethird * 2 + minweight))
+        threshold3 = float("{0:.2f}".format(onethird * 3 + minweight))
+        color_dict = {threshold1: [self.rgb_2_hex(0, 255, 255), self.rgb_2_hex(0, 255, 0)],
+                      threshold2: [self.rgb_2_hex(0, 255, 0), self.rgb_2_hex(255, 255, 0)],
+                      threshold3: [self.rgb_2_hex(255, 255, 0), self.rgb_2_hex(255, 0, 0)]}
+        return [color_dict, color_list]
 
     def edge_color_by_delay(self, MG: ObjManager):
         delay_list = []
@@ -212,11 +225,13 @@ class ObjDrawTkinter:
 
     def load_edges(self):
         try:
-            self.mg.edge[0].get_attribute("width")
-            for i in range(len(self.mg.edge)):
-                self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
-                                                 fill=self.mg.edge[i].get_attribute("color"),
-                                                 width=self.mg.edge[i].get_attribute("width"))
+            if self.mg.edge[0].get_attribute("width") is None:
+                raise KeyError("Received None")
+            else:
+                for i in range(len(self.mg.edge)):
+                    self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
+                                                     fill=self.mg.edge[i].get_attribute("color"),
+                                                     width=self.mg.edge[i].get_attribute("width"))
         except KeyError:
             for i in range(len(self.mg.edge)):
                 self.tk_frame.canvas.create_line(self.transform_to_line_position(self.mg.edge[i], self.mg),
