@@ -61,6 +61,8 @@ class ObjDrawTkinter:
         for i in range(len(unique_list)):
             color = self.rgb_2_hex(red[i], green[i], blue[i])
             color_dict.update({unique_list[i]: color})
+        print("color_dict")
+        print(color_dict)
         new_color = []
         for key in the_list:
             new_color.append(color_dict[key])
@@ -115,7 +117,7 @@ class ObjDrawTkinter:
             # print(graph.vs[i]["x"])
             # print(transform_to_oval_position(graph.vs[i]["x"], graph.vs[i]["y"], 10))
             self.tk_frame.canvas.create_oval(self.transform_to_oval_position(self.mg.vertex[i], self.mg),
-                                             fill="red")
+                                             fill=self.mg.vertex[i].get_attribute("color"))
         self.add_items_table(self.mg.vertex)
         return self.tk_frame
 

@@ -101,6 +101,17 @@ class GUI_support():
         try:
             self.edge_color(graph["note_edge_color"])
         except: pass
+        try:
+            color_dict = {}
+            list_attribute = self.gui.mg.get_all_attribute_value(graph["note_vertex_color"],True)
+            list_color = self.gui.mg.get_all_attribute_value("color",True)
+            for i in range(len(list_attribute)):
+                color_dict.update({list_attribute[i]:list_color[i]})
+            note = Note(self.gui.master, color_dict, "group_vertex", graph["note_vertex_color"])
+            self.list_note.append(note)
+            note.display()
+            print("load node color")
+        except: pass
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -108,6 +119,7 @@ class GUI_support():
         new_graph = self.gui.mg.save_graph(self.gui.drawTk, self.gui.canvas)
         new_graph["note_edge_width"] = Note.note_edge_width
         new_graph["note_edge_color"] = Note.note_edge_color
+        new_graph["note_vertex_color"] = Note.note_vertex_color
         new_graph.write_graphml(graph_name)
 
     def get_vertex_value(self, vertex_item_index):
@@ -217,7 +229,7 @@ class GUI_support():
             if note.title == "group_vertex":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(color_dict)
+                note.regenerate(color_dict,att_name)
                 note.display()
                 self.list_note.append(note)
                 return
@@ -270,7 +282,7 @@ class GUI_support():
             if note.title == "edge_width":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict)
+                note.regenerate(note_dict,att_name)
                 note.display()
                 self.list_note.append(note)
                 return
@@ -292,7 +304,7 @@ class GUI_support():
             if note.title == "edge_color":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict)
+                note.regenerate(note_dict,attribute)
                 note.display()
                 self.list_note.append(note)
                 return
