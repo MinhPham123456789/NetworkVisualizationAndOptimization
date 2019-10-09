@@ -3,6 +3,8 @@ from igraph import *
 from ObjectTk.ObjectManager import *
 from ObjectTk.ObjectDrawTkinter import *
 import tkinter as tk
+
+from Statistic import Statistic2
 from ZoomAndDrag import *
 from igraphNewModules import *
 from DragObject import *
@@ -44,7 +46,7 @@ class Window(Frame):
 
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
-        File.add_command(label="refresh")
+        # File.add_command(label="refresh")
 
         Vertex_highlight.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
         Vertex_highlight.add_command(label="vertex_text_box", command=lambda: self.popup_vertex_text())
@@ -511,12 +513,8 @@ class Window(Frame):
         B1.grid(row=0, column=3, padx=10, pady=5)
 
     def call_statistic_window(self, att):
-        from Statistic import Statistic
-        window = tk.Tk()
-        window.wm_title("Statistic")
-        frame = tk.Frame(window)
-        frame.pack(side="top", fill="both", expand=True)
-        Statistic(frame, window, self.mg.get_all_attribute_value(att, False), att)
+        from Statistic import StatisticPie
+        StatisticPie(self.mg.get_all_attribute_value(att, False), att)
 
     def callstatthroughput(self, hour):
         from ThroughputInformation import get_throughput_information
