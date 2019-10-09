@@ -79,7 +79,6 @@ class Window(Frame):
         menu.add_cascade(label="Search", menu=Search)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
-        menu.add_command(label="Throughput Statistic", command=lambda: self.popup_statistic_throughput())
 
         # VERTEX x=0, y=0###############################################3
 
@@ -464,8 +463,9 @@ class Window(Frame):
                                                                                         float(
                                                                                             input_throughput_threshold.get()))])
         threshold_button.grid(row=1, column=2)
+        B2 = tk.Button(popup_bonus_window, text="Statistic", command=lambda: self.callstatthroughput(int(spin_box_1.get())))
+        B2.grid(row=2, column=2)
         # TODO clear when close
-        # popup_bonus_window.protocol("WM_DELETE_WINDOW", print("hello"))
 
     def popup_geo_window(self):
         window = Toplevel(self.master)
@@ -518,19 +518,6 @@ class Window(Frame):
         frame.pack(side="top", fill="both", expand=True)
         Statistic(frame, window, self.mg.get_all_attribute_value(att, False), att)
 
-    def popup_statistic_throughput(self):
-        window = tk.Tk()
-        window.wm_title("Statistic")
-        frame = tk.Frame(window)
-        input_name = tk.Label(window, text='Hour')
-        input_name.grid(row=0, column=1)
-        input_entry = tk.Entry(window)
-        input_entry.grid(row=0, column=1)
-        # frame.pack(side="top", fill="both", expand=True)
-        # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
-        B1 = tk.Button(window, text="Stat pls", command=lambda: self.callstatthroughput(int(input_entry.get())))
-        B1.grid(row=0, column=2)
-
     def callstatthroughput(self, hour):
         from ThroughputInformation import get_throughput_information
         from Statistic import Statistic2
@@ -545,4 +532,17 @@ class Window(Frame):
         window.wm_title("Statistic")
         frame = tk.Frame(window)
         frame.pack(side="top", fill="both", expand=True)
-        Statistic2(frame, window, edgelist, 'something')
+        Statistic2(frame, window, edgelist, 'something', hour)
+
+    # def popup_statistic_throughput(self):
+    #     window = tk.Tk()
+    #     window.wm_title("Statistic")
+    #     frame = tk.Frame(window)
+    #     input_name = tk.Label(window, text='Hour')
+    #     input_name.grid(row=0, column=1)
+    #     input_entry = tk.Entry(window)
+    #     input_entry.grid(row=0, column=1)
+    #     # frame.pack(side="top", fill="both", expand=True)
+    #     # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
+    #     B2 = tk.Button(window, text="Stat pls", command=lambda: self.callstatthroughput(int(input_entry.get())))
+    #     B2.grid(row=0, column=2)

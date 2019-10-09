@@ -51,7 +51,7 @@ class MouseMover():
         xc = widget.canvasx(event.x)
         yc = widget.canvasx(event.y)
         # print(len(self.item))
-        if len(self.item) >= 1 and self.item[0] <= len(self.mg.vertex):
+        if len(self.item) >= 1 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
             self.canvas.move(self.item, xc - self.previous[0], yc - self.previous[1])
             print("Bis:")
             print((xc, yc, self.item[0]))

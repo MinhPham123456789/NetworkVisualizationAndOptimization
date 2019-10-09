@@ -30,23 +30,27 @@ class Statistic(tk.Frame):
         canvas.show()
 
 class Statistic2(tk.Frame):
-    def __init__(self, parent, controller, stat, attribute):
+    def __init__(self, parent, controller, stat, attribute, hour):
         tk.Frame.__init__(self, parent)
         self.bins = 10
         fig = Figure(figsize=(8, 4.5), dpi=200)
         ax = fig.add_subplot(111)
         self.p = fig.gca()
 
-        self.statistic_dictionary = collections.Counter(x if x else "None" for x in stat)
-        self.statistic_dictionary = collections.OrderedDict(self.statistic_dictionary)
+        self.statistic_dictionary = collections.Counter(x for x in stat if x < 1)
         print(self.statistic_dictionary.keys())
-        # print(statistic_dictionary.values())
-        # print(statistic_dictionary)
+        print(self.statistic_dictionary.values())
+        print(self.statistic_dictionary)
+        self.statistic_dictionary = collections.OrderedDict(sorted(self.statistic_dictionary.items(), key=lambda t: t[0]))
+        print(self.statistic_dictionary.keys())
+        print(self.statistic_dictionary.values())
+        print(self.statistic_dictionary)
         y_pos = np.arange(len(self.statistic_dictionary.keys()))  # Arrange bar position
         self.p.bar(y_pos, self.statistic_dictionary.values(), align='center', alpha=0.5)
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(self.statistic_dictionary.keys())
         self.p.set_ylabel('Number of edges', fontsize=15)
+        self.p.set_xlabel('Statistic in hour {}'.format(hour), fontsize=15)
 
         # p.hist(stat,bins =50,range=[0, 2])
         # p.set_xlabel('{}'.format(attribute), fontsize=15)
