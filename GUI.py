@@ -212,7 +212,7 @@ class Window(Frame):
         popupBonusWindow.wm_title("Vertex color")
 
         tkVar = StringVar(popupBonusWindow)
-        vertex_att = self.gui_support.vertex_attributes()
+        vertex_att = self.gui_support.vertex_attributes("group")
         tkVar.set(vertex_att[0])
 
         input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
@@ -242,7 +242,7 @@ class Window(Frame):
         popupBonusWindow.wm_title("Vertex text box")
 
         tkVar = StringVar(popupBonusWindow)
-        vertex_att = self.gui_support.vertex_attributes_nofilter()
+        vertex_att = self.gui_support.vertex_attributes("text box")
         tkVar.set(vertex_att[0])
 
         input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
@@ -286,7 +286,7 @@ class Window(Frame):
         popupBonusWindow.wm_title("Search vertex")
 
         tkVar = StringVar(popupBonusWindow)
-        vertex_att = self.gui_support.vertex_attributes()
+        vertex_att = self.gui_support.vertex_attributes("search")
         tkVar.set(vertex_att[0])
 
         input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
@@ -328,7 +328,7 @@ class Window(Frame):
         popupBonusWindow.wm_title("Search edge")
 
         tkVar = StringVar(popupBonusWindow)
-        edge_att = self.gui_support.edge_attributes()
+        edge_att = self.gui_support.edge_attributes("search")
         tkVar.set(edge_att[0])
 
         input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
@@ -396,7 +396,7 @@ class Window(Frame):
         input_name.grid(row=0, padx=10, pady=5)
 
         tkVar = StringVar(popup_bonus_window)
-        edge_att = self.gui_support.edge_attributes()
+        edge_att = self.gui_support.edge_attributes("width")
         tkVar.set(edge_att[0])
 
         def change_dropdown(*args):
@@ -416,7 +416,7 @@ class Window(Frame):
         input_name.grid(row=0, padx=10, pady=5)
 
         tkVar = StringVar(popup_window)
-        edge_att = self.gui_support.edge_attributes()
+        edge_att = self.gui_support.edge_attributes("color")
         tkVar.set(edge_att[0])
 
         inputentry = OptionMenu(popup_window, tkVar, *edge_att)
@@ -474,18 +474,40 @@ class Window(Frame):
         GeoPage.GeoPage(frame, window, self.gui_support.graph_path)
 
     def popup_statistic(self):
+        # window = tk.Tk()
+        # window.wm_title("Statistic")
+        # frame = tk.Frame(window)
+        # input_name = tk.Label(window, text='Attribute')
+        # input_name.grid(row=0, column=1)
+        # input_entry = tk.Entry(window)
+        # input_entry.grid(row=0, column=1)
+        # # frame.pack(side="top", fill="both", expand=True)
+        # # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
+        # B1 = tk.Button(window, text="Stat pls", command=lambda: [self.call_statistic_window(input_entry.get()),
+        #                                                          window.destroy()])
+        # B1.grid(row=0, column=2)
+
+
         window = tk.Tk()
         window.wm_title("Statistic")
         frame = tk.Frame(window)
-        input_name = tk.Label(window, text='Attribute')
-        input_name.grid(row=0, column=1)
-        input_entry = tk.Entry(window)
-        input_entry.grid(row=0, column=1)
-        # frame.pack(side="top", fill="both", expand=True)
-        # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
-        B1 = tk.Button(window, text="Stat pls", command=lambda: [self.call_statistic_window(input_entry.get()),
+        input_name = tk.Label(window, text="Choose Attribute")
+        input_name.grid(row=0, column=1, padx=10, pady=5)
+
+        tkVar = StringVar(window)
+        edge_att = self.gui_support.edge_attributes("statistic")
+        tkVar.set(edge_att[0])
+
+        inputentry = OptionMenu(window, tkVar, *edge_att)
+        inputentry.grid(row=0, column=2, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+        B1 = tk.Button(window, text="Stat pls", command=lambda: [self.call_statistic_window(tkVar.get()),
                                                                  window.destroy()])
-        B1.grid(row=0, column=2)
+        B1.grid(row=0, column=3, padx=10, pady=5)
 
     def call_statistic_window(self, att):
         from Statistic import Statistic
