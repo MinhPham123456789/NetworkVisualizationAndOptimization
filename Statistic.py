@@ -21,10 +21,62 @@ class Statistic(tk.Frame):
         p.bar(y_pos, statistic_dictionary.values(), align='center', alpha=0.5)
         p.set_xticks(y_pos)
         p.set_xticklabels(statistic_dictionary.keys())
-        p.set_ylabel('Occurrences', fontsize=15)
+        p.set_ylabel('Number of edges', fontsize=15)
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
         canvas.show()
+
+class Statistic2(tk.Frame):
+    def __init__(self, parent, controller, stat, attribute):
+        tk.Frame.__init__(self, parent)
+        self.bins = 10
+        fig = Figure(figsize=(8, 4.5), dpi=200)
+        ax = fig.add_subplot(111)
+        self.p = fig.gca()
+
+        self.statistic_dictionary = collections.Counter(x if x else "None" for x in stat)
+        self.statistic_dictionary = collections.OrderedDict(self.statistic_dictionary)
+        print(self.statistic_dictionary.keys())
+        # print(statistic_dictionary.values())
+        # print(statistic_dictionary)
+        y_pos = np.arange(len(self.statistic_dictionary.keys()))  # Arrange bar position
+        self.p.bar(y_pos, self.statistic_dictionary.values(), align='center', alpha=0.5)
+        self.p.set_xticks(y_pos)
+        self.p.set_xticklabels(self.statistic_dictionary.keys())
+        self.p.set_ylabel('Number of edges', fontsize=15)
+
+        # p.hist(stat,bins =50,range=[0, 2])
+        # p.set_xlabel('{}'.format(attribute), fontsize=15)
+        # p.set_ylabel('Frequency', fontsize=15)
+        canvas = FigureCanvasTkAgg(fig, parent)
+        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+        toolbar = NavigationToolbar2TkAgg(canvas, parent)
+        toolbar.update()
+        canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
+        canvas.show()
+
+    def update(self, stat):
+        self.statistic_dictionary = collections.Counter(x if x else "None" for x in stat)
+
+        # print(statistic_dictionary.keys())
+        # print(statistic_dictionary.values())
+        # print(statistic_dictionary)
+        y_pos = np.arange(len(self.statistic_dictionary.keys()))  # Arrange bar position
+        self.p.bar(y_pos, self.statistic_dictionary.values(), align='center', alpha=0.5)
+        self.p.set_xticks(y_pos)
+        self.p.set_xticklabels(self.statistic_dictionary.keys())
+
+        # mv = smean.val
+        # stdv = sstd.val
+        # n_sample = round(sn.val)
+        # nd = np.random.normal(loc=mv, scale=stdv, size=n_sample)
+        # # Redraw histogram
+        # ax.cla()
+        # ax.hist(nd, normed=True, bins=n_bins0, alpha=0.5)
+        # plt.draw()
+
+    # def reset(self, event):
+    #     bins.reset()

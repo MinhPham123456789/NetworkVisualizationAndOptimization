@@ -220,7 +220,6 @@ class GUI_support():
                 edge_index_list.append(i)
         self.gui.drawTk.recolor_edge_current()
         self.gui.drawTk.recolor_edge_index_list(edge_index_list, self.gui.mg, "#a02aa9")
-        pass
 
     def group_vertex(self, value):
         att_name = str(value)
