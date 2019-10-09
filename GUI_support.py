@@ -463,22 +463,33 @@ class GUI_support():
             self.maplocate.get_map()
             print("//----GUI Support func openmap()-----")
 
-    def vertex_attributes(self):
+    def vertex_attributes(self, func: str):
         vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
         att_filter = AttFilter(vertex_att_list, True)
-        att_list = att_filter.filter()
+        if func == "group":
+            att_list = att_filter.filter()
+        elif func == "text box":
+            att_list = att_filter.filter_textbox()
+        elif func == "search":
+            att_list = att_filter.filter_search()
         return att_list
 
-    def edge_attributes(self):
+    def edge_attributes(self, func: str):
         edge_att_list = list(self.gui.mg.edge[0].properties.keys())
         att_filter = AttFilter(edge_att_list, False)
-        att_list = att_filter.filter()
+        if func == "width":
+            att_list = att_filter.filter_width()
+        elif func == "color":
+            att_list = att_filter.filter()
+        elif func == "search":
+            att_list = att_filter.filter_search()
+        elif func == "statistic":
+            att_list = att_filter.filter_statistic()
         return att_list
 
     def vertex_attributes_nofilter(self):
         vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
         return vertex_att_list
-
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]

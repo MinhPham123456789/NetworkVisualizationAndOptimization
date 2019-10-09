@@ -41,8 +41,6 @@ class AttFilter:
     def edge_filter(self):
         if "edge_color" in self.att_list:
             self.att_list.remove("edge_color")
-        if "LinkSpeedUnit" in self.att_list:
-                self.att_list.remove("LinkSpeedUnit")
         if "edge_width" in self.att_list:
                 self.att_list.remove("edge_width")
         if "key" in self.att_list:
@@ -51,3 +49,75 @@ class AttFilter:
                 self.att_list.remove("zorder")
         if "color" in self.att_list:
                 self.att_list.remove("color")
+        if "width" in self.att_list:
+                self.att_list.remove("width")
+
+    def filter_search(self):
+        if self.is_vertex:
+            self.vertex_filter()
+            self.att_list.append("id")
+        else:
+            self.edge_filter()
+            if "weight" in self.att_list:
+                self.att_list.remove("weight")
+        return self.att_list
+
+    def filter_textbox(self):
+        if self.is_vertex:
+            if "color" in self.att_list:
+                self.att_list.remove("color")
+            if "vertex_size" in self.att_list:
+                self.att_list.remove("vertex_size")
+        else:
+            pass
+        return self.att_list
+
+    def filter_width(self):
+        if self.is_vertex:
+            pass
+        else:
+            self.filter()
+            if "LinkType" in self.att_list:
+                self.att_list.remove("LinkType")
+            if "LinkNote" in self.att_list:
+                self.att_list.remove("LinkNote")
+            if "LinkSpeedUnits" in self.att_list:
+                self.att_list.remove("LinkSpeedUnits")
+            if "label" in self.att_list:
+                self.att_list.remove("label")
+            if "LinkLabel" in self.att_list:
+                self.att_list.remove("LinkLabel")
+        return self.att_list
+
+    def filter_statistic(self):
+        if self.is_vertex:
+            pass
+        else:
+            self.stat_filter()
+        return self.att_list
+
+    def stat_filter(self):
+        if "weight" in self.att_list:
+            self.att_list.remove("weight")
+        if "LinkSpeedRaw" in self.att_list:
+            self.att_list.remove("LinkSpeedRaw")
+        if "bufferDelay" in self.att_list:
+            self.att_list.remove("bufferDelay")
+        if "tranmissionDelay" in self.att_list:
+            self.att_list.remove("tranmissionDelay")
+        if "propagationDelay" in self.att_list:
+            self.att_list.remove("propagationDelay")
+        if "source" in self.att_list:
+            self.att_list.remove("source")
+        if "target" in self.att_list:
+            self.att_list.remove("target")
+        if "edge_color" in self.att_list:
+            self.att_list.remove("edge_color")
+        if "edge_width" in self.att_list:
+            self.att_list.remove("edge_width")
+        if "key" in self.att_list:
+            self.att_list.remove("key")
+        if "zorder" in self.att_list:
+            self.att_list.remove("zorder")
+        if "color" in self.att_list:
+            self.att_list.remove("color")
