@@ -48,7 +48,6 @@ class GUI_support():
             NREN.vs["y"] = [i * (-1) for i in NREN.vs["Latitude"]]
             self.gui.mg.add_attribute_list("y", NREN.vs["y"], True)
 
-
         try:
             NREN["Network"]
             self.gui.mg.add_attribute("Network", NREN["Network"], True)
@@ -217,7 +216,7 @@ class GUI_support():
         print("bandwidth_list", bandwidth_list)
         edge_index_list = []
         for i in range(len(bandwidth_list)):
-            if float(throughput_list[i] / bandwidth_list[i]) > threshold_ratio:
+            if float(float(throughput_list[i]) / float(bandwidth_list[i])) > threshold_ratio:
                 edge_index_list.append(i)
         self.gui.drawTk.recolor_edge_current()
         self.gui.drawTk.recolor_edge_index_list(edge_index_list, self.gui.mg, "#a02aa9")
@@ -256,8 +255,12 @@ class GUI_support():
         self.search_vertex_list = vertex_obj_list
 
     def clear_search_vertex(self):
-        self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
-        self.search_vertex_list = []
+        try:
+            self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
+            self.search_vertex_list = []
+        except AttributeError:
+            self.gui.drawTk.search_vertex_outline([], 1, False)
+            self.search_vertex_list = []
 
     def search_edge(self, attribute, value):
         edge_obj_list = []
@@ -279,7 +282,7 @@ class GUI_support():
 
     def reset_edge_width(self):
         for edge in self.gui.mg.edge:
-            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=2)
 
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
@@ -377,6 +380,26 @@ class GUI_support():
 
     def reingold_tilford_circular(self):
         coords = self.gui.layout.reingold_tilford_circular_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def fruchterman_reingold(self):
+        coords = self.gui.layout.fruchterman_reingold_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def circle(self):
+        coords = self.gui.layout.circle_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def mds(self):
+        coords = self.gui.layout.mds_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def random_lay(self):
+        coords = self.gui.layout.random_layout()
         for i in range(len(coords)):
             self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
 

@@ -57,6 +57,14 @@ class Window(Frame):
                                 command=lambda: self.gui_support.start_graph())
         Layout_menu.add_command(label="reingold tilford circular",
                                 command=lambda: self.gui_support.reingold_tilford_circular())
+        Layout_menu.add_command(label="fruchterman reingold",
+                                command=lambda: self.gui_support.fruchterman_reingold())
+        Layout_menu.add_command(label="circle",
+                                command=lambda: self.gui_support.circle())
+        Layout_menu.add_command(label="mds",
+                                command=lambda: self.gui_support.mds())
+        Layout_menu.add_command(label="random",
+                                command=lambda: self.gui_support.random_lay())
 
         Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
 
@@ -251,38 +259,87 @@ class Window(Frame):
         scale.grid()
 
     def popup_search_vertex(self):
+        # popupBonusWindow = tk.Tk()
+        # popupBonusWindow.wm_title("Search vertex")
+        # input_att = tk.Label(popupBonusWindow, text="Attribute")
+        # input_att.grid()
+        # att_entry = tk.Entry(popupBonusWindow)
+        # att_entry.grid(row=0, column=1)
+
+        # B1 = tk.Button(popupBonusWindow, text="Okay",
+        #                command=lambda: self.gui_support.search_vertex(att_entry.get(), att_value_entry.get()))
+        # B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_vertex())
+        # B1.grid(row=2, column=1)
+        # B2.grid(row=3, column=1)
+
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Search vertex")
-        input_att = tk.Label(popupBonusWindow, text="Attribute")
-        input_att.grid()
-        att_entry = tk.Entry(popupBonusWindow)
-        att_entry.grid(row=0, column=1)
+
+        tkVar = StringVar(popupBonusWindow)
+        vertex_att = self.gui_support.vertex_attributes()
+        tkVar.set(vertex_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *vertex_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
         input_value = tk.Label(popupBonusWindow, text="Value")
         input_value.grid(row=1)
         att_value_entry = tk.Entry(popupBonusWindow)
-        att_value_entry.grid(row=1, column=1)
+        att_value_entry.grid(row=1, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
         B1 = tk.Button(popupBonusWindow, text="Okay",
-                       command=lambda: self.gui_support.search_vertex(att_entry.get(), att_value_entry.get()))
+                         command=lambda: [self.gui_support.clear_search_vertex(),
+                             self.gui_support.search_vertex(tkVar.get(), att_value_entry.get())])
+        B1.grid(row=2, column=0, pady=5)
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_vertex())
-        B1.grid(row=2, column=1)
-        B2.grid(row=3, column=1)
+        B2.grid(row=2, column=1, pady=5)
 
     def popup_search_edge(self):
+        # popupBonusWindow = tk.Tk()
+        # popupBonusWindow.wm_title("Search edge")
+        # input_att = tk.Label(popupBonusWindow, text="Attribute")
+        # input_att.grid()
+        # att_entry = tk.Entry(popupBonusWindow)
+        # att_entry.grid(row=0, column=1)
+
+        # B1 = tk.Button(popupBonusWindow, text="Okay",
+        #                command=lambda: self.gui_support.search_edge(att_entry.get(), att_value_entry.get()))
+        # B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_edge())
+        # B1.grid(row=2, column=1)
+        # B2.grid(row=3, column=1)
+
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Search edge")
-        input_att = tk.Label(popupBonusWindow, text="Attribute")
-        input_att.grid()
-        att_entry = tk.Entry(popupBonusWindow)
-        att_entry.grid(row=0, column=1)
+
+        tkVar = StringVar(popupBonusWindow)
+        edge_att = self.gui_support.edge_attributes()
+        tkVar.set(edge_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *edge_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
         input_value = tk.Label(popupBonusWindow, text="Value")
         input_value.grid(row=1)
         att_value_entry = tk.Entry(popupBonusWindow)
-        att_value_entry.grid(row=1, column=1)
+        att_value_entry.grid(row=1, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
         B1 = tk.Button(popupBonusWindow, text="Okay",
-                       command=lambda: self.gui_support.search_edge(att_entry.get(), att_value_entry.get()))
+                         command=lambda: self.gui_support.search_edge(tkVar.get(), att_value_entry.get()))
+        B1.grid(row=2, column=0, pady=5)
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_edge())
-        B1.grid(row=2, column=1)
-        B2.grid(row=3, column=1)
+        B2.grid(row=2, column=1, pady=5)
 
     def get_vertex_value(self, list_value):
         self.idnode_entry.delete(0, "end")

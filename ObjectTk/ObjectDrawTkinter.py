@@ -34,8 +34,8 @@ class ObjDrawTkinter:
 
     # Vertex utilities ################################################################################################
     def transform_to_oval_position(self, vertex: VertexObj, MG: ObjManager):
-        min_x = math.fabs(min(MG.get_all_attribute_value("x", True)))  # move the graph to all positive side
-        min_y = math.fabs(min(MG.get_all_attribute_value("y", True)))  # move the graph to all positive side
+        min_x = min(MG.get_all_attribute_value("x", True))  # move the graph to all positive side
+        min_y = min(MG.get_all_attribute_value("y", True))  # move the graph to all positive side
         x = vertex.get_attribute("x") + min_x + self.center \
             + vertex.get_attribute("vertex_size")  # if vertex has center 0,0 then the graph will move to adapt this
         y = vertex.get_attribute("y") + min_y + self.center + \
@@ -44,7 +44,7 @@ class ObjDrawTkinter:
         y1 = y - vertex.get_attribute("vertex_size")
         x2 = x + vertex.get_attribute("vertex_size")
         y2 = y + vertex.get_attribute("vertex_size")
-        # print(min_x,min_y)
+        print(min_x,min_y)
         # print(x1,y1,x2,y2)
         # x1, y1 = self.tk_frame.do_scale(x1, y1)
         # x2, y2 = self.tk_frame.do_scale(x2, y2)
@@ -141,10 +141,8 @@ class ObjDrawTkinter:
 
     # Edge utilities ##################################################################################################
     def transform_to_line_position(self, edge: EdgeObj, MG: ObjManager):
-        min_x = math.fabs(
-            min(MG.get_all_attribute_value("x", True))) + self.center  # move the graph to all positive side
-        min_y = math.fabs(
-            min(MG.get_all_attribute_value("y", True))) + self.center  # move the graph to all positive side
+        min_x = min(MG.get_all_attribute_value("x", True)) + self.center  # move the graph to all positive side
+        min_y = min(MG.get_all_attribute_value("y", True)) + self.center  # move the graph to all positive side
 
         begin = [MG.vertex[edge.get_attribute("source")].get_attribute("x") + min_x +
                  MG.vertex[edge.get_attribute("source")].get_attribute("vertex_size"),
@@ -190,37 +188,39 @@ class ObjDrawTkinter:
 
     # change return value
     def edge_color(self, edge_weight: str, MG: ObjManager):
-        print("----ObjectDrawTkinter----")
-        # if edge_weight == "delay":
-        #     weight_list = self.edge_color_by_delay(MG)
-        # else:
-        #     weight_list = list(map(float,MG.get_all_attribute_value(edge_weight, False)))
-        weight_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
-        color_list = []
-        maxweight = max(weight_list)
-        minweight = min(weight_list)
-        rangeweight = maxweight - minweight
-        onethird = rangeweight / 3
-        for i in range(len(MG.edge)):
-            if weight_list[i] < minweight + onethird:
-                percent = (weight_list[i] - minweight) / onethird
-                color = self.rgb_2_hex(0, 255, int(255 - 255 * percent))
-            elif weight_list[i] < minweight + onethird * 2:
-                percent = (weight_list[i] - minweight - onethird) / onethird
-                color = self.rgb_2_hex(int(255 * percent), 255, 0)
-            else:
-                percent = (weight_list[i] - minweight - onethird * 2) / onethird
-                color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
-            color_list.append(color)
-        MG.change_attribute_value_list("color", color_list, False)
-        print("//----ObjectDrawTkinter----")
-        threshold1 = float("{0:.2f}".format(onethird + minweight))
-        threshold2 = float("{0:.2f}".format(onethird * 2 + minweight))
-        threshold3 = float("{0:.2f}".format(onethird * 3 + minweight))
-        color_dict = {threshold1: [self.rgb_2_hex(0, 255, 255), self.rgb_2_hex(0, 255, 0)],
-                      threshold2: [self.rgb_2_hex(0, 255, 0), self.rgb_2_hex(255, 255, 0)],
-                      threshold3: [self.rgb_2_hex(255, 255, 0), self.rgb_2_hex(255, 0, 0)]}
-        return [color_dict, color_list]
+        print("----ObjectDrawTkinter.edge_color()----")
+        try:
+            weight_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
+        except ValueError:
+            weight_list = list(map(str, MG.get_all_attribute_value(edge_weight, False)))
+        if isinstance(weight_list[0], str):
+            tuple = self.edge_color_str(weight_list, MG)
+            print("//----ObjectDrawTkinter.edge_color----")
+            return tuple
+        else:
+            color_list = []
+            maxweight = max(weight_list)
+            minweight = min(weight_list)
+            rangeweight = maxweight - minweight
+            onethird = rangeweight / 3
+            for i in range(len(MG.edge)):
+                if weight_list[i] < minweight + onethird:
+                    percent = (weight_list[i] - minweight) / onethird
+                    color = self.rgb_2_hex(0, 255, int(255 - 255 * percent))
+                elif weight_list[i] < minweight + onethird * 2:
+                    percent = (weight_list[i] - minweight - onethird) / onethird
+                    color = self.rgb_2_hex(int(255 * percent), 255, 0)
+                else:
+                    percent = (weight_list[i] - minweight - onethird * 2) / onethird
+                    color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
+                color_list.append(color)
+            MG.change_attribute_value_list("color", color_list, False)
+            print("//----ObjectDrawTkinter.edge_color----")
+            threshold1 = float("{0:.2f}".format(onethird + minweight))
+            threshold2 = float("{0:.2f}".format(onethird*2 + minweight))
+            threshold3 = float("{0:.2f}".format(onethird*3 + minweight))
+            color_dict = {threshold1:[self.rgb_2_hex(0,255,255),self.rgb_2_hex(0,255,0)],threshold2:[self.rgb_2_hex(0,255,0),self.rgb_2_hex(255,255,0)],threshold3:[self.rgb_2_hex(255,255,0),self.rgb_2_hex(255,0,0)]}
+            return [color_dict, color_list]
 
     def edge_color_by_delay(self, MG: ObjManager):
         delay_list = []
@@ -265,3 +265,19 @@ class ObjDrawTkinter:
                                                  width=2)
         self.add_items_table(self.mg.edge)
         return self.tk_frame
+
+    def edge_color_str(self, weight_list, MG):
+        color_dict = {}
+        uniq_weight_list = np.unique(weight_list)
+        print(len(uniq_weight_list))
+        red = np.random.randint(255, size=len(uniq_weight_list))
+        green = np.random.randint(255, size=len(uniq_weight_list))
+        blue = np.random.randint(255, size=len(uniq_weight_list))
+        for i in range(len(uniq_weight_list)):
+            color = self.rgb_2_hex(red[i], green[i], blue[i])
+            color_dict.update({uniq_weight_list[i]: color})
+        new_color = []
+        for key in weight_list:
+            new_color.append(color_dict[key])
+        MG.change_attribute_value_list("color", new_color, True)
+        return [color_dict, new_color]
