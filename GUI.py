@@ -4,7 +4,7 @@ from ObjectTk.ObjectManager import *
 from ObjectTk.ObjectDrawTkinter import *
 import tkinter as tk
 
-from Statistic import Statistic2
+from Statistic import Statistic2, StatisticPie2
 from ZoomAndDrag import *
 from igraphNewModules import *
 from DragObject import *
@@ -465,8 +465,19 @@ class Window(Frame):
                                                                                         float(
                                                                                             input_throughput_threshold.get()))])
         threshold_button.grid(row=1, column=2)
-        B2 = tk.Button(popup_bonus_window, text="Statistic", command=lambda: self.callstatthroughput(int(spin_box_1.get())))
-        B2.grid(row=2, column=2)
+
+        tkVar = StringVar(popup_bonus_window)
+        edge_att = ["Pie Chart", "Bar Chart"]
+        tkVar.set("Stat")
+
+        input_stat = OptionMenu(popup_bonus_window, tkVar, *edge_att)
+        input_stat.grid(row=2, column=2)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.callstatthroughput(int(spin_box_1.get()), tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
         # TODO clear when close
 
     def popup_geo_window(self):
@@ -516,7 +527,7 @@ class Window(Frame):
         from Statistic import StatisticPie
         StatisticPie(self.mg.get_all_attribute_value(att, False), att)
 
-    def callstatthroughput(self, hour):
+    def callstatthroughput(self, hour, chart):
         from ThroughputInformation import get_throughput_information
         from Statistic import Statistic2
         import numpy as np
@@ -530,7 +541,10 @@ class Window(Frame):
         window.wm_title("Statistic")
         frame = tk.Frame(window)
         frame.pack(side="top", fill="both", expand=True)
-        Statistic2(frame, window, edgelist, 'something', hour)
+        if chart == "Pie Chart":
+            StatisticPie2(edgelist, 'something', hour)
+        elif chart == "Bar Chart":
+            Statistic2(window, frame, edgelist, 'something', hour)
 
     # def popup_statistic_throughput(self):
     #     window = tk.Tk()
