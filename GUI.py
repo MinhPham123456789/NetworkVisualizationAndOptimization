@@ -475,7 +475,7 @@ class Window(Frame):
 
         def change_dropdown(*args):
             print(tkVar.get())
-            self.callstatthroughput(int(spin_box_1.get()), tkVar.get())
+            self.call_statistic_throughput(int(spin_box_1.get()), tkVar.get())
 
         tkVar.trace('w', change_dropdown)
         # TODO clear when close
@@ -527,7 +527,7 @@ class Window(Frame):
         from Statistic import StatisticPie
         StatisticPie(self.mg.get_all_attribute_value(att, False), att)
 
-    def callstatthroughput(self, hour, chart):
+    def call_statistic_throughput(self, hour, chart):
         from ThroughputInformation import get_throughput_information
         from Statistic import Statistic2
         import numpy as np
@@ -542,19 +542,6 @@ class Window(Frame):
         frame = tk.Frame(window)
         frame.pack(side="top", fill="both", expand=True)
         if chart == "Pie Chart":
-            StatisticPie2(edgelist, 'something', hour)
+            StatisticPie2(window, edgelist, 'something', hour)
         elif chart == "Bar Chart":
             Statistic2(window, frame, edgelist, 'something', hour)
-
-    # def popup_statistic_throughput(self):
-    #     window = tk.Tk()
-    #     window.wm_title("Statistic")
-    #     frame = tk.Frame(window)
-    #     input_name = tk.Label(window, text='Hour')
-    #     input_name.grid(row=0, column=1)
-    #     input_entry = tk.Entry(window)
-    #     input_entry.grid(row=0, column=1)
-    #     # frame.pack(side="top", fill="both", expand=True)
-    #     # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
-    #     B2 = tk.Button(window, text="Stat pls", command=lambda: self.callstatthroughput(int(input_entry.get())))
-    #     B2.grid(row=0, column=2)
