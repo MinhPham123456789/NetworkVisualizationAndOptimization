@@ -40,69 +40,11 @@ class Note():
         title_label = Label(self.frame, text = "Attribute: " + self.attribute)
         title_label.grid(row = 0, column = 0)
         if self.title == "edge_color":
-            Note.note_edge_color = self.attribute
-            i = 0
-            previous = None
-            for key in self.dict:
-                if i==0:
-                    key_label = Label(self.frame, text = "att < " + str(key) )
-                    previous = key
-                    i+=1
-                else:
-                    key_label = Label(self.frame, text = str(previous) + " < att <= " + str(key))
-                    previous = key
-
-                key_label1 = Label(self.frame,text = "from")
-                key_label2 = Label(self.frame, text = "to")
-                key_entry1 = Label(self.frame, bg = self.dict[key][0],padx=5)
-                key_entry2 = Label(self.frame,bg = self.dict[key][1],padx=5)
-
-                key_label.grid(row=self.ykey, column=self.xkey)
-                key_label1.grid(row=self.ykey, column=self.xkey+1)
-                key_entry1.grid(row=self.ykey, column=self.xkey+2)
-                key_label2.grid(row=self.ykey, column=self.xkey+3)
-                key_entry2.grid(row=self.ykey, column=self.xkey+4)
-
-                # key_label.place(x=self.xkey,y=self.ykey)
-                # key_label1.place(x=self.xkey+160,y=self.ykey)
-                # key_label2.place(x=self.xkey+220,y=self.ykey)
-                # key_entry1.place(x=self.xkey+200,y=self.ykey)
-                # key_entry2.place(x=self.xkey+250,y=self.ykey)
-                self.ykey +=1
-            # self.frame.config(height=self.ykey+30,width=400)
-            return
+            self.generate_edge_color()
         if self.title == "edge_width":
-            Note.note_edge_width = self.attribute
-            i = 0
-            previous = None
-            for key in self.dict:
-                if i == 0:
-                    key_label = Label(self.frame, text="att < " + str(key))
-                    previous = key
-                    i += 1
-                else:
-                    key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
-                    previous = key
-
-                key_label1 = Label(self.frame,text = "line width = " + str(self.dict[key]))
-
-                key_label.grid(row=self.ykey, column=self.xkey)
-                key_label1.grid(row=self.ykey, column=self.xkey + 1)
-
-                # key_label.place(x=self.xkey, y=self.ykey)
-                # key_label1.place(x=self.xkey+160,y= self.ykey)
-                self.ykey += 1
-                self.list_key.append(key_label)
-                # self.frame.config(height=self.ykey+30,width=400)
+            self.generate_edge_width()
         if self.title == "group_vertex":
-            Note.note_vertex_color = self.attribute
-            for key in self.dict:
-                key_label = Label(self.frame, text = "att = " + str(key))
-                key_entry = Label(self.frame, bg = self.dict[key],padx=5)
-
-                key_label.grid(row=self.ykey, column=self.xkey)
-                key_entry.grid(row=self.ykey, column=self.xkey+1)
-                self.ykey += 1
+            self.generate_vertex_color()
 
     def regenerate(self,note_dict,attribute):
         self.dict = note_dict
@@ -123,3 +65,67 @@ class Note():
        Note.y -= 90 # (self.ykey + 30)
        print(Note.y)
 
+    def generate_vertex_color(self):
+        Note.note_vertex_color = self.attribute
+        for key in self.dict:
+            key_label = Label(self.frame, text="att = " + str(key))
+            key_entry = Label(self.frame, bg=self.dict[key], padx=5)
+
+            key_label.grid(row=self.ykey, column=self.xkey)
+            key_entry.grid(row=self.ykey, column=self.xkey + 1)
+            self.ykey += 1
+
+    def generate_edge_width(self):
+        Note.note_edge_width = self.attribute
+        i = 0
+        previous = None
+        for key in self.dict:
+            if i == 0:
+                key_label = Label(self.frame, text="att < " + str(key))
+                previous = key
+                i += 1
+            else:
+                key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
+                previous = key
+            key_label1 = Label(self.frame, text="line width = " + str(self.dict[key]))
+
+            key_label.grid(row=self.ykey, column=self.xkey)
+            key_label1.grid(row=self.ykey, column=self.xkey + 1)
+
+            self.ykey += 1
+            self.list_key.append(key_label)
+
+    def generate_edge_color(self):
+        Note.note_edge_color = self.attribute
+        i = 0
+        previous = None
+        keys = list(self.dict.keys())[0]
+        if isinstance(keys, float):
+            for key in self.dict:
+                if i == 0:
+                    key_label = Label(self.frame, text="att < " + str(key))
+                    previous = key
+                    i += 1
+                else:
+                    key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
+                    previous = key
+
+                key_label1 = Label(self.frame, text="from")
+                key_label2 = Label(self.frame, text="to")
+                key_entry1 = Label(self.frame, bg=self.dict[key][0], padx=5)
+                key_entry2 = Label(self.frame, bg=self.dict[key][1], padx=5)
+
+                key_label.grid(row=self.ykey, column=self.xkey)
+                key_label1.grid(row=self.ykey, column=self.xkey + 1)
+                key_entry1.grid(row=self.ykey, column=self.xkey + 2)
+                key_label2.grid(row=self.ykey, column=self.xkey + 3)
+                key_entry2.grid(row=self.ykey, column=self.xkey + 4)
+                self.ykey += 1
+        elif isinstance(keys, str):
+            for key in self.dict:
+                key_label = Label(self.frame, text="att = " + str(key))
+                key_value = Label(self.frame, bg=self.dict[key], padx=5)
+
+                key_label.grid(row=self.ykey, column=self.xkey)
+                key_value.grid(row=self.ykey, column=self.xkey+1)
+                self.ykey += 1
