@@ -48,7 +48,7 @@ class Window(Frame):
 
         Vertex_highlight.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
         Vertex_highlight.add_command(label="vertex_text_box", command=lambda: self.popup_vertex_text())
-        Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
+        # Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
 
         Edge_highlight.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
         Edge_highlight.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
@@ -197,6 +197,16 @@ class Window(Frame):
 
         # x=15, y=600 #########################################
 
+        # Vertex size bar x=10, y=680 #####################################
+        input_name = tk.Label(self, text="Vertex size")
+        input_name.place(x=10, y=680)
+        scale = tk.Scale(self, orient='horizontal', from_=0, to=10,
+                         length=160,
+                         command=lambda x: self.gui_support.set_vertex_size(scale.get()))
+        scale.place(x=100, y=660)
+
+        # x=100, y=680 ##############################################
+
     def popup_group_vertex(self):
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Vertex color")
@@ -256,7 +266,7 @@ class Window(Frame):
         scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=10,
                          length=100,
                          command=lambda x: self.gui_support.set_vertex_size(scale.get()))
-        scale.grid()
+        scale.place(x=10, y=10)
 
     def popup_search_vertex(self):
         # popupBonusWindow = tk.Tk()
@@ -336,7 +346,8 @@ class Window(Frame):
 
         tkVar.trace('w', change_dropdown)
         B1 = tk.Button(popupBonusWindow, text="Okay",
-                         command=lambda: self.gui_support.search_edge(tkVar.get(), att_value_entry.get()))
+                         command=lambda: [self.gui_support.clear_search_edge()
+                             ,self.gui_support.search_edge(tkVar.get(), att_value_entry.get())])
         B1.grid(row=2, column=0, pady=5)
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_edge())
         B2.grid(row=2, column=1, pady=5)

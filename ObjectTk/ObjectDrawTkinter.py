@@ -34,8 +34,8 @@ class ObjDrawTkinter:
 
     # Vertex utilities ################################################################################################
     def transform_to_oval_position(self, vertex: VertexObj, MG: ObjManager):
-        min_x = min(MG.get_all_attribute_value("x", True))  # move the graph to all positive side
-        min_y = min(MG.get_all_attribute_value("y", True))  # move the graph to all positive side
+        min_x = math.fabs(min(MG.get_all_attribute_value("x", True)))  # move the graph to all positive side
+        min_y = math.fabs(min(MG.get_all_attribute_value("y", True)))  # move the graph to all positive side
         x = vertex.get_attribute("x") + min_x + self.center \
             + vertex.get_attribute("vertex_size")  # if vertex has center 0,0 then the graph will move to adapt this
         y = vertex.get_attribute("y") + min_y + self.center + \
@@ -44,7 +44,7 @@ class ObjDrawTkinter:
         y1 = y - vertex.get_attribute("vertex_size")
         x2 = x + vertex.get_attribute("vertex_size")
         y2 = y + vertex.get_attribute("vertex_size")
-        print(min_x,min_y)
+        # print(min_x,min_y)
         # print(x1,y1,x2,y2)
         # x1, y1 = self.tk_frame.do_scale(x1, y1)
         # x2, y2 = self.tk_frame.do_scale(x2, y2)
@@ -126,7 +126,7 @@ class ObjDrawTkinter:
     def search_vertex_outline(self, vertex_obj_list, width_value, check_search):
         for vertex in vertex_obj_list:
             if check_search:
-                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="white")
+                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="pink")
             else:
                 self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="black")
 
@@ -141,8 +141,8 @@ class ObjDrawTkinter:
 
     # Edge utilities ##################################################################################################
     def transform_to_line_position(self, edge: EdgeObj, MG: ObjManager):
-        min_x = min(MG.get_all_attribute_value("x", True)) + self.center  # move the graph to all positive side
-        min_y = min(MG.get_all_attribute_value("y", True)) + self.center  # move the graph to all positive side
+        min_x = math.fabs(min(MG.get_all_attribute_value("x", True))) + self.center  # move the graph to all positive side
+        min_y = math.fabs(min(MG.get_all_attribute_value("y", True))) + self.center  # move the graph to all positive side
 
         begin = [MG.vertex[edge.get_attribute("source")].get_attribute("x") + min_x +
                  MG.vertex[edge.get_attribute("source")].get_attribute("vertex_size"),
@@ -239,7 +239,7 @@ class ObjDrawTkinter:
             if check_search:
                 color_memory.append(self.tk_frame.canvas.itemcget(self.items_table[edge], "fill"))
                 width_memory.append(self.tk_frame.canvas.itemcget(self.items_table[edge], "width"))
-                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4,4), width=9, fill="black")
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4,4), width=9, fill="pink")
             else:
                 self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(),
                                                    fill=self.color_memory[count],
