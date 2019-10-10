@@ -75,6 +75,13 @@ class ObjDrawTkinter:
             mg.vertex[i].set_attribute("color", color)
             self.tk_frame.canvas.itemconfigure(self.items_table[mg.vertex[i]], fill=color)
 
+    # handle the clicked node
+    def visual_clicked_node(self, vertex_obj):
+        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width = 6, outline = "white")
+
+    def free_clicked_node(self, vertex_obj):
+        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width = 1, outline = "")
+
     def resize_vertex(self, vertex_obj, radius):
         x1, y1, x2, y2 = self.tk_frame.canvas.coords(self.items_table[vertex_obj])
         x = (x1 + x2) / 2

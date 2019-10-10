@@ -20,6 +20,7 @@ class MouseMover():
         self.gui_support = gui_support
         self.last_pos = []
         self.new_pos = []
+        self.past_note = None
 
     def select(self, event):
         widget = event.widget  # Get handle to canvas
@@ -33,12 +34,21 @@ class MouseMover():
         print("Von:")
         print((xc, yc, self.item))
         self.last_pos = self.canvas.coords(self.item)
+
+        try: self.drawTk.free_clicked_node(self.drawTk.items_table.inverse[self.past_note])
+        except: pass
+
         if len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
             self.gui_support.get_vertex_value(self.item[0])
             self.gui_support.is_vertex = True
+            self.drawTk.visual_clicked_node(self.drawTk.items_table.inverse[self.item[0]])
+            self.past_note = self.item[0]
+
         elif len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
             self.gui_support.get_edge_value(self.item[0])
             self.gui_support.is_vertex = False
+
+
         # self.drawTk.set_weight_text_position(
         #     int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
         # vertex_obj = self.drawTk.items_table.inverse[self.item[0]]
