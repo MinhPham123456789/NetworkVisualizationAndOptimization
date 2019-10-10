@@ -468,7 +468,7 @@ class Window(Frame):
 
         tkVar = StringVar(popup_bonus_window)
         edge_att = ["Pie Chart", "Bar Chart"]
-        tkVar.set("Stat")
+        tkVar.set("Threshold statistic")
 
         input_stat = OptionMenu(popup_bonus_window, tkVar, *edge_att)
         input_stat.grid(row=2, column=2)
@@ -478,6 +478,22 @@ class Window(Frame):
             self.call_statistic_throughput(int(spin_box_1.get()), tkVar.get())
 
         tkVar.trace('w', change_dropdown)
+        #########
+        tkVar2 = StringVar(popup_bonus_window)
+        edge_att2 = ["Pie Chart", "Bar Chart"]
+        tkVar2.set("Label Statistic")
+
+        input_stat2 = OptionMenu(popup_bonus_window, tkVar2, *edge_att2)
+        input_stat2.grid(row=1, column=3)
+
+        def change_dropdown2(*args):
+            print(tkVar2.get())
+            self.call_statistic_throughput_label(int(spin_box_1.get()),
+                                                 float(input_throughput_threshold.get()), tkVar2.get())
+
+        tkVar2.trace('w', change_dropdown2)
+
+
         # TODO clear when close
 
     def popup_geo_window(self):
@@ -535,7 +551,10 @@ class Window(Frame):
         csv_table = get_throughput_information(self.gui_support.throughput)
         throughput_list = csv_table[hour].tolist()
         edgelink = self.mg.get_all_attribute_value('LinkSpeedRaw', False)
-        result = [i / j for i, j in zip(throughput_list, edgelink)]
+        # result = [i / j for i, j in zip(throughput_list, edgelink)]
+        result = []
+        for i in range(len(edgelink)):
+            result.append(float(throughput_list[i]) / float(edgelink[i]))
         edgelist = np.round(np.array(result), 1)
         print(edgelist)
         window.wm_title("Statistic")
@@ -545,3 +564,26 @@ class Window(Frame):
             StatisticPie2(window, edgelist, 'something', hour)
         elif chart == "Bar Chart":
             Statistic2(window, frame, edgelist, 'something', hour)
+
+    def call_statistic_throughput_label(self, hour, threshold, chart):
+        from ThroughputInformation import get_throughput_information
+        from Statistic import Statistic2, StatisticPie3, Statistic3
+        import numpy as np
+        window = tk.Tk()
+        csv_table = get_throughput_information(self.gui_support.throughput)
+        throughput_list = csv_table[hour].tolist()
+        edgelink = self.mg.get_all_attribute_value('LinkSpeedRaw', False)
+        # result = [i / j for i, j in zip(throughput_list, edgelink)]
+        result = []
+        for i in range(len(edgelink)):
+            result.append(float(throughput_list[i]) / float(edgelink[i]))
+        edgelist = np.round(np.array(result), 1)
+        print(edgelist)
+        window.wm_title("Statistic")
+        frame = tk.Frame(window)
+        frame.pack(side="top", fill="both", expand=True)
+        if chart == "Pie Chart":
+            StatisticPie3(window, edgelist, self.mg, hour, threshold)
+        elif chart == "Bar Chart":
+            Statistic3(window, edgelist, self.mg, hour, threshold)
+        pass

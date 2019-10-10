@@ -7,6 +7,7 @@ class VertexObj:
         if index is not None:
             for key in graph.vs[index].attribute_names():
                 properties_dict.update({key: graph.vs[index][key]})
+            properties_dict["id"] = graph.vs[index].index
         self.properties = properties_dict
 
     def get_attribute(self, attribute_name: str):
