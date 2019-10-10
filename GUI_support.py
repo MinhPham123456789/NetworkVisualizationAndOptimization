@@ -248,7 +248,8 @@ class GUI_support():
     def search_vertex(self, attribute, value):
         vertex_obj_list = []
         for vertex in self.gui.mg.vertex:
-            if vertex.get_attribute(attribute) == value:
+            # print(str(vertex.get_attribute(attribute)))
+            if str(vertex.get_attribute(attribute)) == value:
                 vertex_obj_list.append(vertex)
         self.gui.drawTk.search_vertex_outline(vertex_obj_list, 9, True)
         self.search_vertex_list = vertex_obj_list
@@ -264,7 +265,8 @@ class GUI_support():
     def search_edge(self, attribute, value):
         edge_obj_list = []
         for edge in self.gui.mg.edge:
-            if edge.get_attribute(attribute) == value:
+            # print(str(edge.get_attribute(attribute)))
+            if str(edge.get_attribute(attribute)) == value:
                 edge_obj_list.append(edge)
         self.gui.drawTk.search_edge_dash(edge_obj_list, True)
         self.search_edge_list = edge_obj_list

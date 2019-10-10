@@ -239,10 +239,9 @@ class ObjDrawTkinter:
             if check_search:
                 color_memory.append(self.tk_frame.canvas.itemcget(self.items_table[edge], "fill"))
                 width_memory.append(self.tk_frame.canvas.itemcget(self.items_table[edge], "width"))
-                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4,4), width=9, fill="pink")
+                self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(4, 4), width=9)
             else:
                 self.tk_frame.canvas.itemconfigure(self.items_table[edge], dash=(),
-                                                   fill=self.color_memory[count],
                                                    width=self.width_memory[count])
             count = count + 1
         self.color_memory = color_memory
