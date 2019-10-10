@@ -89,8 +89,9 @@ class GUI_support():
         self.gui.frame.canvas.bind("<Button-5>", zm.zoomOut)
 
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
-        self.gui.drawTk.load_vertices()
         self.gui.drawTk.load_edges()
+        self.gui.drawTk.load_vertices()
+
         self.gui.drawTk.load_vertex_text_weight("service_load")
         self.gui.drawTk.test()
         # self.note = Note(self.gui.master)
