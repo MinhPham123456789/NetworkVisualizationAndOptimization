@@ -466,6 +466,9 @@ class Window(Frame):
                                                                                             input_throughput_threshold.get()))])
         threshold_button.grid(row=1, column=2)
 
+        hour_label = Label(popup_bonus_window, text="Hour")
+        hour_label.grid(row=2, column=0)
+
         tkVar = StringVar(popup_bonus_window)
         edge_att = ["Pie Chart", "Bar Chart"]
         tkVar.set("Threshold statistic")

@@ -46,6 +46,7 @@ def random_value(min_point: float, max_point: float, size: int):
 if __name__ == "__main__":
     test = tk.Tk()
     test.attributes ("-zoomed", True)
+    test.wm_title("Netzwerkvisualisierung von TeamWhite - v1.0")
     # NREN = Graph.Read_GraphML("newNREN.graphml")
     # mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
     # imp_draw = ObjTkFrame(test)
