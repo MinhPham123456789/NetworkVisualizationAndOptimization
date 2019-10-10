@@ -278,5 +278,5 @@ class ObjDrawTkinter:
         new_color = []
         for key in weight_list:
             new_color.append(color_dict[key])
-        MG.change_attribute_value_list("color", new_color, True)
+        MG.change_attribute_value_list("color", new_color, False)
         return [color_dict, new_color]
