@@ -95,6 +95,8 @@ class GUI_support():
         self.gui.drawTk.test()
         # self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
+        # reset note & edge attributes
+        self.reset_attribute_value()
         #reset note
         self.reset_note_vertex()
         self.reset_note_edge()
@@ -175,6 +177,14 @@ class GUI_support():
         result_list: List[str] = [link_type, link_node, link_label, link_speed_raw, buffer_delay,
                                   transmission_delay, propagation_delay]
         self.gui.get_edge_value(result_list)
+
+    def reset_attribute_value(self):
+        ##reset edge
+        result_list: List[str] = ["","","","","","",""]
+        self.gui.get_edge_value(result_list)
+        ##reset node
+        result_list: List[str] = ["","","","","","","",""]
+        self.gui.get_vertex_value(result_list)
 
     def set_edge_value(self):
         if not self.is_vertex:
