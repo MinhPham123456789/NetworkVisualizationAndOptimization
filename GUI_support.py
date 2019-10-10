@@ -45,8 +45,8 @@ class GUI_support():
         try:
             NREN.vs["y"]
         except KeyError:
-            self.gui.mg.add_attribute_list("y", NREN.vs["Latitude"], True)
-            NREN.vs["y"] = NREN.vs["Latitude"]
+            NREN.vs["y"] = [i * (-1) for i in NREN.vs["Latitude"]]
+            self.gui.mg.add_attribute_list("y", NREN.vs["y"], True)
 
         try:
             NREN["Network"]
@@ -95,6 +95,8 @@ class GUI_support():
         self.gui.drawTk.test()
         # self.note = Note(self.gui.master)
         self.gui.frame.place(x=300, y=0)
+        # reset note & edge attributes
+        self.reset_attribute_value()
         #reset note
         self.reset_note_vertex()
         self.reset_note_edge()
@@ -176,6 +178,14 @@ class GUI_support():
                                   transmission_delay, propagation_delay]
         self.gui.get_edge_value(result_list)
 
+    def reset_attribute_value(self):
+        ##reset edge
+        result_list: List[str] = ["","","","","","",""]
+        self.gui.get_edge_value(result_list)
+        ##reset node
+        result_list: List[str] = ["","","","","","","",""]
+        self.gui.get_vertex_value(result_list)
+
     def set_edge_value(self):
         if not self.is_vertex:
             new_link_type = self.gui.link_type_entry.get()
@@ -216,11 +226,10 @@ class GUI_support():
         print("bandwidth_list", bandwidth_list)
         edge_index_list = []
         for i in range(len(bandwidth_list)):
-            if float(throughput_list[i] / bandwidth_list[i]) > threshold_ratio:
+            if float(float(throughput_list[i]) / float(bandwidth_list[i])) > threshold_ratio:
                 edge_index_list.append(i)
         self.gui.drawTk.recolor_edge_current()
         self.gui.drawTk.recolor_edge_index_list(edge_index_list, self.gui.mg, "#a02aa9")
-        pass
 
     def group_vertex(self, value):
         att_name = str(value)
@@ -246,6 +255,40 @@ class GUI_support():
     def set_vertex_size(self, radius):
         self.gui.drawTk.resize_vertex_list(radius)
 
+    def search_vertex(self, attribute, value):
+        vertex_obj_list = []
+        for vertex in self.gui.mg.vertex:
+            # print(str(vertex.get_attribute(attribute)))
+            if str(vertex.get_attribute(attribute)) == value:
+                vertex_obj_list.append(vertex)
+        self.gui.drawTk.search_vertex_outline(vertex_obj_list, 9, True)
+        self.search_vertex_list = vertex_obj_list
+
+    def clear_search_vertex(self):
+        try:
+            self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
+            self.search_vertex_list = []
+        except AttributeError:
+            self.gui.drawTk.search_vertex_outline([], 1, False)
+            self.search_vertex_list = []
+
+    def search_edge(self, attribute, value):
+        edge_obj_list = []
+        for edge in self.gui.mg.edge:
+            # print(str(edge.get_attribute(attribute)))
+            if str(edge.get_attribute(attribute)) == value:
+                edge_obj_list.append(edge)
+        self.gui.drawTk.search_edge_dash(edge_obj_list, True)
+        self.search_edge_list = edge_obj_list
+
+    def clear_search_edge(self):
+        try:
+            self.gui.drawTk.search_edge_dash(self.search_edge_list, False)
+            self.search_edge_list = []
+        except:
+            self.gui.drawTk.search_edge_dash([], False)
+            self.search_edge_list = []
+
     def reset_vertex_color(self):
         self.gui.drawTk.recolor_vertex_list(self.gui.mg.vertex, self.gui.mg, "red")
 
@@ -254,7 +297,7 @@ class GUI_support():
 
     def reset_edge_width(self):
         for edge in self.gui.mg.edge:
-            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=1)
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=2)
 
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
@@ -355,6 +398,26 @@ class GUI_support():
         for i in range(len(coords)):
             self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
 
+    def fruchterman_reingold(self):
+        coords = self.gui.layout.fruchterman_reingold_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def circle(self):
+        coords = self.gui.layout.circle_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def mds(self):
+        coords = self.gui.layout.mds_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
+    def random_lay(self):
+        coords = self.gui.layout.random_layout()
+        for i in range(len(coords)):
+            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+
     def change_position_instantly2(self, new_coord, vertex_obj):  # Use the new bidict
         source_list = []
         target_list = []
@@ -412,22 +475,33 @@ class GUI_support():
             self.maplocate.get_map()
             print("//----GUI Support func openmap()-----")
 
-    def vertex_attributes(self):
+    def vertex_attributes(self, func: str):
         vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
         att_filter = AttFilter(vertex_att_list, True)
-        att_list = att_filter.filter()
+        if func == "group":
+            att_list = att_filter.filter()
+        elif func == "text box":
+            att_list = att_filter.filter_textbox()
+        elif func == "search":
+            att_list = att_filter.filter_search()
         return att_list
 
-    def edge_attributes(self):
+    def edge_attributes(self, func: str):
         edge_att_list = list(self.gui.mg.edge[0].properties.keys())
         att_filter = AttFilter(edge_att_list, False)
-        att_list = att_filter.filter()
+        if func == "width":
+            att_list = att_filter.filter_width()
+        elif func == "color":
+            att_list = att_filter.filter()
+        elif func == "search":
+            att_list = att_filter.filter_search()
+        elif func == "statistic":
+            att_list = att_filter.filter_statistic()
         return att_list
 
     def vertex_attributes_nofilter(self):
         vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
         return vertex_att_list
-
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]

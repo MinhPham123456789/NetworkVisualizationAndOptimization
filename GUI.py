@@ -3,6 +3,8 @@ from igraph import *
 from ObjectTk.ObjectManager import *
 from ObjectTk.ObjectDrawTkinter import *
 import tkinter as tk
+
+from Statistic import Statistic2, StatisticPie2
 from ZoomAndDrag import *
 from igraphNewModules import *
 from DragObject import *
@@ -40,14 +42,15 @@ class Window(Frame):
         Edge_highlight = Menu(menu)
         Layout_menu = Menu(menu)
         Throughput = Menu(menu)
+        Search = Menu(menu)
 
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
-        File.add_command(label="refresh")
+        # File.add_command(label="refresh")
 
         Vertex_highlight.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
         Vertex_highlight.add_command(label="vertex_text_box", command=lambda: self.popup_vertex_text())
-        Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
+        # Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
 
         Edge_highlight.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
         Edge_highlight.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
@@ -56,14 +59,26 @@ class Window(Frame):
                                 command=lambda: self.gui_support.start_graph())
         Layout_menu.add_command(label="reingold tilford circular",
                                 command=lambda: self.gui_support.reingold_tilford_circular())
+        Layout_menu.add_command(label="fruchterman reingold",
+                                command=lambda: self.gui_support.fruchterman_reingold())
+        Layout_menu.add_command(label="circle",
+                                command=lambda: self.gui_support.circle())
+        Layout_menu.add_command(label="mds",
+                                command=lambda: self.gui_support.mds())
+        Layout_menu.add_command(label="random",
+                                command=lambda: self.gui_support.random_lay())
 
         Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
+
+        Search.add_command(label="Vertex", command= lambda: self.popup_search_vertex())
+        Search.add_command(label="Edge", command=lambda: self.popup_search_edge())
 
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
         menu.add_cascade(label="Edge Highlight", menu=Edge_highlight)
         menu.add_cascade(label="Layout", menu=Layout_menu)
         menu.add_cascade(label="Throughput", menu=Throughput)
+        menu.add_cascade(label="Search", menu=Search)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
 
@@ -184,12 +199,22 @@ class Window(Frame):
 
         # x=15, y=600 #########################################
 
+        # Vertex size bar x=10, y=680 #####################################
+        input_name = tk.Label(self, text="Vertex size")
+        input_name.place(x=10, y=680)
+        scale = tk.Scale(self, orient='horizontal', from_=0, to=10,
+                         length=160,
+                         command=lambda x: self.gui_support.set_vertex_size(scale.get()))
+        scale.place(x=100, y=660)
+
+        # x=100, y=680 ##############################################
+
     def popup_group_vertex(self):
         popupBonusWindow = tk.Tk()
         popupBonusWindow.wm_title("Vertex color")
 
         tkVar = StringVar(popupBonusWindow)
-        vertex_att = self.gui_support.vertex_attributes()
+        vertex_att = self.gui_support.vertex_attributes("group")
         tkVar.set(vertex_att[0])
 
         input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
@@ -219,7 +244,7 @@ class Window(Frame):
         popupBonusWindow.wm_title("Vertex text box")
 
         tkVar = StringVar(popupBonusWindow)
-        vertex_att = self.gui_support.vertex_attributes_nofilter()
+        vertex_att = self.gui_support.vertex_attributes("text box")
         tkVar.set(vertex_att[0])
 
         input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
@@ -240,10 +265,94 @@ class Window(Frame):
         popupBonusWindow.wm_title("Vertex size")
         input_name = tk.Label(popupBonusWindow, text="Radius")
         # input_name.grid()
-        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=2,
+        scale = tk.Scale(popupBonusWindow, orient='horizontal', from_=0, to=10,
                          length=100,
                          command=lambda x: self.gui_support.set_vertex_size(scale.get()))
-        scale.grid()
+        scale.place(x=10, y=10)
+
+    def popup_search_vertex(self):
+        # popupBonusWindow = tk.Tk()
+        # popupBonusWindow.wm_title("Search vertex")
+        # input_att = tk.Label(popupBonusWindow, text="Attribute")
+        # input_att.grid()
+        # att_entry = tk.Entry(popupBonusWindow)
+        # att_entry.grid(row=0, column=1)
+
+        # B1 = tk.Button(popupBonusWindow, text="Okay",
+        #                command=lambda: self.gui_support.search_vertex(att_entry.get(), att_value_entry.get()))
+        # B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_vertex())
+        # B1.grid(row=2, column=1)
+        # B2.grid(row=3, column=1)
+
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Search vertex")
+
+        tkVar = StringVar(popupBonusWindow)
+        vertex_att = self.gui_support.vertex_attributes("search")
+        tkVar.set(vertex_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *vertex_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        input_value = tk.Label(popupBonusWindow, text="Value")
+        input_value.grid(row=1)
+        att_value_entry = tk.Entry(popupBonusWindow)
+        att_value_entry.grid(row=1, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+        B1 = tk.Button(popupBonusWindow, text="Okay",
+                         command=lambda: [self.gui_support.clear_search_vertex(),
+                             self.gui_support.search_vertex(tkVar.get(), att_value_entry.get())])
+        B1.grid(row=2, column=0, pady=5)
+        B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_vertex())
+        B2.grid(row=2, column=1, pady=5)
+
+    def popup_search_edge(self):
+        # popupBonusWindow = tk.Tk()
+        # popupBonusWindow.wm_title("Search edge")
+        # input_att = tk.Label(popupBonusWindow, text="Attribute")
+        # input_att.grid()
+        # att_entry = tk.Entry(popupBonusWindow)
+        # att_entry.grid(row=0, column=1)
+
+        # B1 = tk.Button(popupBonusWindow, text="Okay",
+        #                command=lambda: self.gui_support.search_edge(att_entry.get(), att_value_entry.get()))
+        # B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_edge())
+        # B1.grid(row=2, column=1)
+        # B2.grid(row=3, column=1)
+
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Search edge")
+
+        tkVar = StringVar(popupBonusWindow)
+        edge_att = self.gui_support.edge_attributes("search")
+        tkVar.set(edge_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *edge_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        input_value = tk.Label(popupBonusWindow, text="Value")
+        input_value.grid(row=1)
+        att_value_entry = tk.Entry(popupBonusWindow)
+        att_value_entry.grid(row=1, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+        B1 = tk.Button(popupBonusWindow, text="Okay",
+                         command=lambda: [self.gui_support.clear_search_edge()
+                             ,self.gui_support.search_edge(tkVar.get(), att_value_entry.get())])
+        B1.grid(row=2, column=0, pady=5)
+        B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_edge())
+        B2.grid(row=2, column=1, pady=5)
 
     def get_vertex_value(self, list_value):
         self.idnode_entry.delete(0, "end")
@@ -289,7 +398,7 @@ class Window(Frame):
         input_name.grid(row=0, padx=10, pady=5)
 
         tkVar = StringVar(popup_bonus_window)
-        edge_att = self.gui_support.edge_attributes()
+        edge_att = self.gui_support.edge_attributes("width")
         tkVar.set(edge_att[0])
 
         def change_dropdown(*args):
@@ -309,7 +418,7 @@ class Window(Frame):
         input_name.grid(row=0, padx=10, pady=5)
 
         tkVar = StringVar(popup_window)
-        edge_att = self.gui_support.edge_attributes()
+        edge_att = self.gui_support.edge_attributes("color")
         tkVar.set(edge_att[0])
 
         inputentry = OptionMenu(popup_window, tkVar, *edge_att)
@@ -356,8 +465,36 @@ class Window(Frame):
                                                                                         float(
                                                                                             input_throughput_threshold.get()))])
         threshold_button.grid(row=1, column=2)
+
+        tkVar = StringVar(popup_bonus_window)
+        edge_att = ["Pie Chart", "Bar Chart"]
+        tkVar.set("Threshold statistic")
+
+        input_stat = OptionMenu(popup_bonus_window, tkVar, *edge_att)
+        input_stat.grid(row=2, column=2)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.call_statistic_throughput(int(spin_box_1.get()), tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+        #########
+        tkVar2 = StringVar(popup_bonus_window)
+        edge_att2 = ["Pie Chart", "Bar Chart"]
+        tkVar2.set("Label Statistic")
+
+        input_stat2 = OptionMenu(popup_bonus_window, tkVar2, *edge_att2)
+        input_stat2.grid(row=1, column=3)
+
+        def change_dropdown2(*args):
+            print(tkVar2.get())
+            self.call_statistic_throughput_label(int(spin_box_1.get()),
+                                                 float(input_throughput_threshold.get()), tkVar2.get())
+
+        tkVar2.trace('w', change_dropdown2)
+
+
         # TODO clear when close
-        # popup_bonus_window.protocol("WM_DELETE_WINDOW", print("hello"))
 
     def popup_geo_window(self):
         window = Toplevel(self.master)
@@ -367,17 +504,86 @@ class Window(Frame):
         GeoPage.GeoPage(frame, window, self.gui_support.graph_path)
 
     def popup_statistic(self):
-        from Statistic import Statistic
+        # window = tk.Tk()
+        # window.wm_title("Statistic")
+        # frame = tk.Frame(window)
+        # input_name = tk.Label(window, text='Attribute')
+        # input_name.grid(row=0, column=1)
+        # input_entry = tk.Entry(window)
+        # input_entry.grid(row=0, column=1)
+        # # frame.pack(side="top", fill="both", expand=True)
+        # # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
+        # B1 = tk.Button(window, text="Stat pls", command=lambda: [self.call_statistic_window(input_entry.get()),
+        #                                                          window.destroy()])
+        # B1.grid(row=0, column=2)
+
+
         window = tk.Tk()
         window.wm_title("Statistic")
         frame = tk.Frame(window)
-        input_name = tk.Label(window, text='Attribute')
-        input_name.grid(row=0, column=1)
-        input_entry = tk.Entry(window)
-        input_entry.grid(row=0, column=1)
-        # frame.pack(side="top", fill="both", expand=True)
-        # Statistic(frame, window, self.mg.get_all_attribute_value("LinkSpeedRaw",False),'LinkSpeedRaw')
-        B1 = tk.Button(window, text="Stat pls", command=lambda: Statistic(frame, window,
-                                                                            self.mg.get_all_attribute_value(
-                                                                                input_entry.get(), False), input_entry.get()))
-        B1.grid(row=0, column=2)
+        input_name = tk.Label(window, text="Choose Attribute")
+        input_name.grid(row=0, column=1, padx=10, pady=5)
+
+        tkVar = StringVar(window)
+        edge_att = self.gui_support.edge_attributes("statistic")
+        tkVar.set(edge_att[0])
+
+        inputentry = OptionMenu(window, tkVar, *edge_att)
+        inputentry.grid(row=0, column=2, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+        B1 = tk.Button(window, text="Statistic", command=lambda: [self.call_statistic_window(tkVar.get()),
+                                                                 window.destroy()])
+        B1.grid(row=0, column=3, padx=10, pady=5)
+
+    def call_statistic_window(self, att):
+        from Statistic import StatisticPie
+        StatisticPie(self.mg.get_all_attribute_value(att, False), att)
+
+    def call_statistic_throughput(self, hour, chart):
+        from ThroughputInformation import get_throughput_information
+        from Statistic import Statistic2
+        import numpy as np
+        window = tk.Tk()
+        csv_table = get_throughput_information(self.gui_support.throughput)
+        throughput_list = csv_table[hour].tolist()
+        edgelink = self.mg.get_all_attribute_value('LinkSpeedRaw', False)
+        # result = [i / j for i, j in zip(throughput_list, edgelink)]
+        result = []
+        for i in range(len(edgelink)):
+            result.append(float(throughput_list[i]) / float(edgelink[i]))
+        edgelist = np.round(np.array(result), 1)
+        print(edgelist)
+        window.wm_title("Statistic")
+        frame = tk.Frame(window)
+        frame.pack(side="top", fill="both", expand=True)
+        if chart == "Pie Chart":
+            StatisticPie2(window, edgelist, 'something', hour)
+        elif chart == "Bar Chart":
+            Statistic2(window, frame, edgelist, 'something', hour)
+
+    def call_statistic_throughput_label(self, hour, threshold, chart):
+        from ThroughputInformation import get_throughput_information
+        from Statistic import Statistic2, StatisticPie3, Statistic3
+        import numpy as np
+        window = tk.Tk()
+        csv_table = get_throughput_information(self.gui_support.throughput)
+        throughput_list = csv_table[hour].tolist()
+        edgelink = self.mg.get_all_attribute_value('LinkSpeedRaw', False)
+        # result = [i / j for i, j in zip(throughput_list, edgelink)]
+        result = []
+        for i in range(len(edgelink)):
+            result.append(float(throughput_list[i]) / float(edgelink[i]))
+        edgelist = np.round(np.array(result), 1)
+        print(edgelist)
+        window.wm_title("Statistic")
+        frame = tk.Frame(window)
+        frame.pack(side="top", fill="both", expand=True)
+        if chart == "Pie Chart":
+            StatisticPie3(window, edgelist, self.mg, hour, threshold)
+        elif chart == "Bar Chart":
+            Statistic3(window, edgelist, self.mg, hour, threshold)
+        pass
