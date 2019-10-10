@@ -126,6 +126,7 @@ class StatisticPie:
         plt.legend(patches, labels, loc="upper left")
         plt.axis('equal')
         plt.tight_layout()
+        plt.title("Group edges by {}".format(attribute))
         plt.show()
 
 
