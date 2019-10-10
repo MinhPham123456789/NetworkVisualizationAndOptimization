@@ -127,7 +127,7 @@ class ObjDrawTkinter:
     def search_vertex_outline(self, vertex_obj_list, width_value, check_search):
         for vertex in vertex_obj_list:
             if check_search:
-                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="pink")
+                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="#66fc09")
             else:
                 self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="black")
 
