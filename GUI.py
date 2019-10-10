@@ -535,7 +535,7 @@ class Window(Frame):
             print(tkVar.get())
 
         tkVar.trace('w', change_dropdown)
-        B1 = tk.Button(window, text="Stat pls", command=lambda: [self.call_statistic_window(tkVar.get()),
+        B1 = tk.Button(window, text="Statistic", command=lambda: [self.call_statistic_window(tkVar.get()),
                                                                  window.destroy()])
         B1.grid(row=0, column=3, padx=10, pady=5)
 
