@@ -65,7 +65,8 @@ class ObjDrawTkinter:
         print(color_dict)
         new_color = []
         for key in the_list:
-            new_color.append(color_dict[key])
+            # print(color_dict[str(key)], key)
+            new_color.append(color_dict[str(key)])
         MG.change_attribute_value_list("color", new_color, True)
         return [color_dict, new_color]
 
