@@ -70,6 +70,43 @@ class ObjDrawTkinter:
         MG.change_attribute_value_list("color", new_color, True)
         return [color_dict, new_color]
 
+    def group_vertex_color_gradient(self, vertex_weight: str, MG):
+        print("----ObjectDrawTkinter.edge_color()----")
+        try:
+            weight_list = list(map(float, MG.get_all_attribute_value(vertex_weight, True)))
+        except ValueError:
+            weight_list = list(map(str, MG.get_all_attribute_value(vertex_weight, True)))
+        if isinstance(weight_list[0], str):
+            tuple = self.edge_color_str(weight_list, MG)
+            print("//----ObjectDrawTkinter.edge_color----")
+            return tuple
+        else:
+            color_list = []
+            maxweight = max(weight_list)
+            minweight = min(weight_list)
+            rangeweight = maxweight - minweight
+            onethird = rangeweight / 3
+            for i in range(len(MG.vertex)):
+                if weight_list[i] < minweight + onethird:
+                    percent = (weight_list[i] - minweight) / onethird
+                    color = self.rgb_2_hex(0, 255, int(255 - 255 * percent))
+                elif weight_list[i] < minweight + onethird * 2:
+                    percent = (weight_list[i] - minweight - onethird) / onethird
+                    color = self.rgb_2_hex(int(255 * percent), 255, 0)
+                else:
+                    percent = (weight_list[i] - minweight - onethird * 2) / onethird
+                    color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
+                color_list.append(color)
+            MG.change_attribute_value_list("color", color_list, True)
+            print("//----ObjectDrawTkinter.edge_color----")
+            threshold1 = float("{0:.2f}".format(onethird + minweight))
+            threshold2 = float("{0:.2f}".format(onethird * 2 + minweight))
+            threshold3 = float("{0:.2f}".format(onethird * 3 + minweight))
+            color_dict = {threshold1: [self.rgb_2_hex(0, 255, 255), self.rgb_2_hex(0, 255, 0)],
+                          threshold2: [self.rgb_2_hex(0, 255, 0), self.rgb_2_hex(255, 255, 0)],
+                          threshold3: [self.rgb_2_hex(255, 255, 0), self.rgb_2_hex(255, 0, 0)]}
+            return [color_dict, color_list]
+
     def recolor_vertex_list(self, vertex_obj_list: list, mg: ObjManager, color: str):
         for i in range(len(vertex_obj_list)):
             mg.vertex[i].set_attribute("color", color)

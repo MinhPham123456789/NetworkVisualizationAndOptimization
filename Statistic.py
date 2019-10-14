@@ -68,33 +68,28 @@ class Statistic3(tk.Frame):
         self.p = fig.gca()
 
         stat_dict = {}
+        stat_dict_total = {}
         all_label = mg.get_all_attribute_value("LinkLabel", False)
         all_label = set(all_label)
         print(all_label)
         for u in all_label:
             stat_dict.update({u: 0})
+            stat_dict_total.update({u: 0})
         for i in range(len(stat)):
+            stat_dict_total[mg.edge[i].properties["LinkLabel"]] = stat_dict_total[mg.edge[i].properties["LinkLabel"]] + 1
             if stat[i] >= threshold:
                 stat_dict[mg.edge[i].properties["LinkLabel"]] = stat_dict[mg.edge[i].properties["LinkLabel"]] + 1
 
-        # self.statistic_dictionary = collections.Counter(x for x in stat if x < 1)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-        # self.statistic_dictionary = collections.OrderedDict(
-        #     sorted(self.statistic_dictionary.items(), key=lambda t: t[0]))
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-
         stat_dict = collections.OrderedDict(
             sorted(stat_dict.items(), key=lambda t: t[0]))
-        print(stat_dict)
+        stat_dict_total = collections.OrderedDict(
+            sorted(stat_dict_total.items(), key=lambda t: t[0]))
+        print("stat_dict", stat_dict)
+        print("stat_dict_total", stat_dict_total)
 
         y_pos = np.arange(len(stat_dict.keys()))  # Arrange bar position
+        y_pos_total = np.arange(len(stat_dict_total.keys())) + 0.09
+        self.p.bar(y_pos_total, stat_dict_total.values(), align='center', alpha=0.5, color="green")
         self.p.bar(y_pos, stat_dict.values(), align='center', alpha=0.5)
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(stat_dict.keys())
