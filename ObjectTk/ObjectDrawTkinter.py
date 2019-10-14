@@ -306,11 +306,12 @@ class ObjDrawTkinter:
     # create new vertex and add it to manager, items table, draw on canvas
     def add_new_vertex(self,xc,yc):
         new_vertex = VertexObj(None)
-        new_vertex.properties = self.mg.vertex[0].properties
-        new_vertex.add_attribute("id",len(self.mg.vertex))
+        print("Before add")
+        print("len mg.vertex",len(self.mg.vertex),"len items_table",len(self.items_table))
+        new_vertex.set_attribute("id",len(self.mg.vertex))
         self.mg.vertex.append(new_vertex)
         self.add_items_table([new_vertex])
-        print("x,y before create",xc,yc)
         self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")
-        print("x,y after create",xc,yc)
+        print("After add")
+        print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
         return new_vertex
