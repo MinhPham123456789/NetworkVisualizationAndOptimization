@@ -253,6 +253,34 @@ class GUI_support():
         self.list_note.append(note)
         note.display()
 
+    def show_vertex_centrality(self, att_name):
+        from ObjectTk.ObjCentrality import Centrality
+        cen_obj = Centrality(self.graph, self.gui.mg)
+        cen_obj.eigenvector_vertex_centrality(att_name)
+        self.vertex_color_gradient("centrality", att_name)
+        pass
+
+    def vertex_color_gradient(self, value, additional_information=""):    #TODO: separate note
+        attribute = str(value)
+        print("----GUI_support.edge_color()----")
+        result = self.gui.drawTk.group_vertex_color_gradient(attribute, self.gui.mg)
+        vertex_color_list = result[1]
+        for i in range(len(vertex_color_list)):
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=vertex_color_list[i])
+        print("//----GUI_support.edge_color()----")
+        note_dict = result[0]
+        for note in self.list_note:
+            if note.title == "edge_color":
+                self.list_note.remove(note)
+                self.update_note()
+                note.regenerate(note_dict,attribute + " " + additional_information)
+                note.display()
+                self.list_note.append(note)
+                return
+        note = Note(self.gui.master, note_dict, "edge_color",attribute + " " +additional_information)
+        self.list_note.append(note)
+        note.display()
+
     def set_vertex_size(self, radius):
         self.gui.drawTk.resize_vertex_list(radius)
 
@@ -344,6 +372,12 @@ class GUI_support():
             self.list_note.append(note2)
         self.update_note()
 
+    def show_edge_centrality(self, att_name):
+        from ObjectTk.ObjCentrality import Centrality
+        cen_obj = Centrality(self.graph, self.gui.mg)
+        cen_obj.edge_centrality(att_name)
+        self.edge_color("centrality", att_name)
+
     # kiet linkspeedraw:
     def edge_width(self, value):
         att_name = str(value)
@@ -368,7 +402,7 @@ class GUI_support():
         note.display()
 
     # thao          ##add note to function
-    def edge_color(self, value):
+    def edge_color(self, value, additional_information=""):
         attribute = str(value)
         print("----GUI_support.edge_color()----")
         result = self.gui.drawTk.edge_color(attribute, self.gui.mg)
@@ -381,11 +415,11 @@ class GUI_support():
             if note.title == "edge_color":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict,attribute)
+                note.regenerate(note_dict,attribute + " " + additional_information)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_color",attribute)
+        note = Note(self.gui.master, note_dict, "edge_color",attribute + " " + additional_information)
         self.list_note.append(note)
         note.display()
 
