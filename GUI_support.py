@@ -90,8 +90,9 @@ class GUI_support():
         self.gui.frame.canvas.bind("<Button-5>", self.zm.zoomOut)
 
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
-        self.gui.drawTk.load_vertices()
         self.gui.drawTk.load_edges()
+        self.gui.drawTk.load_vertices()
+
         self.gui.drawTk.load_vertex_text_weight("service_load")
         self.gui.drawTk.test()
         # self.note = Note(self.gui.master)
@@ -396,32 +397,32 @@ class GUI_support():
     def start_graph(self):
         coords = self.gui.layout.start_layout()
         for i in range(len(coords)):
-            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+            self.change_position_instantly2(coords[i], self.gui.mg.vertex[i])
 
     def reingold_tilford_circular(self):
         coords = self.gui.layout.reingold_tilford_circular_layout()
         for i in range(len(coords)):
-            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+            self.change_position_instantly2(coords[i], self.gui.mg.vertex[i])
 
     def fruchterman_reingold(self):
         coords = self.gui.layout.fruchterman_reingold_layout()
         for i in range(len(coords)):
-            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+            self.change_position_instantly2(coords[i], self.gui.mg.vertex[i])
 
     def circle(self):
         coords = self.gui.layout.circle_layout()
         for i in range(len(coords)):
-            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+            self.change_position_instantly2(coords[i], self.gui.mg.vertex[i])
 
     def mds(self):
         coords = self.gui.layout.mds_layout()
         for i in range(len(coords)):
-            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+            self.change_position_instantly2(coords[i], self.gui.mg.vertex[i])
 
     def random_lay(self):
         coords = self.gui.layout.random_layout()
         for i in range(len(coords)):
-            self.change_position_instantly2(coords[i], self.gui.drawTk.items_table.inverse[i + 1])
+            self.change_position_instantly2(coords[i], self.gui.mg.vertex[i])
 
     def change_position_instantly2(self, new_coord, vertex_obj):  # Use the new bidict
         source_list = []
@@ -436,7 +437,7 @@ class GUI_support():
         try:
             vertex_obj_index = int(vertex_obj.get_attribute("id")[1:])  # [1:] because id more than 1 digit
         except TypeError:
-            vertex_obj_index = int(vertex_obj.get_attribute("id"))
+            vertex_obj_index = int(str(vertex_obj.get_attribute("id")))
         print("vertex item:", vertex_obj_index)
         for edge in self.gui.mg.edge:
             if edge.get_attribute("source") == vertex_obj_index:

@@ -39,13 +39,13 @@ class GeoPage(tk.Frame):
             x2, y2 = g.vs[t]["Longitude"], g.vs[t]["Latitude"]
             x = m(x1, x2)
             y = m(y1, y2)
-            ax.plot(x, y, linewidth=0.8, color='cyan', linestyle='-', zorder=2)
+            ax.plot(x, y, linewidth=0.8, color='cyan', linestyle='-', zorder=1)
 
         for i in range(len(g.vs)):  # loop through every nodes
             lo, la = g.vs[i]["Longitude"], g.vs[i]["Latitude"]  # get x and y on i th node
             x, y = lo, la
-            ax.scatter(x, y, marker='.', color='orange', zorder=2)
-            ax.annotate(i, (x, y), size=3, ha='center', va='center')
+            ax.scatter(x, y, marker='o', color='orange', zorder=2)
+            ax.annotate(i, (x, y), size=7, ha='center', va='center')
 
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.show()

@@ -60,7 +60,7 @@ class ObjDrawTkinter:
         blue = np.random.randint(255, size=len(unique_list))
         for i in range(len(unique_list)):
             color = self.rgb_2_hex(red[i], green[i], blue[i])
-            color_dict.update({unique_list[i]: color})
+            color_dict.update({str(unique_list[i]): color})
         print("color_dict1")
         print(color_dict)
         new_color = []
@@ -111,7 +111,7 @@ class ObjDrawTkinter:
         items_table_list = []
         for index in range(len(self.mg.vertex)):
             position = self.set_weight_text_position(index, self.mg)
-            self.tk_frame.canvas.create_text(position, fill="green",
+            self.tk_frame.canvas.create_text(position, fill="#96ff33",
                                              text=str(self.mg.vertex[index].get_attribute(vertex_weight)),
                                              state="hidden")
             items_table_list.append("r" + str(index))
@@ -130,7 +130,7 @@ class ObjDrawTkinter:
 
         for vertex in vertex_obj_list:
             if check_search:
-                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="pink")
+                self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="#66fc09")
             else:
                 self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="black")
 

@@ -31,7 +31,7 @@ class Window(Frame):
         self.gui_support = GUI_support(self)
 
     def init_window(self):
-        self.master.title("GUI")
+        self.master.title("Netzwerkvisualisierung von TeamWhite - v1.0")
         self.pack(fill="both", expand=1)
         self.gui_frame.canvas = tk.Canvas(self, width=900, height=0, background="white")
         self.gui_frame.canvas.pack()
@@ -469,6 +469,9 @@ class Window(Frame):
                                                                                         float(
                                                                                             input_throughput_threshold.get()))])
         threshold_button.grid(row=1, column=2)
+
+        hour_label = Label(popup_bonus_window, text="Hour")
+        hour_label.grid(row=2, column=0)
 
         tkVar = StringVar(popup_bonus_window)
         edge_att = ["Pie Chart", "Bar Chart"]
