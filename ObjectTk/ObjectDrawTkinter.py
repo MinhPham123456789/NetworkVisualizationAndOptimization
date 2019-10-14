@@ -75,12 +75,6 @@ class ObjDrawTkinter:
             mg.vertex[i].set_attribute("color", color)
             self.tk_frame.canvas.itemconfigure(self.items_table[mg.vertex[i]], fill=color)
 
-    # handle the clicked node
-    def visual_clicked_node(self, vertex_obj):
-        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width = 6, outline = "white")
-
-    def free_clicked_node(self, vertex_obj):
-        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width = 1, outline = "")
 
     def resize_vertex(self, vertex_obj, radius):
         x1, y1, x2, y2 = self.tk_frame.canvas.coords(self.items_table[vertex_obj])
@@ -127,11 +121,13 @@ class ObjDrawTkinter:
         for index in range(len(self.mg.vertex)):
             text_index = "r" + str(index)
             text_item_index = self.items_table[text_index]
+            print(index, text_index, text_item_index)
             canvas.itemconfigure(text_item_index,
                                  text=str(self.mg.vertex[index].properties[vertex_weight]),
                                  state="normal")
 
     def search_vertex_outline(self, vertex_obj_list, width_value, check_search):
+
         for vertex in vertex_obj_list:
             if check_search:
                 self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="pink")
@@ -176,6 +172,22 @@ class ObjDrawTkinter:
         for one_edge in self.mg.edge:
             self.tk_frame.canvas.itemconfigure(self.items_table[one_edge], fill=one_edge.properties["color"])
 
+    # handle clicked edge
+    def visual_clicked_edge(self, edge: EdgeObj):
+        prewidth =  self.tk_frame.canvas.itemcget(self.items_table[edge], "width")
+        self.tk_frame.canvas.itemconfigure(self.items_table[edge], width = 13)
+        return prewidth
+    def free_clicked_edge(self, edge: EdgeObj, previous_width):
+        self.tk_frame.canvas.itemconfigure(self.items_table[edge], width = previous_width)
+
+        # handle the clicked node
+    def visual_clicked_node(self, vertex_obj):
+        preoutline = self.tk_frame.canvas.itemcget(self.items_table[vertex_obj], "outline")
+        prewidth = self.tk_frame.canvas.itemcget(self.items_table[vertex_obj], "width")
+        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width=6, outline="white")
+        return preoutline,prewidth
+    def free_clicked_node(self, vertex_obj, preoutline,prewidth):
+        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width=prewidth, outline=preoutline)
     # change return value
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
         the_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
@@ -291,3 +303,14 @@ class ObjDrawTkinter:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, False)
         return [color_dict, new_color]
+    # create new vertex and add it to manager, items table, draw on canvas
+    def add_new_vertex(self,xc,yc):
+        new_vertex = VertexObj(None)
+        new_vertex.properties = self.mg.vertex[0].properties
+        new_vertex.add_attribute("id",len(self.mg.vertex))
+        self.mg.vertex.append(new_vertex)
+        self.add_items_table([new_vertex])
+        print("x,y before create",xc,yc)
+        self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")
+        print("x,y after create",xc,yc)
+        return new_vertex

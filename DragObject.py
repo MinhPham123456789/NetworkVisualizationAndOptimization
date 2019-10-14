@@ -8,7 +8,7 @@ from ObjectTk.ObjectDrawTkinter import *
 
 
 class MouseMover():
-    def __init__(self, tk_frame: Frame, drawTk: ObjDrawTkinter, graph: Graph, mg: ObjManager, gui_support):
+    def __init__(self, tk_frame: Frame, drawTk: ObjDrawTkinter, graph: Graph, mg: ObjManager,zm:ZoomAndDrag,gui_support):
         self.item = (0)
         self.previous = (0, 0)
         self.canvas = tk_frame.canvas
@@ -17,11 +17,15 @@ class MouseMover():
         self.graph = graph
         self.tk_frame = tk_frame
         self.mg = mg
+        # get zoom and drag object for add vertex
+        self.zm = zm
         self.gui_support = gui_support
         self.last_pos = []
         self.new_pos = []
-        self.past_note = None
-
+        self.past_node = None
+        self.past_edge = None
+        # check whether add vertex
+        self.add_vertex = False
     def select(self, event):
         widget = event.widget  # Get handle to canvas
         # Convert screen coordinates to canvas coordinates
@@ -33,22 +37,38 @@ class MouseMover():
         self.previous = (xc, yc)
         print("Von:")
         print((xc, yc, self.item))
+        print(event.x,event.y)
         self.last_pos = self.canvas.coords(self.item)
 
-        try: self.drawTk.free_clicked_node(self.drawTk.items_table.inverse[self.past_note])
+        try:
+            self.drawTk.free_clicked_edge(self.drawTk.items_table.inverse[self.past_edge[0]], self.past_edge[1])
+        except: pass
+
+        try:
+            self.drawTk.free_clicked_node(self.drawTk.items_table.inverse[self.past_node[0]], self.past_node[1],
+                                          self.past_node[2])
         except: pass
 
         if len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.VertexObj):
             self.gui_support.get_vertex_value(self.item[0])
             self.gui_support.is_vertex = True
-            self.drawTk.visual_clicked_node(self.drawTk.items_table.inverse[self.item[0]])
-            self.past_note = self.item[0]
+            self.past_node = [self.item[0]]
+            self.past_node.extend(self.drawTk.visual_clicked_node(self.drawTk.items_table.inverse[self.item[0]]))
 
         elif len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
             self.gui_support.get_edge_value(self.item[0])
             self.gui_support.is_vertex = False
+            self.past_edge = [self.item[0], self.drawTk.visual_clicked_edge(self.drawTk.items_table.inverse[self.item[0]])]
 
-
+        ##add_vertex:
+        if self.add_vertex == True:
+            new_vertex = self.drawTk.add_new_vertex(self.zm.canvas.canvasx(event.x),self.zm.canvas.canvasy(event.y))
+            self.add_vertex = False
+            self.gui_support.graph.add_vertices(1)
+            index = len(self.mg.vertex)-1
+            for key in new_vertex.properties.keys():
+                self.gui_support.graph.vs[index][key] = new_vertex.properties.get(key)
+            print(self.gui_support.graph.vs[index])
         # self.drawTk.set_weight_text_position(
         #     int(self.drawTk.items_table.inverse[self.item[0]].get_attribute("id")[1:]), "service_load", self.mg)
         # vertex_obj = self.drawTk.items_table.inverse[self.item[0]]

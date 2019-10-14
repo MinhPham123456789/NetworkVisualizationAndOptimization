@@ -43,6 +43,7 @@ class Window(Frame):
         Layout_menu = Menu(menu)
         Throughput = Menu(menu)
         Search = Menu(menu)
+        Add = Menu(menu)
 
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
@@ -72,6 +73,8 @@ class Window(Frame):
 
         Search.add_command(label="Vertex", command= lambda: self.popup_search_vertex())
         Search.add_command(label="Edge", command=lambda: self.popup_search_edge())
+        # create add vertex button
+        Add.add_command(label="Add vertex", command=lambda: self.gui_support.add_vertex())
 
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
@@ -81,7 +84,8 @@ class Window(Frame):
         menu.add_cascade(label="Search", menu=Search)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
-
+        # after present
+        menu.add_cascade(label="Add", menu= Add)
         # VERTEX x=0, y=0###############################################3
 
         vertex_information = Label(self, text="Vertex", font="Helvetica 16 bold")

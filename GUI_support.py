@@ -29,6 +29,7 @@ class GUI_support():
         NREN = Graph.Read_GraphML(graph_name)
         self.graph = NREN
         self.graph_path = graph_name  # Help in geo window
+
         self.gui.mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
@@ -75,18 +76,18 @@ class GUI_support():
             self.gui.mg.add_attribute_list("Internal", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
 
         # ADD DRAG AND ZOOM
-        zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
+        self.zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
 
         # ADD DRAG OBJECTS
-        mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self)
+        self.mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self.zm,self)
 
         # MOTION
-        self.gui.frame.canvas.bind("<Button-3>", mm.select)
-        self.gui.frame.canvas.bind("<B3-Motion>", mm.drag)
-        self.gui.frame.canvas.bind("<Button-1>", zm.move_start)
-        self.gui.frame.canvas.bind("<B1-Motion>", zm.move_move)
-        self.gui.frame.canvas.bind("<Button-4>", zm.zoomIn)
-        self.gui.frame.canvas.bind("<Button-5>", zm.zoomOut)
+        self.gui.frame.canvas.bind("<Button-3>", self.mm.select)
+        self.gui.frame.canvas.bind("<B3-Motion>", self.mm.drag)
+        self.gui.frame.canvas.bind("<Button-1>", self.zm.move_start)
+        self.gui.frame.canvas.bind("<B1-Motion>", self.zm.move_move)
+        self.gui.frame.canvas.bind("<Button-4>", self.zm.zoomIn)
+        self.gui.frame.canvas.bind("<Button-5>", self.zm.zoomOut)
 
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
         self.gui.drawTk.load_vertices()
@@ -263,15 +264,19 @@ class GUI_support():
                 vertex_obj_list.append(vertex)
         self.gui.drawTk.search_vertex_outline(vertex_obj_list, 9, True)
         self.search_vertex_list = vertex_obj_list
-
+        if self.mm.drawTk.items_table.inverse[self.mm.past_node[0]] in self.search_vertex_list:
+            print("in")
+            self.mm.past_node = None
     def clear_search_vertex(self):
         try:
             self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
             self.search_vertex_list = []
+            self.mm.past_node = None
         except AttributeError:
+            print("error")
             self.gui.drawTk.search_vertex_outline([], 1, False)
             self.search_vertex_list = []
-
+            self.mm.past_node = None
     def search_edge(self, attribute, value):
         edge_obj_list = []
         for edge in self.gui.mg.edge:
@@ -502,6 +507,10 @@ class GUI_support():
     def vertex_attributes_nofilter(self):
         vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
         return vertex_att_list
+
+    # add vertex & edge: after present
+    def add_vertex(self):
+        self.mm.add_vertex = True
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]
