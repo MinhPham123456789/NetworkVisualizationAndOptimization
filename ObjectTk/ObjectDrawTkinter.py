@@ -346,13 +346,14 @@ class ObjDrawTkinter:
         new_vertex = VertexObj(None)
         print("Before add")
         print("len mg.vertex",len(self.mg.vertex),"len items_table",len(self.items_table))
-        new_vertex.set_attribute("id",len(self.mg.vertex))
+        new_vertex.set_attribute("id",self.count_node)
         new_vertex.set_attribute("color","red")
         self.mg.vertex.append(new_vertex)
         self.add_items_table([new_vertex])
         self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")
         print("After add")
         print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
+        self.count_node +=1
         return new_vertex
 
     def add_new_edge(self,vertex1:VertexObj,vertex2:VertexObj):
