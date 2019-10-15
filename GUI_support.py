@@ -123,6 +123,9 @@ class GUI_support():
             note.display()
             print("load node color")
         except: pass
+        try:
+            self.vertex_color_gradient(graph["note_vertex_centrality"])
+        except: pass
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -131,6 +134,7 @@ class GUI_support():
         new_graph["note_edge_width"] = Note.note_edge_width
         new_graph["note_edge_color"] = Note.note_edge_color
         new_graph["note_vertex_color"] = Note.note_vertex_color
+        new_graph["note_vertex_centrality"] = Note.note_vertex_centrality
         new_graph.write_graphml(graph_name)
 
     def get_vertex_value(self, vertex_item_index):
@@ -243,6 +247,10 @@ class GUI_support():
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
         for note in self.list_note:
+            if note.title == "vertex_centrality":
+                note.hideframe()
+                self.list_note.remove(note)
+                self.update_note()
             if note.title == "group_vertex":
                 self.list_note.remove(note)
                 self.update_note()
@@ -258,7 +266,7 @@ class GUI_support():
         from ObjectTk.ObjCentrality import Centrality
         cen_obj = Centrality(self.graph, self.gui.mg)
         cen_obj.eigenvector_vertex_centrality(att_name)
-        self.vertex_color_gradient("centrality", att_name)
+        self.vertex_color_gradient("centrality", att_name + " Vertex")
         pass
 
     def vertex_color_gradient(self, value, additional_information=""):    #TODO: separate note
@@ -271,14 +279,18 @@ class GUI_support():
         print("//----GUI_support.edge_color()----")
         note_dict = result[0]
         for note in self.list_note:
-            if note.title == "edge_color":
+            if note.title == "group_vertex":
+                note.hideframe()
+                self.list_note.remove(note)
+                self.update_note()
+            if note.title == "vertex_centrality":
                 self.list_note.remove(note)
                 self.update_note()
                 note.regenerate(note_dict,attribute + " " + additional_information)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_color",attribute + " " +additional_information)
+        note = Note(self.gui.master, note_dict, "vertex_centrality",attribute + " " + additional_information)
         self.list_note.append(note)
         note.display()
 
@@ -355,6 +367,8 @@ class GUI_support():
         for i in range(len(self.list_note)):
             if self.list_note[i].title == "group_vertex":
                 note = self.list_note[i]
+            if self.list_note[i].title == "vertex_centrality":
+                note = self.list_note[i]
             else: self.list_note[i].hideframe()
         self.list_note = []
         if note != None:
@@ -381,7 +395,7 @@ class GUI_support():
         from ObjectTk.ObjCentrality import Centrality
         cen_obj = Centrality(self.graph, self.gui.mg)
         cen_obj.edge_centrality(att_name)
-        self.edge_color("centrality", att_name)
+        self.edge_color("centrality", att_name + " Edge")
 
     # kiet linkspeedraw:
     def edge_width(self, value):
