@@ -74,7 +74,10 @@ class MouseMover():
                 self.check_edge = 0
             # check delete vertex
             elif self.delete_vertex:
-                self.drawTk.delete_vertex(self.drawTk.items_table.inverse[self.item[0]])
+                deleted_vertex = self.drawTk.delete_vertex(self.drawTk.items_table.inverse[self.item[0]])
+                self.gui_support.graph.delete_vertices(deleted_vertex.get_attribute("id"))
+                print(self.gui_support.graph)
+                self.delete_vertex = False
 
         elif len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
             self.gui_support.get_edge_value(self.item[0])
@@ -82,7 +85,9 @@ class MouseMover():
             self.past_edge = [self.item[0], self.drawTk.visual_clicked_edge(self.drawTk.items_table.inverse[self.item[0]])]
             #check delete edge
             if self.delete_edge:
-                self.drawTk.delete_edge(self.drawTk.items_table.inverse[self.item[0]])
+                deleted_edge = self.drawTk.delete_edge(self.drawTk.items_table.inverse[self.item[0]])
+                self.gui_support.graph.delete_edges((deleted_edge.get_attribute("source"),deleted_edge.get_attribute("target")))
+                self.delete_edge = False
         # nothing choose then turn off checker
         else:
             self.node1 = None

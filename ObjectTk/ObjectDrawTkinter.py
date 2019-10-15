@@ -15,7 +15,7 @@ class ObjDrawTkinter:
         self.items_table = bidict()
         self.current_max = 0
         self.rectangle_switch = False
-
+        self.count_node = len(self.mg.vertex)
     @staticmethod
     def rgb_2_hex(r, g, b):
         result = '#{:02x}{:02x}{:02x}'.format(r, g, b)
@@ -340,6 +340,7 @@ class ObjDrawTkinter:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, False)
         return [color_dict, new_color]
+
     # create new vertex and add it to manager, items table, draw on canvas
     def add_new_vertex(self,xc,yc):
         new_vertex = VertexObj(None)
@@ -353,6 +354,7 @@ class ObjDrawTkinter:
         print("After add")
         print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
         return new_vertex
+
     def add_new_edge(self,vertex1:VertexObj,vertex2:VertexObj):
         coord1 = self.tk_frame.canvas.coords(self.items_table[vertex1])
         coord2 = self.tk_frame.canvas.coords(self.items_table[vertex2])
@@ -367,7 +369,20 @@ class ObjDrawTkinter:
         return new_edge
 
     def delete_vertex(self, vertex: VertexObj):
-        return
+        list_edge = []
+        print(len(self.mg.edge), len(self.items_table))
+        for edge in self.mg.edge:
+            if edge.get_attribute("source") == vertex.get_attribute("id") or edge.get_attribute("target") == vertex.get_attribute("id"):
+                list_edge.append(edge)
+        for edge in list_edge:
+            self.delete_edge(edge)
+        self.tk_frame.canvas.delete(self.items_table[vertex])
+        self.items_table.pop(vertex)
+        self.mg.vertex.remove(vertex)
+        return vertex
 
     def delete_edge(self, edge: EdgeObj):
-        return
+        self.tk_frame.canvas.delete(self.items_table[edge])
+        self.items_table.pop(edge)
+        self.mg.edge.remove(edge)
+        return edge
