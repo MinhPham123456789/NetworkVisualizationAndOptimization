@@ -8,6 +8,7 @@ class Note():
     note_edge_color = None
     note_edge_width = None
     note_vertex_color = None
+    note_vertex_centrality = None
     def __init__(self, master,note_dict,title,attribute):
         self.master = master
         self.frame_container = tk.Frame(self.master, relief=GROOVE,width=90,height=90,bd=1)
@@ -45,6 +46,8 @@ class Note():
             self.generate_edge_width()
         if self.title == "group_vertex":
             self.generate_vertex_color()
+        if self.title == "vertex_centrality":
+            self.generate_vertex_color_centrality()
 
     def regenerate(self,note_dict,attribute):
         self.dict = note_dict
@@ -128,4 +131,31 @@ class Note():
 
                 key_label.grid(row=self.ykey, column=self.xkey)
                 key_value.grid(row=self.ykey, column=self.xkey+1)
+                self.ykey += 1
+
+    def generate_vertex_color_centrality(self):
+        Note.note_vertex_centrality = self.attribute
+        i = 0
+        previous = None
+        keys = list(self.dict.keys())[0]
+        if isinstance(keys, float):
+            for key in self.dict:
+                if i == 0:
+                    key_label = Label(self.frame, text="att < " + str(key))
+                    previous = key
+                    i += 1
+                else:
+                    key_label = Label(self.frame, text=str(previous) + " < att <= " + str(key))
+                    previous = key
+
+                key_label1 = Label(self.frame, text="from")
+                key_label2 = Label(self.frame, text="to")
+                key_entry1 = Label(self.frame, bg=self.dict[key][0], padx=5)
+                key_entry2 = Label(self.frame, bg=self.dict[key][1], padx=5)
+
+                key_label.grid(row=self.ykey, column=self.xkey)
+                key_label1.grid(row=self.ykey, column=self.xkey + 1)
+                key_entry1.grid(row=self.ykey, column=self.xkey + 2)
+                key_label2.grid(row=self.ykey, column=self.xkey + 3)
+                key_entry2.grid(row=self.ykey, column=self.xkey + 4)
                 self.ykey += 1
