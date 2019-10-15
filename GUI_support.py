@@ -124,7 +124,7 @@ class GUI_support():
             print("load node color")
         except: pass
         try:
-            self.vertex_color_gradient(graph["note_vertex_centrality"])
+            self.show_vertex_centrality(graph["note_vertex_centrality"])
         except: pass
 
     def save(self):
