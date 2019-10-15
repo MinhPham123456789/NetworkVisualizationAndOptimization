@@ -346,9 +346,28 @@ class ObjDrawTkinter:
         print("Before add")
         print("len mg.vertex",len(self.mg.vertex),"len items_table",len(self.items_table))
         new_vertex.set_attribute("id",len(self.mg.vertex))
+        new_vertex.set_attribute("color","red")
         self.mg.vertex.append(new_vertex)
         self.add_items_table([new_vertex])
         self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")
         print("After add")
         print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
         return new_vertex
+    def add_new_edge(self,vertex1:VertexObj,vertex2:VertexObj):
+        coord1 = self.tk_frame.canvas.coords(self.items_table[vertex1])
+        coord2 = self.tk_frame.canvas.coords(self.items_table[vertex2])
+        print(len(self.mg.edge), len(self.items_table))
+        self.tk_frame.canvas.create_line(coord1[0],coord1[1],coord2[0],coord2[1],fill="red",width=3)
+        new_edge = EdgeObj(None)
+        new_edge.set_attribute("source",vertex1.get_attribute("id"))
+        new_edge.set_attribute("target",vertex2.get_attribute("id"))
+        self.mg.edge.append(new_edge)
+        self.add_items_table([new_edge])
+        print(len(self.mg.edge), len(self.items_table))
+        return new_edge
+
+    def delete_vertex(self, vertex: VertexObj):
+        return
+
+    def delete_edge(self, edge: EdgeObj):
+        return

@@ -34,8 +34,8 @@ class EdgeObj:
         if index is not None:
             for key in graph.es[index].attribute_names():
                 properties_dict.update({key: graph.es[index][key]})
-        properties_dict.update({"source": graph.es[index].source})
-        properties_dict.update({"target": graph.es[index].target})
+            properties_dict.update({"source": graph.es[index].source})
+            properties_dict.update({"target": graph.es[index].target})
         self.properties = properties_dict
 
     def get_attribute(self, attribute_name: str):

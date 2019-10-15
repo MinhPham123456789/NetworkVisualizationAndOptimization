@@ -547,6 +547,16 @@ class GUI_support():
     def add_vertex(self):
         self.mm.add_vertex = True
 
+    def add_edge(self):
+        self.mm.add_edge = True
+
+    # delete vertex & edge
+    def delete_vertex(self):
+        self.mm.delete_vertex = True
+
+    def delete_edge(self):
+        self.mm.delete_edge = True
+
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]
     return result

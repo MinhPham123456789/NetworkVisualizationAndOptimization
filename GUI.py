@@ -45,6 +45,7 @@ class Window(Frame):
         Search = Menu(menu)
         Centrality = Menu(menu)
         Add = Menu(menu)
+        Delete = Menu(menu)
 
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
@@ -76,6 +77,10 @@ class Window(Frame):
         Search.add_command(label="Edge", command=lambda: self.popup_search_edge())
         # create add vertex button
         Add.add_command(label="Add vertex", command=lambda: self.gui_support.add_vertex())
+        Add.add_command(label="Add edge", command=lambda: self.gui_support.add_edge())
+
+        Delete.add_command(label="Delete vertex", command=lambda: self.gui_support.delete_vertex())
+        Delete.add_command(label="delete edge", command=lambda: self.gui_support.delete_edge())
 
         Centrality.add_command(label="Vertex", command= lambda: self.popup_vertex_centrality())
         Centrality.add_command(label="Edge", command= lambda: self.popup_edge_centrality())
@@ -88,9 +93,9 @@ class Window(Frame):
         menu.add_cascade(label="Search", menu=Search)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
-
         menu.add_cascade(label="Centrality", menu=Centrality)
         menu.add_cascade(label="Add", menu=Add)
+        menu.add_cascade(label="Delete", menu=Delete)
         # VERTEX x=0, y=0###############################################3
 
         vertex_information = Label(self, text="Vertex", font="Helvetica 16 bold")

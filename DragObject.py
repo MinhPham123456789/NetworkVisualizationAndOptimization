@@ -24,8 +24,15 @@ class MouseMover():
         self.new_pos = []
         self.past_node = None
         self.past_edge = None
-        # check whether add vertex
+        # check whether add vertex, edge
         self.add_vertex = False
+        self.add_edge = False
+        self.check_edge = 0
+        self.node1 = None
+        # check whether delete vertex, edge
+        self.delete_vertex = False
+        self.delete_edge = False
+
     def select(self, event):
         widget = event.widget  # Get handle to canvas
         # Convert screen coordinates to canvas coordinates
@@ -54,14 +61,38 @@ class MouseMover():
             self.gui_support.is_vertex = True
             self.past_node = [self.item[0]]
             self.past_node.extend(self.drawTk.visual_clicked_node(self.drawTk.items_table.inverse[self.item[0]]))
+            # check add new edge
+            if self.add_edge and self.check_edge == 0:
+                self.check_edge = 1
+                self.node1 = self.item[0]
+            elif self.add_edge and self.check_edge == 1 and self.node1 is not self.item[0]:
+                new_edge = self.drawTk.add_new_edge(self.drawTk.items_table.inverse[self.node1],self.drawTk.items_table.inverse[self.item[0]])
+                self.gui_support.graph.add_edges([(new_edge.get_attribute("source"),new_edge.get_attribute("target"))])
+                print(self.gui_support.graph.es[len(self.mg.edge)-1])
+                self.node1 = None
+                self.add_edge = False
+                self.check_edge = 0
+            # check delete vertex
+            elif self.delete_vertex:
+                self.drawTk.delete_vertex(self.drawTk.items_table.inverse[self.item[0]])
 
         elif len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
             self.gui_support.get_edge_value(self.item[0])
             self.gui_support.is_vertex = False
             self.past_edge = [self.item[0], self.drawTk.visual_clicked_edge(self.drawTk.items_table.inverse[self.item[0]])]
+            #check delete edge
+            if self.delete_edge:
+                self.drawTk.delete_edge(self.drawTk.items_table.inverse[self.item[0]])
+        # nothing choose then turn off checker
+        else:
+            self.node1 = None
+            self.add_edge = False
+            self.check_edge = 0
+            self.delete_edge = False
+            self.delete_vertex = False
 
         ##add_vertex:
-        if self.add_vertex == True:
+        if self.add_vertex:
             new_vertex = self.drawTk.add_new_vertex(self.zm.canvas.canvasx(event.x),self.zm.canvas.canvasy(event.y))
             self.add_vertex = False
             self.gui_support.graph.add_vertices(1)
