@@ -110,7 +110,12 @@ class GUI_support():
             self.edge_width(graph["note_edge_width"])
         except: pass
         try:
-            self.edge_color(graph["note_edge_color"])
+            s = graph["note_edge_color"]
+            list = s.split(" ")
+            if len(list) >= 2:
+                self.show_edge_centrality(list[1])
+            else:
+                self.edge_color(list[0])
         except: pass
         try:
             color_dict = {}
@@ -124,7 +129,9 @@ class GUI_support():
             print("load node color")
         except: pass
         try:
-            self.show_vertex_centrality(graph["note_vertex_centrality"])
+            s = graph["note_vertex_centrality"]
+            list = s.split(" ")
+            self.show_vertex_centrality(list[1])
         except: pass
 
     def save(self):
