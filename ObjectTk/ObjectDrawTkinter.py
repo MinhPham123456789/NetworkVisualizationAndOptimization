@@ -162,6 +162,7 @@ class ObjDrawTkinter:
         self.add_items_table(["r"+str(vertex)])
 
     def delete_vertex_text_weight(self,vertex:VertexObj):
+        self.tk_frame.canvas.delete(self.items_table["r" + str(vertex)])
         self.items_table.pop("r"+str(vertex))
 
     def change_vertex_text_weight(self, vertex_weight: str, canvas):
