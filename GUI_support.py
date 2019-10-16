@@ -55,20 +55,11 @@ class GUI_support():
         except KeyError:
             pass
 
-        try:
-            NREN.vs["color"]
-        except KeyError:
-            self.gui.mg.add_attribute("color", "red", True)
+        self.gui.mg.add_attribute("color", "red", True)
 
-        try:
-            NREN.es["color"]
-        except KeyError:
-            self.gui.mg.add_attribute("color", "white", False)
+        self.gui.mg.add_attribute("color", "white", False)
 
-        try:
-            NREN.vs["vertex_size"]
-        except KeyError:
-            self.gui.mg.add_attribute("vertex_size", 0.08, True)
+        self.gui.mg.add_attribute("vertex_size", 0.08, True)
 
         try:
             NREN.vs["Internal"]

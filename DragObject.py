@@ -44,8 +44,7 @@ class MouseMover():
             CURRENT)  # Better than closest only move object when you click the right one
         self.previous = (xc, yc)
         print("Von:")
-        print((xc, yc, self.item))
-        print(event.x, event.y)
+        print("Click:", (xc, yc, self.item), (self.canvas.coords(self.item)))
         self.last_pos = self.canvas.coords(self.item)
 
         try:

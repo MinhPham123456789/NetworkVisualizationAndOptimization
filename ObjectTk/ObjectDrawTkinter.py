@@ -34,6 +34,8 @@ class ObjDrawTkinter:
 
     # Vertex utilities ################################################################################################
     def transform_to_oval_position(self, vertex: VertexObj, MG: ObjManager):
+        # print("Vertex id: ", vertex.get_attribute("id"))
+        # print("x y: ", vertex.get_attribute("x"), vertex.get_attribute("y"))
         min_x = math.fabs(min(MG.get_all_attribute_value("x", True)))  # move the graph to all positive side
         min_y = math.fabs(min(MG.get_all_attribute_value("y", True)))  # move the graph to all positive side
         x = vertex.get_attribute("x") + min_x + self.center \
@@ -45,9 +47,9 @@ class ObjDrawTkinter:
         x2 = x + vertex.get_attribute("vertex_size")
         y2 = y + vertex.get_attribute("vertex_size")
         # print(min_x,min_y)
-        # print(x1,y1,x2,y2)
-        # x1, y1 = self.tk_frame.do_scale(x1, y1)
-        # x2, y2 = self.tk_frame.do_scale(x2, y2)
+        # print(x,y)
+        # print("Size", vertex.get_attribute("vertex_size"))
+        # print("After calculation:", x1,y1,x2,y2)
         return [x1, y1, x2, y2]
 
     def group_vertex_color(self, vertex_weight: str, MG: ObjManager):
@@ -349,6 +351,7 @@ class ObjDrawTkinter:
         new_vertex.set_attribute("color","red")
         new_vertex.set_attribute("Country", "New")
         new_vertex.set_attribute("Network", "New")
+        new_vertex.set_attribute("label", "New")
         new_vertex.set_attribute("Internal", "0.0")
         new_vertex.set_attribute("asn", "New")
         self.mg.vertex.append(new_vertex)
