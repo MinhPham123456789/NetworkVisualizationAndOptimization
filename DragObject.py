@@ -66,18 +66,14 @@ class MouseMover():
             self.past_node.extend(self.drawTk.visual_clicked_node(self.drawTk.items_table.inverse[self.item[0]]))
             # check add new edge
             if self.add_edge and self.check_edge == 0:
-                print("choose node 1")
                 self.check_edge = 1
                 self.node1 = self.item[0]
             elif self.add_edge and self.check_edge == 1 and self.node1 is not self.item[0]:
-                print("choose node 2")
                 self.adding_edge()
             # check delete vertex
             elif self.delete_vertex:
-                print("delete node")
                 self.deleting_vertex()
             else:
-                print("not satisfy")
                 self.reset_checking()
 
         elif len(self.item) > 0 and isinstance(self.drawTk.items_table.inverse[self.item[0]], ObjectTkinter.EdgeObj):
@@ -87,7 +83,6 @@ class MouseMover():
                               self.drawTk.visual_clicked_edge(self.drawTk.items_table.inverse[self.item[0]])]
             # check delete edge
             if self.delete_edge:
-                print("delete edge")
                 self.deleting_edge()
         # nothing choose then turn off checker
         else:
@@ -109,12 +104,9 @@ class MouseMover():
         self.node1 = None
         self.add_edge = False
         self.check_edge = 0
-        print(self.graph.vs)
         self.gui_support.graph.add_edges([(new_edge.get_attribute("source"), new_edge.get_attribute("target"))])
 
     def deleting_vertex(self):
-        print("before delete")
-        print(self.gui_support.graph)
         deleted_vertex = self.drawTk.delete_vertex(self.drawTk.items_table.inverse[self.item[0]])
         self.gui_support.graph.delete_vertices(deleted_vertex.get_attribute("id"))
         check_point = deleted_vertex.get_attribute("id")
@@ -130,8 +122,6 @@ class MouseMover():
                 value = edge.get_attribute("target")
                 edge.set_attribute("target", value - 1)
         self.drawTk.count_node -= 1
-        print("after delete")
-        print(self.gui_support.graph)
         self.delete_vertex = False
 
     def deleting_edge(self):
@@ -154,7 +144,6 @@ class MouseMover():
         index = len(self.mg.vertex) - 1
         for key in new_vertex.properties.keys():
             self.gui_support.graph.vs[index][key] = new_vertex.properties.get(key)
-        print(self.gui_support.graph)
 
     def drag(self, event):
         widget = event.widget

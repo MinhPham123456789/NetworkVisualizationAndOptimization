@@ -246,7 +246,6 @@ class GUI_support():
 
     def group_vertex(self, value):
         att_name = str(value)
-        print(att_name)
         result = self.gui.drawTk.group_vertex_color(att_name, self.gui.mg)
         color_list = result[1]
         color_dict = result[0]
