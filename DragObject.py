@@ -161,7 +161,7 @@ class MouseMover():
             x1, y1, x2, y2 = self.canvas.coords(edge_item_index)
             self.canvas.coords(edge_item_index, x1, y1, x, y)
         if self.drawTk.rectangle_switch:
-            rectangle_index = "r" + str(vertex_obj_index)
+            rectangle_index = "r" + str(vertex_obj)
             position = self.drawTk.set_weight_text_position(vertex_obj_index, self.mg)
             self.canvas.coords(self.drawTk.items_table[rectangle_index], position)
         items = self.canvas.find_withtag("all")

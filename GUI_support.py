@@ -350,7 +350,7 @@ class GUI_support():
 
     def clear_vertex_text_box(self):
         for i in range(len(self.gui.mg.vertex)):
-            index = "r" + str(i)
+            index = "r" + str(self.gui.mg.vertex[i])
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
     # update existing node

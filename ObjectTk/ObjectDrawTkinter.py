@@ -151,12 +151,12 @@ class ObjDrawTkinter:
             self.tk_frame.canvas.create_text(position, fill="#96ff33",
                                              text=str(self.mg.vertex[index].get_attribute(vertex_weight)),
                                              state="hidden")
-            items_table_list.append("r" + str(index))
+            items_table_list.append("r" + str(self.mg.vertex[index]))
         self.add_items_table(items_table_list)
 
     def change_vertex_text_weight(self, vertex_weight: str, canvas):
         for index in range(len(self.mg.vertex)):
-            text_index = "r" + str(index)
+            text_index = "r" + str(self.mg.vertex[index])
             text_item_index = self.items_table[text_index]
             print(index, text_index, text_item_index)
             canvas.itemconfigure(text_item_index,
