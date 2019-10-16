@@ -154,6 +154,16 @@ class ObjDrawTkinter:
             items_table_list.append("r" + str(self.mg.vertex[index]))
         self.add_items_table(items_table_list)
 
+    def add_vertex_text_weight(self, vertex : VertexObj):
+        position = self.set_weight_text_position(self.mg.vertex.index(vertex), self.mg)
+        self.tk_frame.canvas.create_text(position, fill="#96ff33",
+                                         text=vertex.get_attribute("id"),
+                                         state="hidden")
+        self.add_items_table(["r"+str(vertex)])
+
+    def delete_vertex_text_weight(self,vertex:VertexObj):
+        self.items_table.pop("r"+str(vertex))
+
     def change_vertex_text_weight(self, vertex_weight: str, canvas):
         for index in range(len(self.mg.vertex)):
             text_index = "r" + str(self.mg.vertex[index])
@@ -358,6 +368,7 @@ class ObjDrawTkinter:
         print("After add")
         print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
         self.count_node +=1
+        self.add_vertex_text_weight(new_vertex)
         return new_vertex
 
     def add_new_edge(self,vertex1:VertexObj,vertex2:VertexObj):
@@ -397,6 +408,7 @@ class ObjDrawTkinter:
         self.tk_frame.canvas.delete(self.items_table[vertex])
         self.items_table.pop(vertex)
         self.mg.vertex.remove(vertex)
+        self.delete_vertex_text_weight(vertex)
         return vertex
 
     def delete_edge(self, edge: EdgeObj):
