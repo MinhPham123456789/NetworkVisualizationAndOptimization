@@ -360,6 +360,7 @@ class GUI_support():
             index = "r" + str(self.gui.mg.vertex[i])
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
+
     # update existing node
     def update_note(self):
         Note.x = 1420
