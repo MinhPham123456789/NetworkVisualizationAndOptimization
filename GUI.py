@@ -11,7 +11,6 @@ from DragObject import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from GUI_support import *
-import tk_tools as tkt
 from MapLocate import *
 import numpy as np
 import GeoPage
