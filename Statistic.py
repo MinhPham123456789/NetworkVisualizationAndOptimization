@@ -51,7 +51,7 @@ class Statistic2(tk.Frame):
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(self.statistic_dictionary.keys())
         self.p.set_ylabel('Number of edges', fontsize=15)
-        self.p.set_xlabel('Number of edges having the according throughput statistic in the hour {}'.format(hour), fontsize=15)
+        self.p.set_xlabel('Number of edges of different throughput summary in the hour {}'.format(hour), fontsize=15)
 
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
@@ -123,7 +123,7 @@ class StatisticPie:
         plt.legend(patches, labels, loc="upper left")
         plt.axis('equal')
         plt.tight_layout()
-        plt.title("Group edges by {}".format(attribute))
+        plt.title("Groups of edges based on {}".format(attribute))
         plt.show()
 
 
@@ -152,7 +152,7 @@ class StatisticPie2(tk.Frame):
         patches, texts = self.p.pie(values, labels=keys, labeldistance=1.04, colors=colors, startangle=90)
         self.p.legend(patches, labels, bbox_to_anchor=(0.16, 1.1))
         self.p.axis('equal')
-        self.p.set_title("Throughput of the edges in the hour {}".format(hour))
+        self.p.set_title("Number of edges of different throughput summary in the hour {}".format(hour))
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
