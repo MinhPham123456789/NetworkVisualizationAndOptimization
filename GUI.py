@@ -438,14 +438,14 @@ class Window(Frame):
         popup_bonus_window = Tk()
         popup_bonus_window.wm_title("Throughput window")
         input_name = Label(popup_bonus_window, text="Throughput file")
-        input_name.grid(row=0)
+        input_name.grid(row=0, padx=5, pady=2)
         input_entry = Entry(popup_bonus_window)
-        input_entry.grid(row=0, column=1)
+        input_entry.grid(row=0, column=1, padx=5, pady=2)
         throughput_threshold = Label(popup_bonus_window, text="Threshold")
-        throughput_threshold.grid(row=1, column=0)
+        throughput_threshold.grid(row=1, column=0, padx=5, pady=2)
         input_throughput_threshold = Entry(popup_bonus_window)
         input_throughput_threshold.insert(0, "0.9")
-        input_throughput_threshold.grid(row=1, column=1)
+        input_throughput_threshold.grid(row=1, column=1, padx=5, pady=2)
         B1 = Button(popup_bonus_window, text="Browse",
                     command=lambda: [input_entry.delete(0, "end"),
                                      self.get_throughput_name(self.gui_support.open_throughput()),
@@ -453,28 +453,28 @@ class Window(Frame):
                                      self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                           self.gui_support.throughput,
                                                                           float(input_throughput_threshold.get()))])
-        B1.grid(row=0, column=2)
+        B1.grid(row=0, column=2, sticky="W", padx=5, pady=2)
         spin_box_1 = tk.Spinbox(popup_bonus_window, from_=0, to=23, width=18,
                                 command=lambda: self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                                      self.gui_support.throughput,
                                                                                      float(input_throughput_threshold.get())))
-        spin_box_1.grid(row=2, column=1)
+        spin_box_1.grid(row=3, column=1, padx=5, pady=2)
         threshold_button = Button(popup_bonus_window, text="Apply",
                                   command=lambda: [self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                                         self.gui_support.throughput,
                                                                                         float(
                                                                                             input_throughput_threshold.get()))])
-        threshold_button.grid(row=1, column=2)
+        threshold_button.grid(row=1, column=2, sticky="W", padx=5, pady=2)
 
         hour_label = Label(popup_bonus_window, text="Hour")
-        hour_label.grid(row=2, column=0)
+        hour_label.grid(row=3, column=0, padx=5, pady=2)
 
         tkVar = StringVar(popup_bonus_window)
         edge_att = ["Pie Chart", "Bar Chart"]
         tkVar.set("Threshold statistic")
 
         input_stat = OptionMenu(popup_bonus_window, tkVar, *edge_att)
-        input_stat.grid(row=2, column=2)
+        input_stat.grid(row=3, column=2, columnspan=2, sticky="W", padx=5, pady=2)
 
         def change_dropdown(*args):
             print(tkVar.get())
@@ -487,7 +487,7 @@ class Window(Frame):
         tkVar2.set("Label Statistic")
 
         input_stat2 = OptionMenu(popup_bonus_window, tkVar2, *edge_att2)
-        input_stat2.grid(row=1, column=3)
+        input_stat2.grid(row=2, column=2, sticky="W", padx=5, pady=2)
 
         def change_dropdown2(*args):
             print(tkVar2.get())

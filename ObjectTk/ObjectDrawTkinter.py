@@ -110,7 +110,7 @@ class ObjDrawTkinter:
         items_table_list = []
         for index in range(len(self.mg.vertex)):
             position = self.set_weight_text_position(index, self.mg)
-            self.tk_frame.canvas.create_text(position, fill="green",
+            self.tk_frame.canvas.create_text(position, fill="#96ff33",
                                              text=str(self.mg.vertex[index].get_attribute(vertex_weight)),
                                              state="hidden")
             items_table_list.append("r" + str(index))
