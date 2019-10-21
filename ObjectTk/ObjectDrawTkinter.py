@@ -15,7 +15,7 @@ class ObjDrawTkinter:
         self.items_table = bidict()
         self.current_max = 0
         self.rectangle_switch = False
-
+        self.count_node = len(self.mg.vertex)
     @staticmethod
     def rgb_2_hex(r, g, b):
         result = '#{:02x}{:02x}{:02x}'.format(r, g, b)
@@ -34,6 +34,8 @@ class ObjDrawTkinter:
 
     # Vertex utilities ################################################################################################
     def transform_to_oval_position(self, vertex: VertexObj, MG: ObjManager):
+        # print("Vertex id: ", vertex.get_attribute("id"))
+        # print("x y: ", vertex.get_attribute("x"), vertex.get_attribute("y"))
         min_x = math.fabs(min(MG.get_all_attribute_value("x", True)))  # move the graph to all positive side
         min_y = math.fabs(min(MG.get_all_attribute_value("y", True)))  # move the graph to all positive side
         x = vertex.get_attribute("x") + min_x + self.center \
@@ -45,24 +47,21 @@ class ObjDrawTkinter:
         x2 = x + vertex.get_attribute("vertex_size")
         y2 = y + vertex.get_attribute("vertex_size")
         # print(min_x,min_y)
-        # print(x1,y1,x2,y2)
-        # x1, y1 = self.tk_frame.do_scale(x1, y1)
-        # x2, y2 = self.tk_frame.do_scale(x2, y2)
+        # print(x,y)
+        # print("Size", vertex.get_attribute("vertex_size"))
+        # print("After calculation:", x1,y1,x2,y2)
         return [x1, y1, x2, y2]
 
     def group_vertex_color(self, vertex_weight: str, MG: ObjManager):
         the_list = MG.get_all_attribute_value(vertex_weight, True)
         color_dict = {}
         unique_list = np.unique(the_list)
-        print(len(unique_list))
         red = np.random.randint(255, size=len(unique_list))
         green = np.random.randint(255, size=len(unique_list))
         blue = np.random.randint(255, size=len(unique_list))
         for i in range(len(unique_list)):
             color = self.rgb_2_hex(red[i], green[i], blue[i])
             color_dict.update({str(unique_list[i]): color})
-        print("color_dict1")
-        print(color_dict)
         new_color = []
         for key in the_list:
             # print(color_dict[str(key)], key)
@@ -71,14 +70,12 @@ class ObjDrawTkinter:
         return [color_dict, new_color]
 
     def group_vertex_color_gradient(self, vertex_weight: str, MG):
-        print("----ObjectDrawTkinter.edge_color()----")
         try:
             weight_list = list(map(float, MG.get_all_attribute_value(vertex_weight, True)))
         except ValueError:
             weight_list = list(map(str, MG.get_all_attribute_value(vertex_weight, True)))
         if isinstance(weight_list[0], str):
             tuple = self.edge_color_str(weight_list, MG)
-            print("//----ObjectDrawTkinter.edge_color----")
             return tuple
         else:
             color_list = []
@@ -98,7 +95,6 @@ class ObjDrawTkinter:
                     color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
                 color_list.append(color)
             MG.change_attribute_value_list("color", color_list, True)
-            print("//----ObjectDrawTkinter.edge_color----")
             threshold1 = float("{0:.2f}".format(onethird + minweight))
             threshold2 = float("{0:.2f}".format(onethird * 2 + minweight))
             threshold3 = float("{0:.2f}".format(onethird * 3 + minweight))
@@ -153,6 +149,17 @@ class ObjDrawTkinter:
                                              state="hidden")
             items_table_list.append("r" + str(self.mg.vertex[index]))
         self.add_items_table(items_table_list)
+
+    def add_vertex_text_weight(self, vertex : VertexObj):
+        position = self.set_weight_text_position(self.mg.vertex.index(vertex), self.mg)
+        self.tk_frame.canvas.create_text(position, fill="#96ff33",
+                                         text=vertex.get_attribute("id"),
+                                         state="hidden")
+        self.add_items_table(["r"+str(vertex)])
+
+    def delete_vertex_text_weight(self,vertex:VertexObj):
+        self.tk_frame.canvas.delete(self.items_table["r" + str(vertex)])
+        self.items_table.pop("r"+str(vertex))
 
     def change_vertex_text_weight(self, vertex_weight: str, canvas):
         for index in range(len(self.mg.vertex)):
@@ -245,14 +252,12 @@ class ObjDrawTkinter:
 
     # change return value
     def edge_color(self, edge_weight: str, MG: ObjManager):
-        print("----ObjectDrawTkinter.edge_color()----")
         try:
             weight_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
         except ValueError:
             weight_list = list(map(str, MG.get_all_attribute_value(edge_weight, False)))
         if isinstance(weight_list[0], str):
             tuple = self.edge_color_str(weight_list, MG)
-            print("//----ObjectDrawTkinter.edge_color----")
             return tuple
         else:
             color_list = []
@@ -272,7 +277,6 @@ class ObjDrawTkinter:
                     color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
                 color_list.append(color)
             MG.change_attribute_value_list("color", color_list, False)
-            print("//----ObjectDrawTkinter.edge_color----")
             threshold1 = float("{0:.2f}".format(onethird + minweight))
             threshold2 = float("{0:.2f}".format(onethird*2 + minweight))
             threshold3 = float("{0:.2f}".format(onethird*3 + minweight))
@@ -328,7 +332,6 @@ class ObjDrawTkinter:
     def edge_color_str(self, weight_list, MG):
         color_dict = {}
         uniq_weight_list = np.unique(weight_list)
-        print(len(uniq_weight_list))
         red = np.random.randint(255, size=len(uniq_weight_list))
         green = np.random.randint(255, size=len(uniq_weight_list))
         blue = np.random.randint(255, size=len(uniq_weight_list))
@@ -340,15 +343,65 @@ class ObjDrawTkinter:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, False)
         return [color_dict, new_color]
+
     # create new vertex and add it to manager, items table, draw on canvas
     def add_new_vertex(self,xc,yc):
         new_vertex = VertexObj(None)
-        print("Before add")
-        print("len mg.vertex",len(self.mg.vertex),"len items_table",len(self.items_table))
-        new_vertex.set_attribute("id",len(self.mg.vertex))
+        new_vertex.set_attribute("id",self.count_node)
+        new_vertex.set_attribute("color","red")
+        new_vertex.set_attribute("Country", "New")
+        new_vertex.set_attribute("Network", "New")
+        new_vertex.set_attribute("label", "New")
+        new_vertex.set_attribute("Internal", "0.0")
+        new_vertex.set_attribute("asn", "New")
+        new_vertex.set_attribute("Longitude", 0.0)
+        new_vertex.set_attribute("Latitude", 0.0)
         self.mg.vertex.append(new_vertex)
         self.add_items_table([new_vertex])
         self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")
-        print("After add")
-        print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
+        self.count_node +=1
+        self.add_vertex_text_weight(new_vertex)
         return new_vertex
+
+    def add_new_edge(self,vertex1:VertexObj,vertex2:VertexObj):
+        coord1 = self.tk_frame.canvas.coords(self.items_table[vertex1])
+        coord2 = self.tk_frame.canvas.coords(self.items_table[vertex2])
+        center_x1 = (coord1[0] + coord1[2]) / 2
+        center_y1 = (coord1[1] + coord1[3]) / 2
+        center_x2 = (coord2[0] + coord2[2]) / 2
+        center_y2 = (coord2[1] + coord2[3]) / 2
+        self.tk_frame.canvas.create_line(center_x1, center_y1, center_x2, center_y2,fill="white",width=2)
+        self.tk_frame.canvas.lift(self.items_table[vertex1])
+        self.tk_frame.canvas.lift(self.items_table[vertex2])
+        new_edge = EdgeObj(None)
+        new_edge.set_attribute("source",vertex1.get_attribute("id"))
+        new_edge.set_attribute("target",vertex2.get_attribute("id"))
+        new_edge.set_attribute("LinkType", "New")
+        new_edge.set_attribute("LinkNote", "New")
+        new_edge.set_attribute("LinkLabel", "New")
+        new_edge.set_attribute("LinkSpeedRaw", 10000000000)
+        new_edge.set_attribute("bufferDelay", 1)
+        new_edge.set_attribute("tranmissionDelay", 1)
+        new_edge.set_attribute("propagationDelay", 1.6)
+        self.mg.edge.append(new_edge)
+        self.add_items_table([new_edge])
+        return new_edge
+
+    def delete_vertex(self, vertex: VertexObj):
+        list_edge = []
+        for edge in self.mg.edge:
+            if edge.get_attribute("source") == vertex.get_attribute("id") or edge.get_attribute("target") == vertex.get_attribute("id"):
+                list_edge.append(edge)
+        for edge in list_edge:
+            self.delete_edge(edge)
+        self.tk_frame.canvas.delete(self.items_table[vertex])
+        self.items_table.pop(vertex)
+        self.mg.vertex.remove(vertex)
+        self.delete_vertex_text_weight(vertex)
+        return vertex
+
+    def delete_edge(self, edge: EdgeObj):
+        self.tk_frame.canvas.delete(self.items_table[edge])
+        self.items_table.pop(edge)
+        self.mg.edge.remove(edge)
+        return edge
