@@ -368,7 +368,7 @@ class ObjDrawTkinter:
         center_y1 = (coord1[1] + coord1[3]) / 2
         center_x2 = (coord2[0] + coord2[2]) / 2
         center_y2 = (coord2[1] + coord2[3]) / 2
-        self.tk_frame.canvas.create_line(center_x1, center_y1, center_x2, center_y2,fill="white",width=3)
+        self.tk_frame.canvas.create_line(center_x1, center_y1, center_x2, center_y2,fill="white",width=2)
         self.tk_frame.canvas.lift(self.items_table[vertex1])
         self.tk_frame.canvas.lift(self.items_table[vertex2])
         new_edge = EdgeObj(None)

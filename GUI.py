@@ -347,7 +347,7 @@ class Window(Frame):
 
     def popup_vertex_centrality(self):
         popupBonusWindow = tk.Tk()
-        popupBonusWindow.wm_title("Edge centrality")
+        popupBonusWindow.wm_title("Vertex centrality")
 
         tkVar = StringVar(popupBonusWindow)
         edge_att = self.gui_support.edge_attributes("width")

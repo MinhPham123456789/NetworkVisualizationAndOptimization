@@ -34,7 +34,7 @@ class GUI_support():
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
         self.gui.canvas = self.gui.frame.canvas
-        self.gui.drawTk = ObjDrawTkinter(300, self.gui.mg, self.gui.frame)
+        self.gui.drawTk = ObjDrawTkinter(390, self.gui.mg, self.gui.frame)
         self.gui.layout = GraphLayout(NREN)
         # GENERATE ADDITIONAL ATTRIBUTES TODO: coordinate problem
         try:
@@ -341,6 +341,7 @@ class GUI_support():
     def reset_edge_width(self):
         for edge in self.gui.mg.edge:
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=2)
+            edge.set_attribute("width", 2)
 
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
@@ -509,7 +510,7 @@ class GUI_support():
         vy2 = y + old_height_len
         self.gui.canvas.coords(vertex_item_index, vx1, vy1, vx2, vy2)
         if self.gui.drawTk.rectangle_switch:
-            rectangle_index = "r" + str(vertex_obj_index)
+            rectangle_index = "r" + str(vertex_obj)
             position = self.gui.drawTk.set_weight_text_position(vertex_obj_index, self.gui.mg)
             self.gui.canvas.coords(self.gui.drawTk.items_table[rectangle_index], position)
         items = self.gui.canvas.find_withtag("all")
@@ -558,16 +559,28 @@ class GUI_support():
     # add vertex & edge: after present
     def add_vertex(self):
         self.mm.add_vertex = True
+        self.mm.add_edge = False
+        self.mm.delete_vertex = False
+        self.mm.delete_edge = False
 
     def add_edge(self):
         self.mm.add_edge = True
+        self.mm.add_vertex = False
+        self.mm.delete_edge = False
+        self.mm.delete_vertex = False
 
     # delete vertex & edge
     def delete_vertex(self):
         self.mm.delete_vertex = True
+        self.mm.add_vertex = False
+        self.mm.add_edge = False
+        self.mm.delete_edge = False
 
     def delete_edge(self):
         self.mm.delete_edge = True
+        self.mm.add_vertex = False
+        self.mm.add_edge = False
+        self.mm.delete_vertex = False
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]
