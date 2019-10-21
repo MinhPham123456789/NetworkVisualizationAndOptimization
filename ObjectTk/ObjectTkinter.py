@@ -10,7 +10,6 @@ class VertexObj:
             properties_dict["id"] = graph.vs[index].index
         self.properties = properties_dict
 
-
     def get_attribute(self, attribute_name: str):
         try:
             return self.properties[attribute_name]
@@ -25,7 +24,6 @@ class VertexObj:
 
     def list_attributes(self):
         return self.properties
-
 
 
 class EdgeObj:

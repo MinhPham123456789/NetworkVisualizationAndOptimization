@@ -11,7 +11,6 @@ from DragObject import *
 from ObjectTk.ObjTkFrame import *
 from ObjectTk.ObjTkLayout import GraphLayout
 from GUI_support import *
-import tk_tools as tkt
 from MapLocate import *
 import numpy as np
 import GeoPage
@@ -41,37 +40,34 @@ class Window(Frame):
         Vertex_highlight = Menu(menu)
         Edge_highlight = Menu(menu)
         Layout_menu = Menu(menu)
-        Throughput = Menu(menu)
         Search = Menu(menu)
         Centrality = Menu(menu)
         Add = Menu(menu)
         Delete = Menu(menu)
 
-        File.add_command(label="open", command=lambda: self.gui_support.open())
-        File.add_command(label="save", command=lambda: self.gui_support.save())
+        File.add_command(label="Open", command=lambda: self.gui_support.open())
+        File.add_command(label="Save", command=lambda: self.gui_support.save())
         # File.add_command(label="refresh")
 
-        Vertex_highlight.add_command(label="group_vertex_by_color", command=lambda: self.popup_group_vertex())
-        Vertex_highlight.add_command(label="vertex_text_box", command=lambda: self.popup_vertex_text())
+        Vertex_highlight.add_command(label="Group_vertex_by_color", command=lambda: self.popup_group_vertex())
+        Vertex_highlight.add_command(label="Vertex_text_box", command=lambda: self.popup_vertex_text())
         # Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
 
-        Edge_highlight.add_command(label="group_edge_by_width", command=lambda: self.popup_group_edge_width())
-        Edge_highlight.add_command(label="group_edge_by_color", command=lambda: self.popup_group_edge_color())
+        Edge_highlight.add_command(label="Group_edge_by_width", command=lambda: self.popup_group_edge_width())
+        Edge_highlight.add_command(label="Group_edge_by_color", command=lambda: self.popup_group_edge_color())
 
-        Layout_menu.add_command(label="original layout",
+        Layout_menu.add_command(label="Original layout",
                                 command=lambda: self.gui_support.start_graph())
-        Layout_menu.add_command(label="reingold tilford circular",
+        Layout_menu.add_command(label="Reingold tilford circular",
                                 command=lambda: self.gui_support.reingold_tilford_circular())
-        Layout_menu.add_command(label="fruchterman reingold",
+        Layout_menu.add_command(label="Fruchterman reingold",
                                 command=lambda: self.gui_support.fruchterman_reingold())
-        Layout_menu.add_command(label="circle",
+        Layout_menu.add_command(label="Circle",
                                 command=lambda: self.gui_support.circle())
-        Layout_menu.add_command(label="mds",
+        Layout_menu.add_command(label="Mds",
                                 command=lambda: self.gui_support.mds())
-        Layout_menu.add_command(label="random",
+        Layout_menu.add_command(label="Random",
                                 command=lambda: self.gui_support.random_lay())
-
-        Throughput.add_command(label="Throughput", command=lambda: self.popup_throughput())
 
         Search.add_command(label="Vertex", command= lambda: self.popup_search_vertex())
         Search.add_command(label="Edge", command=lambda: self.popup_search_edge())
@@ -80,7 +76,7 @@ class Window(Frame):
         Add.add_command(label="Add edge", command=lambda: self.gui_support.add_edge())
 
         Delete.add_command(label="Delete vertex", command=lambda: self.gui_support.delete_vertex())
-        Delete.add_command(label="delete edge", command=lambda: self.gui_support.delete_edge())
+        Delete.add_command(label="Delete edge", command=lambda: self.gui_support.delete_edge())
 
         Centrality.add_command(label="Vertex", command= lambda: self.popup_vertex_centrality())
         Centrality.add_command(label="Edge", command= lambda: self.popup_edge_centrality())
@@ -89,7 +85,7 @@ class Window(Frame):
         menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
         menu.add_cascade(label="Edge Highlight", menu=Edge_highlight)
         menu.add_cascade(label="Layout", menu=Layout_menu)
-        menu.add_cascade(label="Throughput", menu=Throughput)
+        menu.add_command(label="Throughput", command=lambda: self.popup_throughput())
         menu.add_cascade(label="Search", menu=Search)
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())

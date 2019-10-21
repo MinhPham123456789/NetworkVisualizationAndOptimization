@@ -18,7 +18,7 @@ class Statistic(tk.Frame):
         # print(statistic_dictionary.values())
         # print(statistic_dictionary)
         y_pos = np.arange(len(statistic_dictionary.keys()))  # Arrange bar position
-        p.bar(y_pos, statistic_dictionary.values(), align='center', alpha=0.5)
+        p.bar(y_pos, statistic_dictionary.values(), align='center', alpha=0.8)
         p.set_xticks(y_pos)
         p.set_xticklabels(statistic_dictionary.keys())
         p.set_ylabel('Number of edges', fontsize=15)
@@ -47,7 +47,7 @@ class Statistic2(tk.Frame):
         print(self.statistic_dictionary.values())
         print(self.statistic_dictionary)
         y_pos = np.arange(len(self.statistic_dictionary.keys()))  # Arrange bar position
-        self.p.bar(y_pos, self.statistic_dictionary.values(), align='center', alpha=0.5)
+        self.p.bar(y_pos, self.statistic_dictionary.values(), align='center', alpha=0.8)
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(self.statistic_dictionary.keys())
         self.p.set_ylabel('Number of edges', fontsize=15)
@@ -89,15 +89,15 @@ class Statistic3(tk.Frame):
 
         y_pos = np.arange(len(stat_dict.keys()))  # Arrange bar position
         y_pos_total = np.arange(len(stat_dict_total.keys())) + 0.09
-        self.p.bar(y_pos_total, stat_dict_total.values(), align='center', alpha=0.5, color="green")
-        self.p.bar(y_pos, stat_dict.values(), align='center', alpha=0.5)
+        self.p.bar(y_pos_total, stat_dict_total.values(), align='center', alpha=0.8, color="green")
+        self.p.bar(y_pos, stat_dict.values(), align='center', alpha=0.8)
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(stat_dict.keys())
         self.p.set_ylabel('Number of edges', fontsize=15)
         self.p.set_xlabel("Number of edges with high throughput group by LinkLabel in the hour {0}, threshold {1}"
                           .format(hour, threshold), fontsize=10)
-        colors = ["blue", "green"]
-        labels = [stat_dict, stat_dict_total]
+        self.p.legend(["Total number of edges", "Number of edges with high throughput"],fontsize="small",
+                      bbox_to_anchor=(0.3, 1.16))
 
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
@@ -143,9 +143,6 @@ class StatisticPie2(tk.Frame):
         print(self.statistic_dictionary.keys())
         print(self.statistic_dictionary.values())
         print(self.statistic_dictionary)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
 
         keys = list(self.statistic_dictionary.keys())
         values = np.array(list(self.statistic_dictionary.values()))
@@ -178,19 +175,6 @@ class StatisticPie3(tk.Frame):
         for i in range(len(stat)):
             if stat[i] >= threshold:
                 stat_dict[mg.edge[i].properties["LinkLabel"]] = stat_dict[mg.edge[i].properties["LinkLabel"]] + 1
-
-        # self.statistic_dictionary = collections.Counter(x for x in stat if x < 1)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-        # self.statistic_dictionary = collections.OrderedDict(
-        #     sorted(self.statistic_dictionary.items(), key=lambda t: t[0]))
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
 
         stat_dict = collections.OrderedDict(
             sorted(stat_dict.items(), key=lambda t: t[0]))
