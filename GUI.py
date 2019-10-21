@@ -534,19 +534,20 @@ class Window(Frame):
 
         tkVar.trace('w', change_dropdown)
         #########
-        tkVar2 = StringVar(popup_bonus_window)
-        edge_att2 = ["Pie Chart", "Bar Chart"]
-        tkVar2.set("Label Statistic")    #TODO: turn it into bar chart only and make both total by link label and high throughput
+        # tkVar2 = StringVar(popup_bonus_window)
+        # edge_att2 = ["Pie Chart", "Bar Chart"]
+        # tkVar2.set("Label Statistic")    #TODO: turn it into bar chart only and make both total by link label and high throughput
 
-        input_stat2 = OptionMenu(popup_bonus_window, tkVar2, *edge_att2)
+        input_stat2 = Button(popup_bonus_window,text="Label Statistic", command = lambda:self.call_statistic_throughput_label(int(spin_box_1.get()),
+                                                 float(input_throughput_threshold.get()), "Bar Chart"))
         input_stat2.grid(row=1, column=3)
 
-        def change_dropdown2(*args):
-            print(tkVar2.get())
-            self.call_statistic_throughput_label(int(spin_box_1.get()),
-                                                 float(input_throughput_threshold.get()), tkVar2.get())
-
-        tkVar2.trace('w', change_dropdown2)
+        # def change_dropdown2(*args):
+        #     print(tkVar2.get())
+        #     self.call_statistic_throughput_label(int(spin_box_1.get()),
+        #                                          float(input_throughput_threshold.get()), tkVar2.get())
+        #
+        # tkVar2.trace('w', change_dropdown2)
 
 
         # TODO clear when close
