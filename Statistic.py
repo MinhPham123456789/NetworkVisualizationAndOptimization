@@ -89,13 +89,15 @@ class Statistic3(tk.Frame):
 
         y_pos = np.arange(len(stat_dict.keys()))  # Arrange bar position
         y_pos_total = np.arange(len(stat_dict_total.keys())) + 0.09
-        self.p.bar(y_pos_total, stat_dict_total.values(), align='center', alpha=0.5, color="green")
-        self.p.bar(y_pos, stat_dict.values(), align='center', alpha=0.5)
+        self.p.bar(y_pos_total, stat_dict_total.values(), align='center', alpha=0.8, color="green")
+        self.p.bar(y_pos, stat_dict.values(), align='center', alpha=0.8)
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(stat_dict.keys())
         self.p.set_ylabel('Number of edges', fontsize=15)
         self.p.set_xlabel("Number of edges with high throughput group by LinkLabel in the hour {0}, threshold {1}"
                           .format(hour, threshold), fontsize=10)
+        self.p.legend(["Total number of edges", "Number of edges with high throughput"],fontsize="small",
+                      bbox_to_anchor=(0.3, 1.16))
 
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
