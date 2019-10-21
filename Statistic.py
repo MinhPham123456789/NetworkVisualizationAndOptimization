@@ -51,7 +51,7 @@ class Statistic2(tk.Frame):
         self.p.set_xticks(y_pos)
         self.p.set_xticklabels(self.statistic_dictionary.keys())
         self.p.set_ylabel('Number of edges', fontsize=15)
-        self.p.set_xlabel('Statistic in hour {}'.format(hour), fontsize=15)
+        self.p.set_xlabel('Number of edges having the according throughput statistic in the hour {}'.format(hour), fontsize=15)
 
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
@@ -96,6 +96,8 @@ class Statistic3(tk.Frame):
         self.p.set_ylabel('Number of edges', fontsize=15)
         self.p.set_xlabel("Number of edges with high throughput group by LinkLabel in the hour {0}, threshold {1}"
                           .format(hour, threshold), fontsize=10)
+        colors = ["blue", "green"]
+        labels = [stat_dict, stat_dict_total]
 
         canvas = FigureCanvasTkAgg(fig, parent)
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
