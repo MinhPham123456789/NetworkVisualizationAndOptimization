@@ -143,9 +143,6 @@ class StatisticPie2(tk.Frame):
         print(self.statistic_dictionary.keys())
         print(self.statistic_dictionary.values())
         print(self.statistic_dictionary)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
 
         keys = list(self.statistic_dictionary.keys())
         values = np.array(list(self.statistic_dictionary.values()))
@@ -178,19 +175,6 @@ class StatisticPie3(tk.Frame):
         for i in range(len(stat)):
             if stat[i] >= threshold:
                 stat_dict[mg.edge[i].properties["LinkLabel"]] = stat_dict[mg.edge[i].properties["LinkLabel"]] + 1
-
-        # self.statistic_dictionary = collections.Counter(x for x in stat if x < 1)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-        # self.statistic_dictionary = collections.OrderedDict(
-        #     sorted(self.statistic_dictionary.items(), key=lambda t: t[0]))
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
-        # print(self.statistic_dictionary.keys())
-        # print(self.statistic_dictionary.values())
-        # print(self.statistic_dictionary)
 
         stat_dict = collections.OrderedDict(
             sorted(stat_dict.items(), key=lambda t: t[0]))
