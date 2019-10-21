@@ -43,6 +43,8 @@ class Window(Frame):
         Layout_menu = Menu(menu)
         Throughput = Menu(menu)
         Search = Menu(menu)
+        Centrality = Menu(menu)
+        Add = Menu(menu)
 
         File.add_command(label="open", command=lambda: self.gui_support.open())
         File.add_command(label="save", command=lambda: self.gui_support.save())
@@ -72,6 +74,11 @@ class Window(Frame):
 
         Search.add_command(label="Vertex", command= lambda: self.popup_search_vertex())
         Search.add_command(label="Edge", command=lambda: self.popup_search_edge())
+        # create add vertex button
+        Add.add_command(label="Add vertex", command=lambda: self.gui_support.add_vertex())
+
+        Centrality.add_command(label="Vertex", command= lambda: self.popup_vertex_centrality())
+        Centrality.add_command(label="Edge", command= lambda: self.popup_edge_centrality())
 
         menu.add_cascade(label="File", menu=File)
         menu.add_cascade(label="Vertex Highlight", menu=Vertex_highlight)
@@ -82,6 +89,8 @@ class Window(Frame):
         menu.add_command(label="GeoWindow", command=lambda: self.popup_geo_window())
         menu.add_command(label="Statistics", command=lambda: self.popup_statistic())
 
+        menu.add_cascade(label="Centrality", menu=Centrality)
+        menu.add_cascade(label="Add", menu=Add)
         # VERTEX x=0, y=0###############################################3
 
         vertex_information = Label(self, text="Vertex", font="Helvetica 16 bold")
@@ -312,6 +321,44 @@ class Window(Frame):
         B2 = tk.Button(popupBonusWindow, text="Clear", command=lambda: self.gui_support.clear_search_vertex())
         B2.grid(row=2, column=1, pady=5)
 
+    def popup_edge_centrality(self):
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Edge centrality")
+
+        tkVar = StringVar(popupBonusWindow)
+        edge_att = self.gui_support.edge_attributes("width")
+        tkVar.set(edge_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *edge_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.gui_support.show_edge_centrality(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+
+    def popup_vertex_centrality(self):
+        popupBonusWindow = tk.Tk()
+        popupBonusWindow.wm_title("Edge centrality")
+
+        tkVar = StringVar(popupBonusWindow)
+        edge_att = self.gui_support.edge_attributes("width")
+        tkVar.set(edge_att[0])
+
+        input_name = tk.Label(popupBonusWindow, text="Choose Attribute")
+        input_name.grid(row=0, padx=10, pady=5)
+        input_entry = OptionMenu(popupBonusWindow, tkVar, *edge_att)
+        input_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        def change_dropdown(*args):
+            print(tkVar.get())
+            self.gui_support.show_vertex_centrality(tkVar.get())
+
+        tkVar.trace('w', change_dropdown)
+
     def popup_search_edge(self):
         # popupBonusWindow = tk.Tk()
         # popupBonusWindow.wm_title("Search edge")
@@ -484,7 +531,7 @@ class Window(Frame):
         #########
         tkVar2 = StringVar(popup_bonus_window)
         edge_att2 = ["Pie Chart", "Bar Chart"]
-        tkVar2.set("Label Statistic")
+        tkVar2.set("Label Statistic")    #TODO: turn it into bar chart only and make both total by link label and high throughput
 
         input_stat2 = OptionMenu(popup_bonus_window, tkVar2, *edge_att2)
         input_stat2.grid(row=2, column=2, sticky="W", padx=5, pady=2)

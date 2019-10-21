@@ -54,29 +54,29 @@ class ZoomAndDrag(tk.Frame):
 
     def move_move(self, event):
         self.canvas.scan_dragto(event.x, event.y, gain=1)
-
+        print("dragto",event.x,event.y)
     # linux zoom
-    def zoomerP(self, event):
-        true_x = self.offset #self.canvas.canvasx(event.x)  # help zoom focus
-        true_y = self.offset #self.canvas.canvasy(event.y)  # help zoom focus
-        self.canvas.scale("all", true_x, true_y, self.scale_in, self.scale_in)
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        self.scale *= self.scale_in
+    #def zoomerP(self, event):
+    #    true_x = self.offset #self.canvas.canvasx(event.x)  # help zoom focus
+    #    true_y = self.offset #self.canvas.canvasy(event.y)  # help zoom focus
+    #    self.canvas.scale("all", true_x, true_y, self.scale_in, self.scale_in)
+    #    self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+    #    self.scale *= self.scale_in
 
-        self.offset_in.append([true_x, true_y])  # Constructing
+    #    self.offset_in.append([true_x, true_y])  # Constructing
 
-        self.current_scale = [self.offset, self.offset, self.scale, self.scale]
+    #    self.current_scale = [self.offset, self.offset, self.scale, self.scale]
 
-    def zoomerM(self, event):
-        true_x = self.offset #self.canvas.canvasx(event.x)  # help zoom focus
-        true_y = self.offset #self.canvas.canvasy(event.y)  # help zoom focus
-        self.canvas.scale("all", true_x, true_y, self.scale_out, self.scale_out)
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"))
-        self.scale *= self.scale_out
+    #def zoomerM(self, event):
+    #    true_x = self.offset #self.canvas.canvasx(event.x)  # help zoom focus
+    #    true_y = self.offset #self.canvas.canvasy(event.y)  # help zoom focus
+    #    self.canvas.scale("all", true_x, true_y, self.scale_out, self.scale_out)
+    #    self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+    #    self.scale *= self.scale_out
 
-        self.offset_out.append([true_x, true_y])  # Constructing
+    #    self.offset_out.append([true_x, true_y])  # Constructing
 
-        self.current_scale = [self.offset, self.offset, self.scale, self.scale]
+    #    self.current_scale = [self.offset, self.offset, self.scale, self.scale]
 
     # def get_current_scale(self):
     #     return self.current_scale
@@ -97,7 +97,6 @@ class ZoomAndDrag(tk.Frame):
         true_x = self.canvas.canvasx(event.x)  # help zoom focus
         true_y = self.canvas.canvasy(event.y)  # help zoom focus
         items = self.canvas.find_withtag("all")
-
         for item in items:
             coords = self.canvas.coords(item)
             if len(coords) > 2:
@@ -112,14 +111,12 @@ class ZoomAndDrag(tk.Frame):
                 x = x * self.scale_in - (true_x * self.scale_in - true_x)
                 y = y * self.scale_in - (true_y * self.scale_in - true_y)
                 self.canvas.coords(item, x, y)
-
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def zoomOut(self, event):
         true_x = self.canvas.canvasx(event.x)  # help zoom focus
         true_y = self.canvas.canvasy(event.y)  # help zoom focus
         items = self.canvas.find_withtag("all")
-
         for item in items:
             coords = self.canvas.coords(item)
             if len(coords) > 2:
@@ -134,7 +131,6 @@ class ZoomAndDrag(tk.Frame):
                 x = x * self.scale_out - (true_x * self.scale_out - true_x)
                 y = y * self.scale_out - (true_y * self.scale_out - true_y)
                 self.canvas.coords(item, x, y)
-
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def save_all_position(self, center_point):

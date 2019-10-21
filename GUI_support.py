@@ -29,6 +29,7 @@ class GUI_support():
         NREN = Graph.Read_GraphML(graph_name)
         self.graph = NREN
         self.graph_path = graph_name  # Help in geo window
+
         self.gui.mg = ObjManager(NREN)  # GET VERTICES AND EDGES FROM GRAPHML AND MAKE THEM OBJECTS
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
@@ -75,18 +76,18 @@ class GUI_support():
             self.gui.mg.add_attribute_list("Internal", random_value(0.0, 10.0, len(self.gui.mg.vertex)), True)
 
         # ADD DRAG AND ZOOM
-        zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
+        self.zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
 
         # ADD DRAG OBJECTS
-        mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self)
+        self.mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self.zm,self)
 
         # MOTION
-        self.gui.frame.canvas.bind("<Button-3>", mm.select)
-        self.gui.frame.canvas.bind("<B3-Motion>", mm.drag)
-        self.gui.frame.canvas.bind("<Button-1>", zm.move_start)
-        self.gui.frame.canvas.bind("<B1-Motion>", zm.move_move)
-        self.gui.frame.canvas.bind("<Button-4>", zm.zoomIn)
-        self.gui.frame.canvas.bind("<Button-5>", zm.zoomOut)
+        self.gui.frame.canvas.bind("<Button-3>", self.mm.select)
+        self.gui.frame.canvas.bind("<B3-Motion>", self.mm.drag)
+        self.gui.frame.canvas.bind("<Button-1>", self.zm.move_start)
+        self.gui.frame.canvas.bind("<B1-Motion>", self.zm.move_move)
+        self.gui.frame.canvas.bind("<Button-4>", self.zm.zoomIn)
+        self.gui.frame.canvas.bind("<Button-5>", self.zm.zoomOut)
 
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
         self.gui.drawTk.load_edges()
@@ -122,6 +123,9 @@ class GUI_support():
             note.display()
             print("load node color")
         except: pass
+        try:
+            self.show_vertex_centrality(graph["note_vertex_centrality"])
+        except: pass
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -130,6 +134,7 @@ class GUI_support():
         new_graph["note_edge_width"] = Note.note_edge_width
         new_graph["note_edge_color"] = Note.note_edge_color
         new_graph["note_vertex_color"] = Note.note_vertex_color
+        new_graph["note_vertex_centrality"] = Note.note_vertex_centrality
         new_graph.write_graphml(graph_name)
 
     def get_vertex_value(self, vertex_item_index):
@@ -242,6 +247,10 @@ class GUI_support():
         for i in range(len(color_list)):
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=color_list[i])
         for note in self.list_note:
+            if note.title == "vertex_centrality":
+                note.hideframe()
+                self.list_note.remove(note)
+                self.update_note()
             if note.title == "group_vertex":
                 self.list_note.remove(note)
                 self.update_note()
@@ -250,6 +259,38 @@ class GUI_support():
                 self.list_note.append(note)
                 return
         note = Note(self.gui.master, color_dict, "group_vertex",att_name)
+        self.list_note.append(note)
+        note.display()
+
+    def show_vertex_centrality(self, att_name):
+        from ObjectTk.ObjCentrality import Centrality
+        cen_obj = Centrality(self.graph, self.gui.mg)
+        cen_obj.eigenvector_vertex_centrality(att_name)
+        self.vertex_color_gradient("centrality", att_name + " Vertex")
+        pass
+
+    def vertex_color_gradient(self, value, additional_information=""):    #TODO: separate note
+        attribute = str(value)
+        print("----GUI_support.edge_color()----")
+        result = self.gui.drawTk.group_vertex_color_gradient(attribute, self.gui.mg)
+        vertex_color_list = result[1]
+        for i in range(len(vertex_color_list)):
+            self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[self.gui.mg.vertex[i]], fill=vertex_color_list[i])
+        print("//----GUI_support.edge_color()----")
+        note_dict = result[0]
+        for note in self.list_note:
+            if note.title == "group_vertex":
+                note.hideframe()
+                self.list_note.remove(note)
+                self.update_note()
+            if note.title == "vertex_centrality":
+                self.list_note.remove(note)
+                self.update_note()
+                note.regenerate(note_dict,attribute + " " + additional_information)
+                note.display()
+                self.list_note.append(note)
+                return
+        note = Note(self.gui.master, note_dict, "vertex_centrality",attribute + " " + additional_information)
         self.list_note.append(note)
         note.display()
 
@@ -264,15 +305,19 @@ class GUI_support():
                 vertex_obj_list.append(vertex)
         self.gui.drawTk.search_vertex_outline(vertex_obj_list, 9, True)
         self.search_vertex_list = vertex_obj_list
-
+        if self.mm.drawTk.items_table.inverse[self.mm.past_node[0]] in self.search_vertex_list:
+            print("in")
+            self.mm.past_node = None
     def clear_search_vertex(self):
         try:
             self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
             self.search_vertex_list = []
+            self.mm.past_node = None
         except AttributeError:
+            print("error")
             self.gui.drawTk.search_vertex_outline([], 1, False)
             self.search_vertex_list = []
-
+            self.mm.past_node = None
     def search_edge(self, attribute, value):
         edge_obj_list = []
         for edge in self.gui.mg.edge:
@@ -322,6 +367,8 @@ class GUI_support():
         for i in range(len(self.list_note)):
             if self.list_note[i].title == "group_vertex":
                 note = self.list_note[i]
+            if self.list_note[i].title == "vertex_centrality":
+                note = self.list_note[i]
             else: self.list_note[i].hideframe()
         self.list_note = []
         if note != None:
@@ -343,6 +390,12 @@ class GUI_support():
         if note2 != None:
             self.list_note.append(note2)
         self.update_note()
+
+    def show_edge_centrality(self, att_name):
+        from ObjectTk.ObjCentrality import Centrality
+        cen_obj = Centrality(self.graph, self.gui.mg)
+        cen_obj.edge_centrality(att_name)
+        self.edge_color("centrality", att_name + " Edge")
 
     # kiet linkspeedraw:
     def edge_width(self, value):
@@ -368,7 +421,7 @@ class GUI_support():
         note.display()
 
     # thao          ##add note to function
-    def edge_color(self, value):
+    def edge_color(self, value, additional_information=""):
         attribute = str(value)
         print("----GUI_support.edge_color()----")
         result = self.gui.drawTk.edge_color(attribute, self.gui.mg)
@@ -381,11 +434,11 @@ class GUI_support():
             if note.title == "edge_color":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict,attribute)
+                note.regenerate(note_dict,attribute + " " + additional_information)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_color",attribute)
+        note = Note(self.gui.master, note_dict, "edge_color",attribute + " " + additional_information)
         self.list_note.append(note)
         note.display()
 
@@ -503,6 +556,10 @@ class GUI_support():
     def vertex_attributes_nofilter(self):
         vertex_att_list = list(self.gui.mg.vertex[0].properties.keys())
         return vertex_att_list
+
+    # add vertex & edge: after present
+    def add_vertex(self):
+        self.mm.add_vertex = True
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]

@@ -70,10 +70,48 @@ class ObjDrawTkinter:
         MG.change_attribute_value_list("color", new_color, True)
         return [color_dict, new_color]
 
+    def group_vertex_color_gradient(self, vertex_weight: str, MG):
+        print("----ObjectDrawTkinter.edge_color()----")
+        try:
+            weight_list = list(map(float, MG.get_all_attribute_value(vertex_weight, True)))
+        except ValueError:
+            weight_list = list(map(str, MG.get_all_attribute_value(vertex_weight, True)))
+        if isinstance(weight_list[0], str):
+            tuple = self.edge_color_str(weight_list, MG)
+            print("//----ObjectDrawTkinter.edge_color----")
+            return tuple
+        else:
+            color_list = []
+            maxweight = max(weight_list)
+            minweight = min(weight_list)
+            rangeweight = maxweight - minweight
+            onethird = rangeweight / 3
+            for i in range(len(MG.vertex)):
+                if weight_list[i] < minweight + onethird:
+                    percent = (weight_list[i] - minweight) / onethird
+                    color = self.rgb_2_hex(0, 255, int(255 - 255 * percent))
+                elif weight_list[i] < minweight + onethird * 2:
+                    percent = (weight_list[i] - minweight - onethird) / onethird
+                    color = self.rgb_2_hex(int(255 * percent), 255, 0)
+                else:
+                    percent = (weight_list[i] - minweight - onethird * 2) / onethird
+                    color = self.rgb_2_hex(255, int(255 - percent * 255), 0)
+                color_list.append(color)
+            MG.change_attribute_value_list("color", color_list, True)
+            print("//----ObjectDrawTkinter.edge_color----")
+            threshold1 = float("{0:.2f}".format(onethird + minweight))
+            threshold2 = float("{0:.2f}".format(onethird * 2 + minweight))
+            threshold3 = float("{0:.2f}".format(onethird * 3 + minweight))
+            color_dict = {threshold1: [self.rgb_2_hex(0, 255, 255), self.rgb_2_hex(0, 255, 0)],
+                          threshold2: [self.rgb_2_hex(0, 255, 0), self.rgb_2_hex(255, 255, 0)],
+                          threshold3: [self.rgb_2_hex(255, 255, 0), self.rgb_2_hex(255, 0, 0)]}
+            return [color_dict, color_list]
+
     def recolor_vertex_list(self, vertex_obj_list: list, mg: ObjManager, color: str):
         for i in range(len(vertex_obj_list)):
             mg.vertex[i].set_attribute("color", color)
             self.tk_frame.canvas.itemconfigure(self.items_table[mg.vertex[i]], fill=color)
+
 
     def resize_vertex(self, vertex_obj, radius):
         x1, y1, x2, y2 = self.tk_frame.canvas.coords(self.items_table[vertex_obj])
@@ -120,11 +158,13 @@ class ObjDrawTkinter:
         for index in range(len(self.mg.vertex)):
             text_index = "r" + str(index)
             text_item_index = self.items_table[text_index]
+            print(index, text_index, text_item_index)
             canvas.itemconfigure(text_item_index,
                                  text=str(self.mg.vertex[index].properties[vertex_weight]),
                                  state="normal")
 
     def search_vertex_outline(self, vertex_obj_list, width_value, check_search):
+
         for vertex in vertex_obj_list:
             if check_search:
                 self.tk_frame.canvas.itemconfigure(self.items_table[vertex], width=width_value, outline="#66fc09")
@@ -169,6 +209,22 @@ class ObjDrawTkinter:
         for one_edge in self.mg.edge:
             self.tk_frame.canvas.itemconfigure(self.items_table[one_edge], fill=one_edge.properties["color"])
 
+    # handle clicked edge
+    def visual_clicked_edge(self, edge: EdgeObj):
+        prewidth =  self.tk_frame.canvas.itemcget(self.items_table[edge], "width")
+        self.tk_frame.canvas.itemconfigure(self.items_table[edge], width = 13)
+        return prewidth
+    def free_clicked_edge(self, edge: EdgeObj, previous_width):
+        self.tk_frame.canvas.itemconfigure(self.items_table[edge], width = previous_width)
+
+        # handle the clicked node
+    def visual_clicked_node(self, vertex_obj):
+        preoutline = self.tk_frame.canvas.itemcget(self.items_table[vertex_obj], "outline")
+        prewidth = self.tk_frame.canvas.itemcget(self.items_table[vertex_obj], "width")
+        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width=6, outline="white")
+        return preoutline,prewidth
+    def free_clicked_node(self, vertex_obj, preoutline,prewidth):
+        self.tk_frame.canvas.itemconfigure(self.items_table[vertex_obj], width=prewidth, outline=preoutline)
     # change return value
     def group_edge_bandwidth(self, edge_weight: str, MG: ObjManager):
         the_list = list(map(float, MG.get_all_attribute_value(edge_weight, False)))
@@ -222,6 +278,9 @@ class ObjDrawTkinter:
             threshold3 = float("{0:.2f}".format(onethird*3 + minweight))
             color_dict = {threshold1:[self.rgb_2_hex(0,255,255),self.rgb_2_hex(0,255,0)],threshold2:[self.rgb_2_hex(0,255,0),self.rgb_2_hex(255,255,0)],threshold3:[self.rgb_2_hex(255,255,0),self.rgb_2_hex(255,0,0)]}
             return [color_dict, color_list]
+
+    #def edge_color_string(self, edge_weight, MG: ObjManager):
+
 
     def edge_color_by_delay(self, MG: ObjManager):
         delay_list = []
@@ -281,3 +340,15 @@ class ObjDrawTkinter:
             new_color.append(color_dict[key])
         MG.change_attribute_value_list("color", new_color, False)
         return [color_dict, new_color]
+    # create new vertex and add it to manager, items table, draw on canvas
+    def add_new_vertex(self,xc,yc):
+        new_vertex = VertexObj(None)
+        print("Before add")
+        print("len mg.vertex",len(self.mg.vertex),"len items_table",len(self.items_table))
+        new_vertex.set_attribute("id",len(self.mg.vertex))
+        self.mg.vertex.append(new_vertex)
+        self.add_items_table([new_vertex])
+        self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")
+        print("After add")
+        print("len mg.vertex", len(self.mg.vertex), "len items_table", len(self.items_table))
+        return new_vertex
