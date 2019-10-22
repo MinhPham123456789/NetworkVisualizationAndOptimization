@@ -21,6 +21,9 @@ def random_value(min_point: float, max_point: float, size: int):
 
 if __name__ == "__main__":
     test = tk.Tk()
-    test.attributes("-zoomed", True)
+    try:
+        test.attributes("-zoomed", True)
+    except:
+        test.attributes("-fullscreen", True)
     main_window = Window(test)
     test.mainloop()

@@ -35,7 +35,7 @@ class Window(Frame):
 
         File.add_command(label="Open", command=lambda: self.gui_support.open())
         File.add_command(label="Save", command=lambda: self.gui_support.save())
-        # File.add_command(label="refresh")
+        File.add_command(label="Exit", command=lambda: self.master.destroy())
 
         Vertex_highlight.add_command(label="Group_vertex_by_color", command=lambda: self.popup_group_vertex())
         Vertex_highlight.add_command(label="Vertex_text_box", command=lambda: self.popup_vertex_text())
