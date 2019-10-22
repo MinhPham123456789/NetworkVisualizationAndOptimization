@@ -93,6 +93,12 @@ class ZoomAndDrag(tk.Frame):
     # def get_offset_out(self):
     #     return self.offset_out
 
+    def zoomerWindow(self,event):
+        if (event.delta > 0):
+            self.zoomIn(event)
+        elif (event.delta < 0):
+            self.zoomOut(event)
+
     def zoomIn(self, event):
         true_x = self.canvas.canvasx(event.x)  # help zoom focus
         true_y = self.canvas.canvasy(event.y)  # help zoom focus

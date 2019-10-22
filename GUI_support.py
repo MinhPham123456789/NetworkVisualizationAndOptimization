@@ -79,6 +79,7 @@ class GUI_support():
         self.gui.frame.canvas.bind("<B1-Motion>", self.zm.move_move)
         self.gui.frame.canvas.bind("<Button-4>", self.zm.zoomIn)
         self.gui.frame.canvas.bind("<Button-5>", self.zm.zoomOut)
+        self.gui.frame.canvas.bind("<MouseWheel>", self.zm.zoomerWindow)
 
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
         self.gui.drawTk.load_edges()
