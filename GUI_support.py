@@ -70,7 +70,7 @@ class GUI_support():
         self.zm = ZoomAndDrag(self.gui.frame, self.gui.mg)
 
         # ADD DRAG OBJECTS
-        self.mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self.zm,self)
+        self.mm = MouseMover(self.gui.frame, self.gui.drawTk, NREN, self.gui.mg, self.zm, self)
 
         # MOTION
         self.gui.frame.canvas.bind("<Button-3>", self.mm.select)
@@ -90,16 +90,17 @@ class GUI_support():
         self.gui.frame.place(x=300, y=0)
         # reset note & edge attributes
         self.reset_attribute_value()
-        #reset note
+        # reset note
         self.reset_note_vertex()
         self.reset_note_edge()
-        #load_note
+        # load_note
         self.loadnode(NREN)
 
-    def loadnode(self,graph):
+    def loadnode(self, graph):
         try:
             self.edge_width(graph["note_edge_width"])
-        except: pass
+        except:
+            pass
         try:
             s = graph["note_edge_color"]
             list = s.split(" ")
@@ -107,23 +108,26 @@ class GUI_support():
                 self.show_edge_centrality(list[1])
             else:
                 self.edge_color(list[0])
-        except: pass
+        except:
+            pass
         try:
             color_dict = {}
-            list_attribute = self.gui.mg.get_all_attribute_value(graph["note_vertex_color"],True)
-            list_color = self.gui.mg.get_all_attribute_value("color",True)
+            list_attribute = self.gui.mg.get_all_attribute_value(graph["note_vertex_color"], True)
+            list_color = self.gui.mg.get_all_attribute_value("color", True)
             for i in range(len(list_attribute)):
-                color_dict.update({list_attribute[i]:list_color[i]})
+                color_dict.update({list_attribute[i]: list_color[i]})
             note = Note(self.gui.master, color_dict, "group_vertex", graph["note_vertex_color"])
             self.list_note.append(note)
             note.display()
             print("load node color")
-        except: pass
+        except:
+            pass
         try:
             s = graph["note_vertex_centrality"]
             list = s.split(" ")
             self.show_vertex_centrality(list[1])
-        except: pass
+        except:
+            pass
 
     def save(self):
         graph_name = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -184,10 +188,10 @@ class GUI_support():
 
     def reset_attribute_value(self):
         ##reset edge
-        result_list: List[str] = ["","","","","","",""]
+        result_list: List[str] = ["", "", "", "", "", "", ""]
         self.gui.get_edge_value(result_list)
         ##reset node
-        result_list: List[str] = ["","","","","","","",""]
+        result_list: List[str] = ["", "", "", "", "", "", "", ""]
         self.gui.get_vertex_value(result_list)
 
     def set_edge_value(self):
@@ -251,11 +255,11 @@ class GUI_support():
             if note.title == "group_vertex":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(color_dict,att_name)
+                note.regenerate(color_dict, att_name)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, color_dict, "group_vertex",att_name)
+        note = Note(self.gui.master, color_dict, "group_vertex", att_name)
         self.list_note.append(note)
         note.display()
 
@@ -266,7 +270,7 @@ class GUI_support():
         self.vertex_color_gradient("centrality", att_name + " Vertex")
         pass
 
-    def vertex_color_gradient(self, value, additional_information=""):    #TODO: separate note
+    def vertex_color_gradient(self, value, additional_information=""):  # TODO: separate note
         attribute = str(value)
         print("----GUI_support.edge_color()----")
         result = self.gui.drawTk.group_vertex_color_gradient(attribute, self.gui.mg)
@@ -283,11 +287,11 @@ class GUI_support():
             if note.title == "vertex_centrality":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict,attribute + " " + additional_information)
+                note.regenerate(note_dict, attribute + " " + additional_information)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "vertex_centrality",attribute + " " + additional_information)
+        note = Note(self.gui.master, note_dict, "vertex_centrality", attribute + " " + additional_information)
         self.list_note.append(note)
         note.display()
 
@@ -305,6 +309,7 @@ class GUI_support():
         if self.mm.drawTk.items_table.inverse[self.mm.past_node[0]] in self.search_vertex_list:
             print("in")
             self.mm.past_node = None
+
     def clear_search_vertex(self):
         try:
             self.gui.drawTk.search_vertex_outline(self.search_vertex_list, 1, False)
@@ -315,6 +320,7 @@ class GUI_support():
             self.gui.drawTk.search_vertex_outline([], 1, False)
             self.search_vertex_list = []
             self.mm.past_node = None
+
     def search_edge(self, attribute, value):
         edge_obj_list = []
         for edge in self.gui.mg.edge:
@@ -351,7 +357,6 @@ class GUI_support():
             index = "r" + str(self.gui.mg.vertex[i])
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
 
-
     # update existing node
     def update_note(self):
         Note.x = 1420
@@ -368,7 +373,8 @@ class GUI_support():
                 note = self.list_note[i]
             if self.list_note[i].title == "vertex_centrality":
                 note = self.list_note[i]
-            else: self.list_note[i].hideframe()
+            else:
+                self.list_note[i].hideframe()
         self.list_note = []
         if note != None:
             self.list_note.append(note)
@@ -382,7 +388,8 @@ class GUI_support():
                 note1 = self.list_note[i]
             elif self.list_note[i].title == "edge_color":
                 note2 = self.list_note[i]
-            else: self.list_note[i].hideframe()
+            else:
+                self.list_note[i].hideframe()
         self.list_note = []
         if note1 != None:
             self.list_note.append(note1)
@@ -411,11 +418,11 @@ class GUI_support():
             if note.title == "edge_width":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict,att_name)
+                note.regenerate(note_dict, att_name)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_width",att_name)
+        note = Note(self.gui.master, note_dict, "edge_width", att_name)
         self.list_note.append(note)
         note.display()
 
@@ -433,11 +440,11 @@ class GUI_support():
             if note.title == "edge_color":
                 self.list_note.remove(note)
                 self.update_note()
-                note.regenerate(note_dict,attribute + " " + additional_information)
+                note.regenerate(note_dict, attribute + " " + additional_information)
                 note.display()
                 self.list_note.append(note)
                 return
-        note = Note(self.gui.master, note_dict, "edge_color",attribute + " " + additional_information)
+        note = Note(self.gui.master, note_dict, "edge_color", attribute + " " + additional_information)
         self.list_note.append(note)
         note.display()
 
@@ -581,6 +588,7 @@ class GUI_support():
         self.mm.add_vertex = False
         self.mm.add_edge = False
         self.mm.delete_vertex = False
+
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]
