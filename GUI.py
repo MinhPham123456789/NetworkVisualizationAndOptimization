@@ -1,18 +1,6 @@
-import pandas as pd
-from igraph import *
-from ObjectTk.ObjectManager import *
-from ObjectTk.ObjectDrawTkinter import *
-import tkinter as tk
-
-from Statistic import Statistic2, StatisticPie2
-from ZoomAndDrag import *
-from igraphNewModules import *
-from DragObject import *
-from ObjectTk.ObjTkFrame import *
-from ObjectTk.ObjTkLayout import GraphLayout
+from Statistic import StatisticPie2
 from GUI_support import *
 from MapLocate import *
-import numpy as np
 import GeoPage
 
 
@@ -619,7 +607,7 @@ class Window(Frame):
 
     def call_statistic_throughput_label(self, hour, threshold, chart):
         from ThroughputInformation import get_throughput_information
-        from Statistic import Statistic2, StatisticPie3, Statistic3
+        from Statistic import StatisticPie3, Statistic3
         import numpy as np
         window = tk.Tk()
         csv_table = get_throughput_information(self.gui_support.throughput)

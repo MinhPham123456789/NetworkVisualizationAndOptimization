@@ -1,17 +1,3 @@
-from igraph import *
-from ObjectTk.ObjectManager import *
-from ObjectTk.ObjectDrawTkinter import *
-from ObjectTk.ObjTkFrame import *
-from ObjectTk.ObjTkLayout import GraphLayout
-import tkinter as tk
-from ZoomAndDrag import *
-from igraphNewModules import *
-from DragObject import *
-
-from ObjectTk.ObjTkFrame import *
-from GUI import *
-
-import numpy as np
 from GUI import *
 
 

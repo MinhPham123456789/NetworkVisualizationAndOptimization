@@ -356,6 +356,8 @@ class ObjDrawTkinter:
         new_vertex.set_attribute("asn", "New")
         new_vertex.set_attribute("Longitude", 0.0)
         new_vertex.set_attribute("Latitude", 0.0)
+        new_vertex.set_attribute("x", xc)
+        new_vertex.set_attribute("y", yc)
         self.mg.vertex.append(new_vertex)
         self.add_items_table([new_vertex])
         self.tk_frame.canvas.create_oval(xc-5,yc-5,xc+5,yc+5, fill = "red")

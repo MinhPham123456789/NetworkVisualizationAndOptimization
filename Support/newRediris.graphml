@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="g_Testbed" for="graph" attr.name="Testbed" attr.type="double"/>
+  <key id="g_LastProcessed" for="graph" attr.name="LastProcessed" attr.type="string"/>
+  <key id="g_DateYear" for="graph" attr.name="DateYear" attr.type="string"/>
+  <key id="g_NetworkDate" for="graph" attr.name="NetworkDate" attr.type="string"/>
+  <key id="g_Transit" for="graph" attr.name="Transit" attr.type="double"/>
+  <key id="g_Developed" for="graph" attr.name="Developed" attr.type="double"/>
+  <key id="g_Creator" for="graph" attr.name="Creator" attr.type="string"/>
+  <key id="g_Layer" for="graph" attr.name="Layer" attr.type="string"/>
+  <key id="g_Access" for="graph" attr.name="Access" attr.type="double"/>
+  <key id="g_LastAccess" for="graph" attr.name="LastAccess" attr.type="string"/>
+  <key id="g_DateMonth" for="graph" attr.name="DateMonth" attr.type="string"/>
+  <key id="g_DateModifier" for="graph" attr.name="DateModifier" attr.type="string"/>
+  <key id="g_SourceGitVersion" for="graph" attr.name="SourceGitVersion" attr.type="string"/>
+  <key id="g_IX" for="graph" attr.name="IX" attr.type="double"/>
+  <key id="g_Customer" for="graph" attr.name="Customer" attr.type="double"/>
+  <key id="g_ToolsetVersion" for="graph" attr.name="ToolsetVersion" attr.type="string"/>
+  <key id="g_label" for="graph" attr.name="label" attr.type="string"/>
+  <key id="g_Commercial" for="graph" attr.name="Commercial" attr.type="double"/>
+  <key id="g_Backbone" for="graph" attr.name="Backbone" attr.type="double"/>
+  <key id="g_Type" for="graph" attr.name="Type" attr.type="string"/>
+  <key id="g_DateType" for="graph" attr.name="DateType" attr.type="string"/>
+  <key id="g_Version" for="graph" attr.name="Version" attr.type="string"/>
+  <key id="g_Source" for="graph" attr.name="Source" attr.type="string"/>
+  <key id="g_Note" for="graph" attr.name="Note" attr.type="string"/>
+  <key id="g_Provenance" for="graph" attr.name="Provenance" attr.type="string"/>
+  <key id="g_Network" for="graph" attr.name="Network" attr.type="string"/>
+  <key id="g_GeoExtent" for="graph" attr.name="GeoExtent" attr.type="string"/>
+  <key id="g_GeoLocation" for="graph" attr.name="GeoLocation" attr.type="string"/>
+  <key id="g_DateObtained" for="graph" attr.name="DateObtained" attr.type="string"/>
+  <key id="v_label" for="node" attr.name="label" attr.type="string"/>
+  <key id="v_Longitude" for="node" attr.name="Longitude" attr.type="double"/>
+  <key id="v_id" for="node" attr.name="id" attr.type="double"/>
+  <key id="v_Country" for="node" attr.name="Country" attr.type="string"/>
+  <key id="v_Latitude" for="node" attr.name="Latitude" attr.type="double"/>
+  <key id="v_Internal" for="node" attr.name="Internal" attr.type="double"/>
+  <key id="e_key" for="edge" attr.name="key" attr.type="double"/>
+  <key id="e_LinkSpeedRaw" for="edge" attr.name="LinkSpeedRaw" attr.type="double"/>
+  <key id="e_LinkSpeedUnits" for="edge" attr.name="LinkSpeedUnits" attr.type="string"/>
+  <key id="e_LinkLabel" for="edge" attr.name="LinkLabel" attr.type="string"/>
+  <key id="e_LinkSpeed" for="edge" attr.name="LinkSpeed" attr.type="string"/>
+  <key id="e_bufferDelay" for="edge" attr.name="bufferDelay" attr.type="double"/>
+  <key id="e_tranmissionDelay" for="edge" attr.name="tranmissionDelay" attr.type="double"/>
+  <key id="e_propagationDelay" for="edge" attr.name="propagationDelay" attr.type="double"/>
+  <graph id="G" edgedefault="undirected">
+    <data key="g_Testbed">0</data>
+    <data key="g_LastProcessed">2011_09_01</data>
+    <data key="g_DateYear">2011</data>
+    <data key="g_NetworkDate">2011_03</data>
+    <data key="g_Transit">0</data>
+    <data key="g_Developed">0</data>
+    <data key="g_Creator">Topology Zoo Toolset</data>
+    <data key="g_Layer">IP</data>
+    <data key="g_Access">0</data>
+    <data key="g_LastAccess">6/03/11</data>
+    <data key="g_DateMonth">03</data>
+    <data key="g_DateModifier">=</data>
+    <data key="g_SourceGitVersion">e278b1b</data>
+    <data key="g_IX">0</data>
+    <data key="g_Customer">0</data>
+    <data key="g_ToolsetVersion">0.3.34dev-20120328</data>
+    <data key="g_label">Rediris</data>
+    <data key="g_Commercial">0</data>
+    <data key="g_Backbone">1</data>
+    <data key="g_Type">REN</data>
+    <data key="g_DateType">Current</data>
+    <data key="g_Version">1.0</data>
+    <data key="g_Source">http://www.rediris.es/lared/mapa.html</data>
+    <data key="g_Note">Names from http://www.rediris.es/servicios/conectividad/pdp.html Assume Nacional is located in Madrid.</data>
+    <data key="g_Provenance">Primary</data>
+    <data key="g_Network">RedIris</data>
+    <data key="g_GeoExtent">Country</data>
+    <data key="g_GeoLocation">Spain</data>
+    <data key="g_DateObtained">3/02/11</data>
+    <node id="n0">
+      <data key="v_label">Navarra</data>
+      <data key="v_Longitude">-1.64323</data>
+      <data key="v_id">0</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">42.8169</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n1">
+      <data key="v_label">Rioja</data>
+      <data key="v_Longitude">-2.45</data>
+      <data key="v_id">1</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">42.4667</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n2">
+      <data key="v_label">Cantabria</data>
+      <data key="v_Longitude">-3.80444</data>
+      <data key="v_id">2</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">43.4647</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n3">
+      <data key="v_label">Pais Vasco</data>
+      <data key="v_Longitude">-2.75</data>
+      <data key="v_id">3</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">43</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n4">
+      <data key="v_label">Baleares</data>
+      <data key="v_Longitude">2.65024</data>
+      <data key="v_id">4</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">39.5694</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n5">
+      <data key="v_label">Valencia</data>
+      <data key="v_Longitude">-0.37739</data>
+      <data key="v_id">5</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">39.4697</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n6">
+      <data key="v_label">Aragon</data>
+      <data key="v_Longitude">-0.87734</data>
+      <data key="v_id">6</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">41.6561</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n7">
+      <data key="v_label">Cataluna</data>
+      <data key="v_Longitude">2.15899</data>
+      <data key="v_id">7</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">41.3888</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n8">
+      <data key="v_label">Murcia</data>
+      <data key="v_Longitude">-1.11667</data>
+      <data key="v_id">8</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">37.9833</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n9">
+      <data key="v_label">Galacia</data>
+      <data key="v_Longitude">-8.54569</data>
+      <data key="v_id">9</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">42.8805</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n10">
+      <data key="v_label">Asturias</data>
+      <data key="v_Longitude">-5.84476</data>
+      <data key="v_id">10</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">43.3603</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n11">
+      <data key="v_label">Extremadura</data>
+      <data key="v_Longitude">-6.96667</data>
+      <data key="v_id">11</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">38.8833</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n12">
+      <data key="v_label">Andalucia</data>
+      <data key="v_Longitude">-5.98694</data>
+      <data key="v_id">12</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">37.3772</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n13">
+      <data key="v_label">Canarias (las palmas)</data>
+      <data key="v_Longitude">-15.4167</data>
+      <data key="v_id">13</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">28.1</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n14">
+      <data key="v_label">Canarias (tenerife)</data>
+      <data key="v_Longitude">-16.3167</data>
+      <data key="v_id">14</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">28.4833</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n15">
+      <data key="v_label">Castilla La Mancha</data>
+      <data key="v_Longitude">-3.93333</data>
+      <data key="v_id">15</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">38.9833</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n16">
+      <data key="v_label">Nacional</data>
+      <data key="v_Longitude">-3.70256</data>
+      <data key="v_id">16</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">40.4165</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n17">
+      <data key="v_label">Madrid</data>
+      <data key="v_Longitude">-3.70256</data>
+      <data key="v_id">17</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">40.4165</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <node id="n18">
+      <data key="v_label">Castilla Y Leon</data>
+      <data key="v_Longitude">-4.71667</data>
+      <data key="v_id">18</data>
+      <data key="v_Country">Spain</data>
+      <data key="v_Latitude">41.65</data>
+      <data key="v_Internal">1</data>
+    </node>
+    <edge source="n0" target="n3">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.08995</data>
+      <data key="e_tranmissionDelay">1.01152</data>
+      <data key="e_propagationDelay">87.2635</data>
+    </edge>
+    <edge source="n0" target="n6">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.0585</data>
+      <data key="e_tranmissionDelay">0.873583</data>
+      <data key="e_propagationDelay">-19.4273</data>
+    </edge>
+    <edge source="n1" target="n18">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1.55e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">155 Mbps</data>
+      <data key="e_LinkSpeed">155</data>
+      <data key="e_bufferDelay">1.72627</data>
+      <data key="e_tranmissionDelay">1.01299</data>
+      <data key="e_propagationDelay">42.0392</data>
+    </edge>
+    <edge source="n1" target="n6">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1.55e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">155 Mbps</data>
+      <data key="e_LinkSpeed">155</data>
+      <data key="e_bufferDelay">1.98885</data>
+      <data key="e_tranmissionDelay">0.869056</data>
+      <data key="e_propagationDelay">95.6973</data>
+    </edge>
+    <edge source="n2" target="n10">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">2.39176</data>
+      <data key="e_tranmissionDelay">0.860002</data>
+      <data key="e_propagationDelay">75.4577</data>
+    </edge>
+    <edge source="n2" target="n3">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">1.80301</data>
+      <data key="e_tranmissionDelay">1.0703</data>
+      <data key="e_propagationDelay">56.7641</data>
+    </edge>
+    <edge source="n3" target="n9">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">1.78078</data>
+      <data key="e_tranmissionDelay">1.13757</data>
+      <data key="e_propagationDelay">36.9221</data>
+    </edge>
+    <edge source="n3" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">2.00155</data>
+      <data key="e_tranmissionDelay">1.21683</data>
+      <data key="e_propagationDelay">27.0309</data>
+    </edge>
+    <edge source="n4" target="n5">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">1.51293</data>
+      <data key="e_tranmissionDelay">0.704624</data>
+      <data key="e_propagationDelay">52.0804</data>
+    </edge>
+    <edge source="n4" target="n7">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">1.98927</data>
+      <data key="e_tranmissionDelay">0.904354</data>
+      <data key="e_propagationDelay">67.7698</data>
+    </edge>
+    <edge source="n4" target="n7">
+      <data key="e_key">1</data>
+      <data key="e_LinkSpeedRaw">1.55e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">155 Mbps</data>
+      <data key="e_LinkSpeed">155</data>
+      <data key="e_bufferDelay">1.78541</data>
+      <data key="e_tranmissionDelay">1.02312</data>
+      <data key="e_propagationDelay">64.722</data>
+    </edge>
+    <edge source="n5" target="n8">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">1.86868</data>
+      <data key="e_tranmissionDelay">1.05297</data>
+      <data key="e_propagationDelay">59.5303</data>
+    </edge>
+    <edge source="n5" target="n12">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">1.96757</data>
+      <data key="e_tranmissionDelay">1.19331</data>
+      <data key="e_propagationDelay">37.558</data>
+    </edge>
+    <edge source="n5" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1e+10</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">10 Gbps</data>
+      <data key="e_LinkSpeed">10</data>
+      <data key="e_bufferDelay">1.94553</data>
+      <data key="e_tranmissionDelay">0.843501</data>
+      <data key="e_propagationDelay">18.7092</data>
+    </edge>
+    <edge source="n5" target="n7">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1e+10</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">10 Gbps</data>
+      <data key="e_LinkSpeed">10</data>
+      <data key="e_bufferDelay">2.3311</data>
+      <data key="e_tranmissionDelay">1.19779</data>
+      <data key="e_propagationDelay">67.1103</data>
+    </edge>
+    <edge source="n6" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">1.9805</data>
+      <data key="e_tranmissionDelay">0.874029</data>
+      <data key="e_propagationDelay">31.2839</data>
+    </edge>
+    <edge source="n6" target="n7">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.28839</data>
+      <data key="e_tranmissionDelay">1.07588</data>
+      <data key="e_propagationDelay">31.3576</data>
+    </edge>
+    <edge source="n7" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1e+10</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">10 Gbps</data>
+      <data key="e_LinkSpeed">10</data>
+      <data key="e_bufferDelay">2.0878</data>
+      <data key="e_tranmissionDelay">0.979915</data>
+      <data key="e_propagationDelay">1.39966</data>
+    </edge>
+    <edge source="n8" target="n12">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.2954</data>
+      <data key="e_tranmissionDelay">0.854619</data>
+      <data key="e_propagationDelay">41.0369</data>
+    </edge>
+    <edge source="n9" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">1.98129</data>
+      <data key="e_tranmissionDelay">0.945195</data>
+      <data key="e_propagationDelay">73.702</data>
+    </edge>
+    <edge source="n9" target="n10">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">2.06173</data>
+      <data key="e_tranmissionDelay">0.616438</data>
+      <data key="e_propagationDelay">47.6201</data>
+    </edge>
+    <edge source="n9" target="n18">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">2.04965</data>
+      <data key="e_tranmissionDelay">0.8548</data>
+      <data key="e_propagationDelay">50.6981</data>
+    </edge>
+    <edge source="n11" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">1.96811</data>
+      <data key="e_tranmissionDelay">1.22146</data>
+      <data key="e_propagationDelay">57.0821</data>
+    </edge>
+    <edge source="n11" target="n12">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">2.02575</data>
+      <data key="e_tranmissionDelay">1.36158</data>
+      <data key="e_propagationDelay">87.8246</data>
+    </edge>
+    <edge source="n12" target="n13">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.25968</data>
+      <data key="e_tranmissionDelay">1.05231</data>
+      <data key="e_propagationDelay">66.8994</data>
+    </edge>
+    <edge source="n12" target="n15">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.15912</data>
+      <data key="e_tranmissionDelay">0.835308</data>
+      <data key="e_propagationDelay">68.2908</data>
+    </edge>
+    <edge source="n12" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1e+10</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">10 Gbps</data>
+      <data key="e_LinkSpeed">10</data>
+      <data key="e_bufferDelay">1.92535</data>
+      <data key="e_tranmissionDelay">1.13848</data>
+      <data key="e_propagationDelay">8.65553</data>
+    </edge>
+    <edge source="n13" target="n14">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">100 Mbps</data>
+      <data key="e_LinkSpeed">100</data>
+      <data key="e_bufferDelay">2.0692</data>
+      <data key="e_tranmissionDelay">0.744028</data>
+      <data key="e_propagationDelay">49.6625</data>
+    </edge>
+    <edge source="n14" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">2.17018</data>
+      <data key="e_tranmissionDelay">1.17877</data>
+      <data key="e_propagationDelay">56.7153</data>
+    </edge>
+    <edge source="n15" target="n16">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">6.22e+08</data>
+      <data key="e_LinkSpeedUnits">M</data>
+      <data key="e_LinkLabel">622 Mbps</data>
+      <data key="e_LinkSpeed">622</data>
+      <data key="e_bufferDelay">1.8732</data>
+      <data key="e_tranmissionDelay">1.14198</data>
+      <data key="e_propagationDelay">23.5154</data>
+    </edge>
+    <edge source="n16" target="n17">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">1e+10</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">10 Gbps</data>
+      <data key="e_LinkSpeed">10</data>
+      <data key="e_bufferDelay">1.92975</data>
+      <data key="e_tranmissionDelay">1.05509</data>
+      <data key="e_propagationDelay">90.1253</data>
+    </edge>
+    <edge source="n16" target="n18">
+      <data key="e_key">0</data>
+      <data key="e_LinkSpeedRaw">2.5e+09</data>
+      <data key="e_LinkSpeedUnits">G</data>
+      <data key="e_LinkLabel">2.5 Gbps</data>
+      <data key="e_LinkSpeed">2.5</data>
+      <data key="e_bufferDelay">2.03302</data>
+      <data key="e_tranmissionDelay">0.922688</data>
+      <data key="e_propagationDelay">13.7492</data>
+    </edge>
+  </graph>
+</graphml>

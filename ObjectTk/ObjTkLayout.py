@@ -7,6 +7,7 @@ class GraphLayout:
 
     def start_layout(self):
         new_layout_coords = list(zip(self.graph.vs["x"], self.graph.vs["y"]))
+        # print(new_layout_coords)
         return new_layout_coords
 
     def reingold_tilford_circular_layout(self):
