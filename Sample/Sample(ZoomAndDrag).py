@@ -1,4 +1,4 @@
-from Support.DrawTkinter import *
+from Sample.DrawTkinter import *
 from igraph import *
 
 class Example(tk.Frame):

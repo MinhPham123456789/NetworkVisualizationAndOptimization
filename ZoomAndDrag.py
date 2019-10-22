@@ -54,7 +54,7 @@ class ZoomAndDrag(tk.Frame):
 
     def move_move(self, event):
         self.canvas.scan_dragto(event.x, event.y, gain=1)
-        print("dragto",event.x,event.y)
+        # print("dragto",event.x,event.y)
     # linux zoom
     #def zoomerP(self, event):
     #    true_x = self.offset #self.canvas.canvasx(event.x)  # help zoom focus
@@ -92,6 +92,12 @@ class ZoomAndDrag(tk.Frame):
     #
     # def get_offset_out(self):
     #     return self.offset_out
+
+    def zoomerWindow(self,event):
+        if (event.delta > 0):
+            self.zoomIn(event)
+        elif (event.delta < 0):
+            self.zoomOut(event)
 
     def zoomIn(self, event):
         true_x = self.canvas.canvasx(event.x)  # help zoom focus

@@ -34,7 +34,7 @@ class GUI_support():
         self.gui.frame.destroy()
         self.gui.frame = ObjTkFrame(self.gui.master)
         self.gui.canvas = self.gui.frame.canvas
-        self.gui.drawTk = ObjDrawTkinter(300, self.gui.mg, self.gui.frame)
+        self.gui.drawTk = ObjDrawTkinter(390, self.gui.mg, self.gui.frame)
         self.gui.layout = GraphLayout(NREN)
         # GENERATE ADDITIONAL ATTRIBUTES TODO: coordinate problem
         try:
@@ -55,20 +55,11 @@ class GUI_support():
         except KeyError:
             pass
 
-        try:
-            NREN.vs["color"]
-        except KeyError:
-            self.gui.mg.add_attribute("color", "red", True)
+        self.gui.mg.add_attribute("color", "red", True)
 
-        try:
-            NREN.es["color"]
-        except KeyError:
-            self.gui.mg.add_attribute("color", "white", False)
+        self.gui.mg.add_attribute("color", "white", False)
 
-        try:
-            NREN.vs["vertex_size"]
-        except KeyError:
-            self.gui.mg.add_attribute("vertex_size", 0.08, True)
+        self.gui.mg.add_attribute("vertex_size", 0.08, True)
 
         try:
             NREN.vs["Internal"]
@@ -88,6 +79,7 @@ class GUI_support():
         self.gui.frame.canvas.bind("<B1-Motion>", self.zm.move_move)
         self.gui.frame.canvas.bind("<Button-4>", self.zm.zoomIn)
         self.gui.frame.canvas.bind("<Button-5>", self.zm.zoomOut)
+        self.gui.frame.canvas.bind("<MouseWheel>", self.zm.zoomerWindow)
 
         # LOAD VERTICES AND EDGE FROM GRAPHML (Note: reverse draw edge before vertex for nice visual
         self.gui.drawTk.load_edges()
@@ -110,7 +102,12 @@ class GUI_support():
             self.edge_width(graph["note_edge_width"])
         except: pass
         try:
-            self.edge_color(graph["note_edge_color"])
+            s = graph["note_edge_color"]
+            list = s.split(" ")
+            if len(list) >= 2:
+                self.show_edge_centrality(list[1])
+            else:
+                self.edge_color(list[0])
         except: pass
         try:
             color_dict = {}
@@ -124,7 +121,9 @@ class GUI_support():
             print("load node color")
         except: pass
         try:
-            self.show_vertex_centrality(graph["note_vertex_centrality"])
+            s = graph["note_vertex_centrality"]
+            list = s.split(" ")
+            self.show_vertex_centrality(list[1])
         except: pass
 
     def save(self):
@@ -239,7 +238,6 @@ class GUI_support():
 
     def group_vertex(self, value):
         att_name = str(value)
-        print(att_name)
         result = self.gui.drawTk.group_vertex_color(att_name, self.gui.mg)
         color_list = result[1]
         color_dict = result[0]
@@ -344,14 +342,16 @@ class GUI_support():
     def reset_edge_width(self):
         for edge in self.gui.mg.edge:
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[edge], width=2)
+            edge.set_attribute("width", 2)
 
     def set_vertex_box(self, vertex_weight):
         self.gui.drawTk.change_vertex_text_weight(vertex_weight, self.gui.canvas)
 
     def clear_vertex_text_box(self):
         for i in range(len(self.gui.mg.vertex)):
-            index = "r" + str(i)
+            index = "r" + str(self.gui.mg.vertex[i])
             self.gui.canvas.itemconfigure(self.gui.drawTk.items_table[index], state="hidden")
+
 
     # update existing node
     def update_note(self):
@@ -511,7 +511,7 @@ class GUI_support():
         vy2 = y + old_height_len
         self.gui.canvas.coords(vertex_item_index, vx1, vy1, vx2, vy2)
         if self.gui.drawTk.rectangle_switch:
-            rectangle_index = "r" + str(vertex_obj_index)
+            rectangle_index = "r" + str(vertex_obj)
             position = self.gui.drawTk.set_weight_text_position(vertex_obj_index, self.gui.mg)
             self.gui.canvas.coords(self.gui.drawTk.items_table[rectangle_index], position)
         items = self.gui.canvas.find_withtag("all")
@@ -560,6 +560,28 @@ class GUI_support():
     # add vertex & edge: after present
     def add_vertex(self):
         self.mm.add_vertex = True
+        self.mm.add_edge = False
+        self.mm.delete_vertex = False
+        self.mm.delete_edge = False
+
+    def add_edge(self):
+        self.mm.add_edge = True
+        self.mm.add_vertex = False
+        self.mm.delete_edge = False
+        self.mm.delete_vertex = False
+
+    # delete vertex & edge
+    def delete_vertex(self):
+        self.mm.delete_vertex = True
+        self.mm.add_vertex = False
+        self.mm.add_edge = False
+        self.mm.delete_edge = False
+
+    def delete_edge(self):
+        self.mm.delete_edge = True
+        self.mm.add_vertex = False
+        self.mm.add_edge = False
+        self.mm.delete_vertex = False
 
 def random_value(min_point: float, max_point: float, size: int):
     result = [random.uniform(min_point, max_point) for i in range(size)]
