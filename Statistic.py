@@ -31,7 +31,10 @@ class Statistic(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
-        canvas.show()
+        try:
+            canvas.show()
+        except:
+            canvas.draw()
 
 
 class Statistic2(tk.Frame):
@@ -62,7 +65,10 @@ class Statistic2(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
-        canvas.show()
+        try:
+            canvas.show()
+        except:
+            canvas.draw()
 
 class Statistic3(tk.Frame):
     def __init__(self, parent, stat, mg, hour, threshold):
@@ -108,7 +114,10 @@ class Statistic3(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
-        canvas.show()
+        try:
+            canvas.show()
+        except:
+            canvas.draw()
 
 class StatisticPie:
     def __init__(self, stat, attribute):
@@ -162,7 +171,10 @@ class StatisticPie2(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
-        canvas.show()
+        try:
+            canvas.show()
+        except:
+            canvas.draw()
 
 class StatisticPie3(tk.Frame):
     def __init__(self, parent, stat, mg, hour, threshold):
@@ -198,7 +210,10 @@ class StatisticPie3(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
         canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
-        canvas.show()
+        try:
+            canvas.show()
+        except:
+            canvas.draw()
 
 
 def random_color(amount):

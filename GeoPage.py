@@ -52,7 +52,7 @@ class GeoPage(tk.Frame):
             ax.annotate(i, (x, y), size=7, ha='center', va='center')
 
         canvas = FigureCanvasTkAgg(fig, parent)
-        canvas.show()
+        canvas.draw()
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
         toolbar = NavigationToolbar2TkAgg(canvas, parent)
         toolbar.update()
