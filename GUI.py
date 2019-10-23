@@ -37,12 +37,12 @@ class Window(Frame):
         File.add_command(label="Save", command=lambda: self.gui_support.save())
         File.add_command(label="Exit", command=lambda: self.master.destroy())
 
-        Vertex_highlight.add_command(label="Group_vertex_by_color", command=lambda: self.popup_group_vertex())
-        Vertex_highlight.add_command(label="Vertex_text_box", command=lambda: self.popup_vertex_text())
+        Vertex_highlight.add_command(label="Highlight vertex by color", command=lambda: self.popup_group_vertex())
+        Vertex_highlight.add_command(label="Vertex text box", command=lambda: self.popup_vertex_text())
         # Vertex_highlight.add_command(label="vertex_size", command=lambda: self.popup_vertex_size())
 
-        Edge_highlight.add_command(label="Group_edge_by_width", command=lambda: self.popup_group_edge_width())
-        Edge_highlight.add_command(label="Group_edge_by_color", command=lambda: self.popup_group_edge_color())
+        Edge_highlight.add_command(label="Highlight edge by width", command=lambda: self.popup_group_edge_width())
+        Edge_highlight.add_command(label="Highlight edge by color", command=lambda: self.popup_group_edge_color())
 
         Layout_menu.add_command(label="Original layout",
                                 command=lambda: self.gui_support.start_graph())
@@ -474,14 +474,14 @@ class Window(Frame):
         popup_bonus_window = Tk()
         popup_bonus_window.wm_title("Throughput window")
         input_name = Label(popup_bonus_window, text="Throughput file")
-        input_name.grid(row=0)
+        input_name.grid(row=0, padx=5, pady=2)
         input_entry = Entry(popup_bonus_window)
-        input_entry.grid(row=0, column=1)
+        input_entry.grid(row=0, column=1, padx=5, pady=2)
         throughput_threshold = Label(popup_bonus_window, text="Threshold")
-        throughput_threshold.grid(row=1, column=0)
+        throughput_threshold.grid(row=1, column=0, padx=5, pady=2)
         input_throughput_threshold = Entry(popup_bonus_window)
         input_throughput_threshold.insert(0, "0.9")
-        input_throughput_threshold.grid(row=1, column=1)
+        input_throughput_threshold.grid(row=1, column=1, padx=5, pady=2)
         B1 = Button(popup_bonus_window, text="Browse",
                     command=lambda: [input_entry.delete(0, "end"),
                                      self.get_throughput_name(self.gui_support.open_throughput()),
@@ -489,28 +489,28 @@ class Window(Frame):
                                      self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                           self.gui_support.throughput,
                                                                           float(input_throughput_threshold.get()))])
-        B1.grid(row=0, column=2)
+        B1.grid(row=0, column=2, sticky="W", padx=5, pady=2)
         spin_box_1 = tk.Spinbox(popup_bonus_window, from_=0, to=23, width=18,
                                 command=lambda: self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                                      self.gui_support.throughput,
                                                                                      float(input_throughput_threshold.get())))
-        spin_box_1.grid(row=2, column=1)
+        spin_box_1.grid(row=3, column=1, padx=5, pady=2)
         threshold_button = Button(popup_bonus_window, text="Apply",
                                   command=lambda: [self.gui_support.get_throughput_time(spin_box_1.get(),
                                                                                         self.gui_support.throughput,
                                                                                         float(
                                                                                             input_throughput_threshold.get()))])
-        threshold_button.grid(row=1, column=2)
+        threshold_button.grid(row=1, column=2, sticky="W", padx=5, pady=2)
 
         hour_label = Label(popup_bonus_window, text="Hour")
-        hour_label.grid(row=2, column=0)
+        hour_label.grid(row=3, column=0, padx=5, pady=2)
 
         tkVar = StringVar(popup_bonus_window)
         edge_att = ["Pie Chart", "Bar Chart"]
         tkVar.set("Threshold statistic")
 
         input_stat = OptionMenu(popup_bonus_window, tkVar, *edge_att)
-        input_stat.grid(row=2, column=2)
+        input_stat.grid(row=3, column=2, columnspan=2, sticky="W", padx=5, pady=2)
 
         def change_dropdown(*args):
             print(tkVar.get())
@@ -522,6 +522,8 @@ class Window(Frame):
         # edge_att2 = ["Pie Chart", "Bar Chart"]
         # tkVar2.set("Label Statistic")    #TODO: turn it into bar chart only and make both total by link label and high throughput
 
+        # input_stat2 = OptionMenu(popup_bonus_window, tkVar2, *edge_att2)
+        # input_stat2.grid(row=2, column=2, sticky="W", padx=5, pady=2)
         input_stat2 = Button(popup_bonus_window,text="Label Statistic", command = lambda:self.call_statistic_throughput_label(int(spin_box_1.get()),
                                                  float(input_throughput_threshold.get()), "Bar Chart"))
         input_stat2.grid(row=1, column=3)
