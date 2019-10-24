@@ -93,12 +93,12 @@ pip install imageio
 
 ### Support demo
 
-* There are 3 files in "support" folder which support for demo and testing
+* There are 3 files in "support" folder which support for demo and testing.
 
-* Two *.graphml file in order to open a graph
+* Two *.graphml files contain the graph data.
 
-* One *. csv file in order to browse the throughput
+* One *. csv file contains the throughput data.
 
 ### Warning
 
-* The throughput file was generated randomly. Therefore, when testing with throughput statistic, the total number of edges maynot correct because some edges have throughput higher than its bandwidth or capapicity. Therefore those links are not calculated in a chart but still visualized in a graph
+* The throughput file was generated randomly. Therefore, when testing with throughput statistic, the total number of edges maynot correct because some edges have throughput higher than their bandwidth or capapicity. Therefore those links are not calculated in a chart but still visualized in a graph
