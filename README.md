@@ -1,7 +1,7 @@
 # Network Visualization And Optimization
 # Netzwerkvisualisierung version 1.0
 
-This project for study purpose. Visualize computer network and display meaningful data
+This project for study purpose. The application of visualizing network graph.
 
 ## Getting Started
 
