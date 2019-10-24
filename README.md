@@ -7,7 +7,7 @@ This project for study purpose. Visualize computer network and display meaningfu
 
 These instructions will get you a copy of the project up and running on your local machine
 
-### Instalation
+### Installation
 
  _Ubuntu 18.04
 
@@ -57,7 +57,7 @@ pip3 install imageio
 
 ```
 
-_Window 10
+_Windows 10
 
 * download & python 3.6 [Link](https://www.python.org/downloads/release/python-360/)
 
