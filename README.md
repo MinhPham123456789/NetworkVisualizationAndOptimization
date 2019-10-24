@@ -5,7 +5,7 @@ This project for study purpose. Visualize computer network and display meaningfu
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine
+These instructions will aid you to prepare the necessary environment for the application
 
 ### Installation
 
